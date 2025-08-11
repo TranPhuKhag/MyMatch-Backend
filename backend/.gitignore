@@ -1,0 +1,71 @@
+# Java/Maven build artifacts
+target/
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+pom.xml.versionsBackup
+pom.xml.releaseBackup
+dependency-reduced-pom.xml
+.mvn/timing.properties
+!mvn/wrapper/maven-wrapper.jar
+
+# Spring Boot specific
+spring.log
+application.yml
+application-*.yml
+*.properties
+*.log
+logs/
+
+# IDE files
+.idea/
+*.iml
+*.iws
+.vscode/
+.classpath
+.project
+.settings/
+out/
+
+# Docker
+docker-compose.yml
+docker-compose.override.yml
+.env
+*.env
+.env.*
+*.local
+postgres_data/
+pgdata/
+
+# Database files
+*.sql
+*.psql
+
+# Test results and coverage
+/test-output/
+/surefire-reports/
+/jacoco.exec
+coverage/
+*.lcov
+
+# System files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.bak
+*.tmp
+*.orig
+
+# Node (optional, for future frontend)
+node_modules/
+dist/
+build/
+
+# Miscellaneous
+*.cache
+*.pid
+*.seed
+*.pid.lock
