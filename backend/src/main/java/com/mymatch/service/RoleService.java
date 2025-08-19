@@ -1,4 +1,3 @@
 package com.mymatch.service;
 
-public interface RoleService {
-}
+public interface RoleService {}

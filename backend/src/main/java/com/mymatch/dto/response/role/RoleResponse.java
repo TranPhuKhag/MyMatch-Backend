@@ -1,9 +1,9 @@
 package com.mymatch.dto.response.role;
 
+import java.util.List;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor

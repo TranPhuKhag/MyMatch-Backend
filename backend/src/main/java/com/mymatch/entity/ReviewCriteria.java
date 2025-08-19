@@ -1,12 +1,15 @@
 package com.mymatch.entity;
 
-import com.mymatch.common.AbstractAuditingEntity;
-import com.mymatch.enums.CriteriaType;
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+
+import com.mymatch.common.AbstractAuditingEntity;
+import com.mymatch.enums.CriteriaType;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
