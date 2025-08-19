@@ -20,7 +20,7 @@ public class UserUpdateRequest {
     String firstName;
     String lastName;
 
-    @Pattern(regexp = "^(\\+\\d{1,3}[- ]?)?\\d{9,15}$", message = "Invalid phone number")
+    @Pattern(regexp = "^(?:\\+84|0)\\d(?:[\\s.-]?\\d){8}$", message = "Số điện thoại không hợp lệ")
     String phone;
 
     String address;
