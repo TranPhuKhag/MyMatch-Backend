@@ -1,4 +1,3 @@
 package com.mymatch.service;
 
-public interface UserService {
-}
+public interface UserService {}

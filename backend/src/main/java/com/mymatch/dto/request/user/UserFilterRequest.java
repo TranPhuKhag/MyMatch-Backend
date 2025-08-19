@@ -1,6 +1,7 @@
 package com.mymatch.dto.request.user;
 
 import com.mymatch.enums.RoleType;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
