@@ -44,7 +44,6 @@ public class ApplicationInitConfig {
         DESCRIPTIONS.put(RoleType.MANAGER, "Manager for administering the review system");
     }
     @Bean
-    @Profile({"local","dev","test"})
     @ConditionalOnProperty(
             prefix = "spring.datasource",
             name = "driver-class-name",
