@@ -1,8 +1,9 @@
 name: CI/CD My Match Backend
 
-on push:
-  branches:
-    - develop
+on:
+  push:
+    branches:
+      - develop
   workflow_dispatch:
 
 jobs:
