@@ -8,6 +8,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+  profiles:
+    active: dev
 
   jpa:
     hibernate:
@@ -22,6 +24,10 @@ jwt:
   signerKey: ${JWT_SIGNER_KEY}
   valid-duration: 3600 # in second
   refreshable-duration: 36000 # in seconds
+app:
+  admin:
+    username: admin
+    password: 123456
 
 springdoc:
   api-docs:

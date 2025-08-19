@@ -25,7 +25,7 @@ public class Student extends AbstractAuditingEntity {
     Long id;
 
     @Column(name = "student_code")
-    Long studentCode;
+    String studentCode;
 
     @ManyToOne
     @JoinColumn(name = "campus_id")
