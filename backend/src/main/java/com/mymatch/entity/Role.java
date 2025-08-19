@@ -1,11 +1,13 @@
 package com.mymatch.entity;
 
-import com.mymatch.enums.RoleType;
+import java.util.Set;
+
 import jakarta.persistence.*;
+
+import com.mymatch.enums.RoleType;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Set;
 
 @Getter
 @Setter
@@ -31,5 +33,4 @@ public class Role {
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
     Set<Permission> permissions;
-
 }

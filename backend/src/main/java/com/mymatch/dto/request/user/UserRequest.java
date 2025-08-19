@@ -1,9 +1,9 @@
 package com.mymatch.dto.request.user;
 
-import com.mymatch.enums.RoleType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -31,6 +31,5 @@ public class UserRequest {
 
     String address;
     String avatarUrl;
-//    RoleType roleType = RoleType.CUSTOMER; // Default role type is CUSTOMER
+    //    RoleType roleType = RoleType.CUSTOMER; // Default role type is CUSTOMER
 }
-
