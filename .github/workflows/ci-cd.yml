@@ -53,11 +53,11 @@ jobs:
           script: |
             cd /var/docker/mymatch
             echo "Deploying TEST environment..."
-            docker-compose pull
-            docker-compose down --remove-orphans || true
+            docker compose pull
+            docker compose down --remove-orphans || true
             docker rm -f $(docker ps -a -q --filter "name=mymatch") || true
             docker image prune -f
-            docker-compose up -d
+            docker compose up -d
             docker rmi $(docker images -q --filter "dangling=true") || true
             docker ps
 
