@@ -14,11 +14,7 @@ import java.time.LocalDateTime;
 public class StudentResponse {
     Long id;
     String studentCode;
-    Long campusId;
-    String campusName;
-    Long universityId;
-    String universityName;
-
+    CampusResponse campus;
     String skill;
     Double goals;
     String description;

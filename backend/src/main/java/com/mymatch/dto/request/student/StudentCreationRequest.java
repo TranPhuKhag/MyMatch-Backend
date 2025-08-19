@@ -16,10 +16,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StudentCreationRequest {
 
-    //    @NotBlank(message = "Mã sinh viên không được để trống")
-    @NotNull String studentCode;
-    @NotNull Long campusId;
-//    Long universityId;
+    String studentCode;
+    Long campusId;
 
     String skill;
     Double goals;
