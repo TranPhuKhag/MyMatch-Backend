@@ -35,19 +35,6 @@ public class StudentServiceImpl implements StudentService {
     UniversityRepository universityRepository;
 
     @Override
-    public StudentResponse createStudent(StudentCreationRequest req) {
-        if (studentRepository.existsByStudentCode(req.getStudentCode()))
-            throw new AppException(ErrorCode.STUDENT_CODE_EXISTED);
-
-        Campus campus = campusRepository.findById(req.getCampusId())
-                .orElseThrow(() -> new AppException(ErrorCode.CAMPUS_NOT_FOUND));
-        Student student = studentMapper.toEntity(req);
-        student.setCampus(campus);
-        student = studentRepository.save(student);
-        return studentMapper.toResponse(student);
-    }
-
-    @Override
     public StudentResponse getById(Long id) {
         var student = studentRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));

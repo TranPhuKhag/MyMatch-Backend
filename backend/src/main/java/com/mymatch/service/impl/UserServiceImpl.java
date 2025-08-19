@@ -1,5 +1,6 @@
 package com.mymatch.service.impl;
 
+import com.mymatch.dto.request.student.StudentCreationRequest;
 import com.mymatch.dto.request.user.UserCreationRequest;
 import com.mymatch.dto.request.user.UserUpdateRequest;
 import com.mymatch.dto.response.PageResponse;
@@ -14,6 +15,7 @@ import com.mymatch.repository.CampusRepository;
 import com.mymatch.repository.RoleRepository;
 import com.mymatch.repository.StudentRepository;
 import com.mymatch.repository.UserRepository;
+import com.mymatch.service.StudentService;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +46,7 @@ public class UserServiceImpl implements UserService {
     RoleRepository roleRepository;
     CampusRepository campusRepository;
     StudentRepository studentRepository;
+    StudentService studentService;
 
     @Override
     @Transactional
@@ -62,24 +65,10 @@ public class UserServiceImpl implements UserService {
         user.setWallet(wallet);
 
         if (roleType == RoleType.STUDENT) {
-            if (request.getStudentCreationRequest() == null) {
-                throw new AppException(ErrorCode.STUDENT_INFO_REQUIRED);
-            }
-            var studentReq = request.getStudentCreationRequest();
-
-            var campus = campusRepository.findById(studentReq.getCampusId())
-                    .orElseThrow(() -> new AppException(ErrorCode.CAMPUS_NOT_FOUND));
-
-            Student student = studentRepository.save(
-                    Student.builder()
-                    .studentCode(studentReq.getStudentCode())
-                    .campus(campus)
-                    .skill(studentReq.getSkill())
-                    .goals(studentReq.getGoals())
-                    .description(studentReq.getDescription())
+            Student student = studentRepository.save(Student
+                    .builder()
                     .build()
             );
-
             user.setStudent(student);
         }
 

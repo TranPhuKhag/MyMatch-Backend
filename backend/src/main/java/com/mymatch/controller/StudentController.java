@@ -20,15 +20,6 @@ public class StudentController {
 
     StudentService studentService;
 
-    @PostMapping
-    public ApiResponse<StudentResponse> createStudent(@RequestBody StudentCreationRequest req) {
-        return ApiResponse.<StudentResponse>builder()
-                .code(HttpStatus.CREATED.value())
-                .message("Tạo sinh viên thành công")
-                .result(studentService.createStudent(req))
-                .build();
-    }
-
     @GetMapping("/{id}")
     public ApiResponse<StudentResponse> getById(@PathVariable Long id) {
         return ApiResponse.<StudentResponse>builder()
