@@ -1,11 +1,14 @@
 package com.mymatch.entity;
 
-import com.mymatch.common.AbstractAuditingEntity;
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+
+import com.mymatch.common.AbstractAuditingEntity;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
@@ -39,7 +42,6 @@ public class Review extends AbstractAuditingEntity {
 
     @Column(nullable = false)
     Boolean verified = false;
-
 
     Boolean isAnonymous = false;
 

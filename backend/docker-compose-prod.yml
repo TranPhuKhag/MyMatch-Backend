@@ -1,0 +1,31 @@
+services:
+  db:
+    image: mysql:8.0
+    env_file:
+      - .env
+    environment:
+      TZ: Asia/Ho_Chi_Minh
+    ports:
+      - 127.0.0.1:3306:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  backend:
+    image: anhtu2808/mymatch-backend:latest
+    container_name: mymatch-backend
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+
+volumes:
+  mysql_data:

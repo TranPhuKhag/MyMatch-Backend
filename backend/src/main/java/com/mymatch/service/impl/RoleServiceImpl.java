@@ -1,4 +1,3 @@
 package com.mymatch.service.impl;
 
-public class RoleServiceImpl {
-}
+public class RoleServiceImpl {}

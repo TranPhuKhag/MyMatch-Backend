@@ -2,6 +2,7 @@ package com.mymatch.dto.request.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -26,4 +27,3 @@ public class UserUpdateRequest {
     String avatarUrl;
     String password;
 }
-

@@ -1,11 +1,14 @@
 package com.mymatch.entity;
 
-import com.mymatch.common.AbstractAuditingEntity;
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+
+import com.mymatch.common.AbstractAuditingEntity;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
@@ -32,11 +35,9 @@ public class Student extends AbstractAuditingEntity {
 
     Double goals;
 
-    @Column( columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     String description;
 
     @OneToOne(mappedBy = "student")
     User user;
-
-
 }

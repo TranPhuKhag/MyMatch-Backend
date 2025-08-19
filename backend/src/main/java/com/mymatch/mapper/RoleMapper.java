@@ -7,5 +7,4 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
         componentModel = "spring",
         uses = {PermissionMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-public interface RoleMapper {
-}
+public interface RoleMapper {}
