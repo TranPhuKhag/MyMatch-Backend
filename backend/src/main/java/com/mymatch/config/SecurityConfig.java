@@ -41,7 +41,7 @@ public class SecurityConfig {
             "/webjars/**",
             "/universities/**",
             "/campuses/**",
-
+            "/lecturers/**",
     };
 
     private final CustomJwtDecoder customJwtDecoder;
