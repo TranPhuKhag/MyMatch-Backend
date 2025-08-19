@@ -9,7 +9,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface UserService {
     public UserResponse createUser(UserCreationRequest request, RoleType roleType);
-    @PreAuthorize("hasAnyAuthority('user:update')")
     public UserResponse updateUser(UserUpdateRequest request, Long id);
     public UserResponse deleteUser(Long id);
     public void unBanUser(Long userId);

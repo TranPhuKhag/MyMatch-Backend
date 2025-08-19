@@ -14,7 +14,6 @@ import com.mymatch.repository.CampusRepository;
 import com.mymatch.repository.RoleRepository;
 import com.mymatch.repository.StudentRepository;
 import com.mymatch.repository.UserRepository;
-import com.mymatch.service.StudentService;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +42,6 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
-    StudentService studentService;
     CampusRepository campusRepository;
     StudentRepository studentRepository;
 
