@@ -18,6 +18,5 @@ public class CampusResponse {
     String imgUrl;
     LocalDateTime createAt;
     LocalDateTime updateAt;
-    String universityId;
-    String universityName;
+    UniversityResponse university;
 }

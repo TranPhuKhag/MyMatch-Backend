@@ -17,8 +17,6 @@ public interface CampusMapper {
     @Mapping(target = "university", ignore = true)
     Campus toEntity(CampusCreationRequest req);
 
-    @Mapping(target = "universityId",   source = "university.id")
-    @Mapping(target = "universityName", source = "university.name")
     CampusResponse toResponse(Campus entity);
 
     @Mapping(target = "university", ignore = true)
