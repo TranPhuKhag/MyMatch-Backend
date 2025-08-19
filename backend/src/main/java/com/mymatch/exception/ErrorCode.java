@@ -7,27 +7,37 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorCode {
-    UNCATEGORIZED_EXCEPTION(9999, "Uncategorized error", HttpStatus.INTERNAL_SERVER_ERROR),
-    INVALID_KEY(1001, "Uncategorized error", HttpStatus.BAD_REQUEST),
-    USERNAME_INVALID(1002, "Username must be at least {min} characters", HttpStatus.BAD_REQUEST),
-    ENTITY_NOT_FOUND(1003, "Entity not found with given ID", HttpStatus.NOT_FOUND),
-    INVALID_PASSWORD(1004, "Password must be at least {min} characters", HttpStatus.BAD_REQUEST),
-    USER_NOT_EXISTED(1005, "User not existed", HttpStatus.NOT_FOUND),
-    UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
-    UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
-    USER_EXISTED(1008, "User already exists", HttpStatus.BAD_REQUEST),
-    ROLE_NOT_FOUND(1009, "Role not found", HttpStatus.NOT_FOUND),
-    EMAIL_EXISTED(1010, "Email already exists", HttpStatus.BAD_REQUEST),
-    USER_HAS_BEEN_BANNED(1011, "User has been banned", HttpStatus.FORBIDDEN),
-    UNIVERSITY_EXISTED(1012, "University already exists", HttpStatus.BAD_REQUEST),
-    UNIVERSITY_NOT_FOUND(1013, "University not found", HttpStatus.NOT_FOUND),
-    CAMPUS_EXISTED(1014, "Campus already exists", HttpStatus.BAD_REQUEST),
-    CAMPUS_NOT_FOUND(1015, "Campus not found", HttpStatus.NOT_FOUND),
-    STUDENT_CODE_EXISTED(1016, "Student code already exists", HttpStatus.BAD_REQUEST),
-    STUDENT_CODE_NOT_FOUND(1017, "Student code not found", HttpStatus.NOT_FOUND),
-    STUDENT_NOT_FOUND(1018, "Student not found", HttpStatus.NOT_FOUND),
-    STUDENT_INFO_REQUIRED(1019, "Student information is required", HttpStatus.BAD_REQUEST),
+    // 500
+    UNCATEGORIZED_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Lỗi không xác định", HttpStatus.INTERNAL_SERVER_ERROR),
 
+    // 400 Bad Request
+    INVALID_KEY(HttpStatus.BAD_REQUEST.value(), "Khóa không hợp lệ", HttpStatus.BAD_REQUEST),
+    USERNAME_INVALID(HttpStatus.BAD_REQUEST.value(), "Tên đăng nhập phải có ít nhất {min} ký tự", HttpStatus.BAD_REQUEST),
+    INVALID_PASSWORD(HttpStatus.BAD_REQUEST.value(), "Mật khẩu phải có ít nhất {min} ký tự", HttpStatus.BAD_REQUEST),
+    STUDENT_INFO_REQUIRED(HttpStatus.BAD_REQUEST.value(), "Thiếu thông tin sinh viên", HttpStatus.BAD_REQUEST),
+
+    // 401 Unauthorized
+    UNAUTHENTICATED(HttpStatus.UNAUTHORIZED.value(), "Chưa xác thực", HttpStatus.UNAUTHORIZED),
+
+    // 403 Forbidden
+    UNAUTHORIZED(HttpStatus.FORBIDDEN.value(), "Bạn không có quyền truy cập", HttpStatus.FORBIDDEN),
+    USER_HAS_BEEN_BANNED(HttpStatus.FORBIDDEN.value(), "Tài khoản đã bị khóa", HttpStatus.FORBIDDEN),
+
+    // 404 Not Found
+    ENTITY_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy dữ liệu với ID đã cung cấp", HttpStatus.NOT_FOUND),
+    USER_NOT_EXISTED(HttpStatus.NOT_FOUND.value(), "Người dùng không tồn tại", HttpStatus.NOT_FOUND),
+    ROLE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy vai trò", HttpStatus.NOT_FOUND),
+    UNIVERSITY_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy trường đại học", HttpStatus.NOT_FOUND),
+    CAMPUS_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy cơ sở", HttpStatus.NOT_FOUND),
+    STUDENT_CODE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy mã sinh viên", HttpStatus.NOT_FOUND),
+    STUDENT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy sinh viên", HttpStatus.NOT_FOUND),
+
+    // 409 Conflict (đã tồn tại/trùng)
+    USER_EXISTED(HttpStatus.CONFLICT.value(), "Người dùng đã tồn tại", HttpStatus.CONFLICT),
+    EMAIL_EXISTED(HttpStatus.CONFLICT.value(), "Email đã tồn tại", HttpStatus.CONFLICT),
+    UNIVERSITY_EXISTED(HttpStatus.CONFLICT.value(), "Trường đại học đã tồn tại", HttpStatus.CONFLICT),
+    CAMPUS_EXISTED(HttpStatus.CONFLICT.value(), "Cơ sở đã tồn tại", HttpStatus.CONFLICT),
+    STUDENT_CODE_EXISTED(HttpStatus.CONFLICT.value(), "Mã sinh viên đã tồn tại", HttpStatus.CONFLICT);
 
     ;
 
