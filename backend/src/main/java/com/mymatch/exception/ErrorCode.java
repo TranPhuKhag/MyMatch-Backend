@@ -17,7 +17,7 @@ public enum ErrorCode {
     STUDENT_INFO_REQUIRED(HttpStatus.BAD_REQUEST.value(), "Thiếu thông tin sinh viên", HttpStatus.BAD_REQUEST),
 
     // 401 Unauthorized
-    UNAUTHENTICATED(HttpStatus.UNAUTHORIZED.value(), "Chưa xác thực", HttpStatus.UNAUTHORIZED),
+    UNAUTHENTICATED(HttpStatus.UNAUTHORIZED.value(), "Unauthenticated", HttpStatus.UNAUTHORIZED),
 
     // 403 Forbidden
     UNAUTHORIZED(HttpStatus.FORBIDDEN.value(), "Bạn không có quyền truy cập", HttpStatus.FORBIDDEN),
@@ -28,18 +28,18 @@ public enum ErrorCode {
     USER_NOT_EXISTED(HttpStatus.NOT_FOUND.value(), "Người dùng không tồn tại", HttpStatus.NOT_FOUND),
     ROLE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy vai trò", HttpStatus.NOT_FOUND),
     UNIVERSITY_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy trường đại học", HttpStatus.NOT_FOUND),
+    LECTURER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy giảng viên", HttpStatus.NOT_FOUND),
     CAMPUS_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy cơ sở", HttpStatus.NOT_FOUND),
     STUDENT_CODE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy mã sinh viên", HttpStatus.NOT_FOUND),
     STUDENT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy sinh viên", HttpStatus.NOT_FOUND),
 
     // 409 Conflict (đã tồn tại/trùng)
     USER_EXISTED(HttpStatus.CONFLICT.value(), "Người dùng đã tồn tại", HttpStatus.CONFLICT),
+    LECTURER_EXISTED(HttpStatus.CONFLICT.value(), "Mã giảng viên đã tồn tại", HttpStatus.CONFLICT),
     EMAIL_EXISTED(HttpStatus.CONFLICT.value(), "Email đã tồn tại", HttpStatus.CONFLICT),
     UNIVERSITY_EXISTED(HttpStatus.CONFLICT.value(), "Trường đại học đã tồn tại", HttpStatus.CONFLICT),
     CAMPUS_EXISTED(HttpStatus.CONFLICT.value(), "Cơ sở đã tồn tại", HttpStatus.CONFLICT),
-    STUDENT_CODE_EXISTED(HttpStatus.CONFLICT.value(), "Mã sinh viên đã tồn tại", HttpStatus.CONFLICT);
-
-    ;
+    STUDENT_CODE_EXISTED(HttpStatus.CONFLICT.value(), "Mã sinh viên đã tồn tại", HttpStatus.CONFLICT);;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
