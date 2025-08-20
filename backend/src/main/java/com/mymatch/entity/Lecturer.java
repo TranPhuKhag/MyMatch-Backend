@@ -42,6 +42,11 @@ public class Lecturer extends AbstractAuditingEntity {
     Campus campus;
 
     @ManyToMany
+    @JoinTable(
+            name = "lecturer_tags",
+            joinColumns = @JoinColumn(name = "lecturer_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
     List<Tag> tags;
 
 }

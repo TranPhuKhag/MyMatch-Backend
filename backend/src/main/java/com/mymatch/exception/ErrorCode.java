@@ -25,6 +25,7 @@ public enum ErrorCode {
 
     // 404 Not Found
     ENTITY_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy dữ liệu với ID đã cung cấp", HttpStatus.NOT_FOUND),
+    COURSE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Môn học không tồn tại", HttpStatus.NOT_FOUND),
     USER_NOT_EXISTED(HttpStatus.NOT_FOUND.value(), "Người dùng không tồn tại", HttpStatus.NOT_FOUND),
     ROLE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy vai trò", HttpStatus.NOT_FOUND),
     UNIVERSITY_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy trường đại học", HttpStatus.NOT_FOUND),
@@ -39,6 +40,7 @@ public enum ErrorCode {
     EMAIL_EXISTED(HttpStatus.CONFLICT.value(), "Email đã tồn tại", HttpStatus.CONFLICT),
     UNIVERSITY_EXISTED(HttpStatus.CONFLICT.value(), "Trường đại học đã tồn tại", HttpStatus.CONFLICT),
     CAMPUS_EXISTED(HttpStatus.CONFLICT.value(), "Cơ sở đã tồn tại", HttpStatus.CONFLICT),
+    COURSE_EXISTED(HttpStatus.CONFLICT.value(), "Mã môn học đã tồn tại", HttpStatus.CONFLICT),
     STUDENT_CODE_EXISTED(HttpStatus.CONFLICT.value(), "Mã sinh viên đã tồn tại", HttpStatus.CONFLICT);;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

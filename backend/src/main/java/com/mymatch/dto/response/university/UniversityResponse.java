@@ -1,9 +1,11 @@
 package com.mymatch.dto.response.university;
 
+import com.mymatch.dto.response.course.CourseResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -14,6 +16,7 @@ public class UniversityResponse {
     Long id;
     String imgUrl;
     String name;
+    List<CourseResponse> courses;
     LocalDateTime createAt;
     LocalDateTime updateAt;
 }

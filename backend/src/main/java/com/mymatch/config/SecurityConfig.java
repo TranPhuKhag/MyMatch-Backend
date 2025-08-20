@@ -42,6 +42,7 @@ public class SecurityConfig {
             "/universities/**",
             "/campuses/**",
             "/lecturers/**",
+            "/courses/**",
     };
 
     private final CustomJwtDecoder customJwtDecoder;
