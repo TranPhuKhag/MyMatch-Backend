@@ -10,6 +10,8 @@ import com.mymatch.common.AbstractAuditingEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -39,6 +41,9 @@ public class Review extends AbstractAuditingEntity {
 
     @Column(name = "overall_score")
     Double overallScore;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<ReviewDetail> details;
 
     @Column(nullable = false)
     Boolean verified = false;
