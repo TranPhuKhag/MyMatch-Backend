@@ -51,15 +51,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     protected long REFRESHABLE_DURATION;
 
     @NonFinal
-    @Value("${goolge.oauth.client-id}")
+    @Value("${google.oauth.client-id}")
     protected String CLIENT_ID;
 
     @NonFinal
-    @Value("${goolge.oauth.client-secret}")
+    @Value("${google.oauth.client-secret}")
     protected String CLIENT_SECRET;
 
     @NonFinal
-    @Value("${goolge.oauth.redirect-uri}")
+    @Value("${google.oauth.redirect-uri}")
     protected String REDIRECT_URI;
 
     @NonFinal
