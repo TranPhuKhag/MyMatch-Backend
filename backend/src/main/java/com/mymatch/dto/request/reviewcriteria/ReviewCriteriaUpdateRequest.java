@@ -11,12 +11,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReviewCriteriaUpdateRequest {
-
-    @NotBlank
-    private String name;
-
-    @NotNull
-    private CriteriaType type;
-
+    @NotBlank(message = "Mô tả không được để trống")
     private String description;
 }

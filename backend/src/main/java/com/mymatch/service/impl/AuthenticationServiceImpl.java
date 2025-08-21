@@ -73,6 +73,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     RoleRepository roleRepository;
     WalletRepository walletRepository;
     StudentRepository studentRepository;
+
     @Override
     public IntrospectResponse introspect(IntrospectRequest request) {
         var token = request.getToken();
@@ -103,18 +104,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return AuthenticationResponse.builder().token(token).build();
     }
+
     @Override
     @Transactional
-    public AuthenticationResponse outboundAuthenticate(String code){
+    public AuthenticationResponse outboundAuthenticate(String code) {
         log.info("Starting outbound authentication with code: {}", code);
-            var response = outboundIdentityClient.exchangeToken(ExchangeTokenRequest.builder()
-                    .code(code)
-                    .clientId(CLIENT_ID)
-                    .clientSecret(CLIENT_SECRET)
-                    .redirectUri(REDIRECT_URI)
-                    .grantType(GRANT_TYPE)
-                    .build());
-            log.info("TOKEN RESPONSE {}", response);
+        var response = outboundIdentityClient.exchangeToken(ExchangeTokenRequest.builder()
+                .code(code)
+                .clientId(CLIENT_ID)
+                .clientSecret(CLIENT_SECRET)
+                .redirectUri(REDIRECT_URI)
+                .grantType(GRANT_TYPE)
+                .build());
+        log.info("TOKEN RESPONSE {}", response);
 
         // Get user info
         var userInfo = outboundUserClient.getUserInfo("json", response.getAccessToken());
@@ -136,6 +138,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .token(token)
                 .build();
     }
+
     @Override
     public void logout(LogoutRequest request) throws ParseException, JOSEException {
         try {
@@ -196,6 +199,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         Instant.now().plus(VALID_DURATION, ChronoUnit.SECONDS).toEpochMilli()))
                 .jwtID(UUID.randomUUID().toString())
                 .claim("scope", buildScope(user))
+                .claim("userId", user.getId())
+                .claim("studentId", user.getStudent() != null ? user.getStudent().getId() : null)
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -210,6 +215,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RuntimeException(e);
         }
     }
+
     private SignedJWT verifyToken(String token, boolean isRefresh) throws JOSEException, ParseException {
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
 
@@ -233,6 +239,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return signedJWT;
     }
+
     private String buildScope(User user) {
         StringJoiner stringJoiner = new StringJoiner(" ");
 

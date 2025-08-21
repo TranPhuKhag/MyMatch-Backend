@@ -35,3 +35,4 @@ springdoc:
     path: /1111
   swagger-ui:
     path: /1111
+    persist-authorization: true
