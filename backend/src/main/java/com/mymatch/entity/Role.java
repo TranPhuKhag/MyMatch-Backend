@@ -2,12 +2,15 @@ package com.mymatch.entity;
 
 import java.util.Set;
 
+import com.mymatch.common.AbstractAuditingEntity;
 import jakarta.persistence.*;
 
 import com.mymatch.enums.RoleType;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Getter
 @Setter
@@ -16,7 +19,9 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Role {
+@SQLDelete(sql = "UPDATE role SET deleted = 1 WHERE id = ?")
+@SQLRestriction("deleted = 0")
+public class Role extends AbstractAuditingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
