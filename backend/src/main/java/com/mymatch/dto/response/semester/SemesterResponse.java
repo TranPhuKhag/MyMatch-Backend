@@ -1,5 +1,4 @@
-package com.mymatch.dto.request.review;
-
+package com.mymatch.dto.response.semester;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -9,8 +8,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ReviewUpdateRequest {
-    Boolean isVerified;   // only for admin
-    String evidenceUrl;
-
+public class SemesterResponse {
+    Long id;
+    String name;
 }

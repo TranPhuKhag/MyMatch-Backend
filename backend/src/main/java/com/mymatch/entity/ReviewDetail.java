@@ -1,5 +1,6 @@
 package com.mymatch.entity;
 
+import com.mymatch.common.AbstractAuditingEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -18,7 +19,7 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @SQLDelete(sql = "UPDATE review_detail SET deleted = 1 WHERE id = ?")
 @SQLRestriction("deleted = 0")
-public class ReviewDetail {
+public class ReviewDetail extends AbstractAuditingEntity {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     Long id;
@@ -26,7 +27,7 @@ public class ReviewDetail {
     Review review;
     @ManyToOne
     ReviewCriteria criteria;
-    String score;
+    int score;
     String comment;
     Boolean isYes;
 }

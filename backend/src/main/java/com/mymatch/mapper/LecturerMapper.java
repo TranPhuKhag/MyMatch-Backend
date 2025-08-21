@@ -16,7 +16,7 @@ import java.util.List;
 
 @Mapper(
         componentModel = "spring",
-        uses = {CampusMapper.class, TagMapper.class, ReviewMapper.class},
+        uses = {CampusMapper.class, TagMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface LecturerMapper {
 
@@ -34,7 +34,6 @@ public interface LecturerMapper {
     @Mapping(target = "code", source = "lecturer.code")
     @Mapping(target = "bio", source = "lecturer.bio")
     @Mapping(target = "tags", source = "lecturer.tags")
-    @Mapping(target = "reviews", source = "reviews")
     LecturerResponse toLecturerResponse(Lecturer lecturer, List<Review> reviews, int reviewCount);
 
     @Mapping(target = "campus", source = "campus")

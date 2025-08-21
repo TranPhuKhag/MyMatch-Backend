@@ -34,6 +34,8 @@ public enum ErrorCode {
     STUDENT_CODE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy mã sinh viên", HttpStatus.NOT_FOUND),
     STUDENT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy sinh viên", HttpStatus.NOT_FOUND),
     REVIEW_CRITERIA_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy tiêu chí đánh giá", HttpStatus.NOT_FOUND),
+    SEMESTER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy học kỳ", HttpStatus.NOT_FOUND),
+    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy đánh giá", HttpStatus.NOT_FOUND),
 
     // 409 Conflict (đã tồn tại/trùng)
     USER_EXISTED(HttpStatus.CONFLICT.value(), "Người dùng đã tồn tại", HttpStatus.CONFLICT),

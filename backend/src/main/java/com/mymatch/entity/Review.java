@@ -45,9 +45,10 @@ public class Review extends AbstractAuditingEntity {
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<ReviewDetail> details;
 
-    @Column(nullable = false)
-    Boolean verified = false;
-
+    @Column(name = "verified", nullable = false)
+    @Builder.Default
+    Boolean isVerified = false;
+    @Builder.Default
     Boolean isAnonymous = false;
 
     @ManyToOne
