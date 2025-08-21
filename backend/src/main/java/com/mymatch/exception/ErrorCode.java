@@ -42,7 +42,9 @@ public enum ErrorCode {
     UNIVERSITY_EXISTED(HttpStatus.CONFLICT.value(), "Trường đại học đã tồn tại", HttpStatus.CONFLICT),
     CAMPUS_EXISTED(HttpStatus.CONFLICT.value(), "Cơ sở đã tồn tại", HttpStatus.CONFLICT),
     COURSE_EXISTED(HttpStatus.CONFLICT.value(), "Mã môn học đã tồn tại", HttpStatus.CONFLICT),
-    STUDENT_CODE_EXISTED(HttpStatus.CONFLICT.value(), "Mã sinh viên đã tồn tại", HttpStatus.CONFLICT);
+    STUDENT_CODE_EXISTED(HttpStatus.CONFLICT.value(), "Mã sinh viên đã tồn tại", HttpStatus.CONFLICT),
+    ROLE_EXISTED(HttpStatus.CONFLICT.value(), "Vai trò đã tồn tại", HttpStatus.CONFLICT),;
+
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
