@@ -1,7 +1,5 @@
 server:
   port: 8080
-  servlet:
-    context-path: /identity
 spring:
   application:
     name: MyMatch
@@ -18,7 +16,7 @@ spring:
     user:
       name: admin
       password: 123456
-goolge:
+google:
   oauth:
     client-id: ${GOOGLE_OAUTH_CLIENT_ID}
     client-secret: ${GOOGLE_OAUTH_CLIENT_SECRET}
