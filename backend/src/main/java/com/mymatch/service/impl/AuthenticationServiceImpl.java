@@ -1,20 +1,16 @@
 package com.mymatch.service.impl;
 
-import com.mymatch.dto.request.auth.AuthenticationRequest;
-import com.mymatch.dto.request.auth.IntrospectRequest;
-import com.mymatch.dto.request.auth.LogoutRequest;
-import com.mymatch.dto.request.auth.RefreshRequest;
+import com.mymatch.dto.request.auth.*;
 import com.mymatch.dto.response.auth.AuthenticationResponse;
 import com.mymatch.dto.response.auth.IntrospectResponse;
-import com.mymatch.entity.InvalidatedToken;
-import com.mymatch.entity.Permission;
-import com.mymatch.entity.Role;
-import com.mymatch.entity.User;
+import com.mymatch.entity.*;
+import com.mymatch.enums.RoleType;
 import com.mymatch.exception.AppException;
 import com.mymatch.exception.ErrorCode;
 import com.mymatch.mapper.UserMapper;
-import com.mymatch.repository.InvalidatedTokenRepository;
-import com.mymatch.repository.UserRepository;
+import com.mymatch.repository.*;
+import com.mymatch.repository.httpClient.OutboundIdentityClient;
+import com.mymatch.repository.httpClient.OutboundUserClient;
 import com.mymatch.service.AuthenticationService;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -30,14 +26,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.Set;
-import java.util.StringJoiner;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -56,9 +50,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Value("${jwt.refreshable-duration}")
     protected long REFRESHABLE_DURATION;
 
+    @NonFinal
+    @Value("${goolge.oauth.client-id}")
+    protected String CLIENT_ID;
+
+    @NonFinal
+    @Value("${goolge.oauth.client-secret}")
+    protected String CLIENT_SECRET;
+
+    @NonFinal
+    @Value("${goolge.oauth.redirect-uri}")
+    protected String REDIRECT_URI;
+
+    @NonFinal
+    protected final String GRANT_TYPE = "authorization_code";
+
     UserRepository userRepository;
     UserMapper userMapper;
     InvalidatedTokenRepository invalidatedTokenRepository;
+    OutboundIdentityClient outboundIdentityClient;
+    OutboundUserClient outboundUserClient;
+    RoleRepository roleRepository;
+    WalletRepository walletRepository;
+    StudentRepository studentRepository;
     @Override
     public IntrospectResponse introspect(IntrospectRequest request) {
         var token = request.getToken();
@@ -89,7 +103,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return AuthenticationResponse.builder().token(token).build();
     }
+    @Override
+    @Transactional
+    public AuthenticationResponse outboundAuthenticate(String code){
+        log.info("Starting outbound authentication with code: {}", code);
+            var response = outboundIdentityClient.exchangeToken(ExchangeTokenRequest.builder()
+                    .code(code)
+                    .clientId(CLIENT_ID)
+                    .clientSecret(CLIENT_SECRET)
+                    .redirectUri(REDIRECT_URI)
+                    .grantType(GRANT_TYPE)
+                    .build());
+            log.info("TOKEN RESPONSE {}", response);
 
+        // Get user info
+        var userInfo = outboundUserClient.getUserInfo("json", response.getAccessToken());
+
+        log.info("User Info {}", userInfo);
+        Wallet wallet = Wallet.builder()
+                .coin(0L)
+                .build();
+        Role role = roleRepository.findByName(RoleType.STUDENT).orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
+        Student student = studentRepository.save(Student.builder().build());
+        userMapper.toUserFromGoogle(userInfo, role, wallet, student);
+        // Onboard user
+
+        User user = userMapper.toUserFromGoogle(userInfo, role, wallet, student);
+        // Generate token
+        var token = generateToken(user);
+
+        return AuthenticationResponse.builder()
+                .token(token)
+                .build();
+    }
     @Override
     public void logout(LogoutRequest request) throws ParseException, JOSEException {
         try {
@@ -107,12 +153,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             log.info("Token invalidated successfully");
 
             invalidatedTokenRepository.save(invalidatedToken);
-//        } catch (AppException exception) {
-//            log.info("Token already expired");
-//        }
+
         } catch (AppException exception) {
             log.error("AppException during logout: {}", exception.getMessage());
-            throw exception; // Throw lại để caller biết có lỗi
+            throw exception;
         } catch (Exception e) {
             log.error("Unexpected error during logout", e);
             throw e;
@@ -140,6 +184,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return AuthenticationResponse.builder().token(token).build();
     }
+
     private String generateToken(User user) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
 
@@ -202,4 +247,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         return stringJoiner.toString();
     }
+
 }

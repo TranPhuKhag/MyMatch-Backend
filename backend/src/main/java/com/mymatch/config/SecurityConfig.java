@@ -32,6 +32,7 @@ public class SecurityConfig {
             "/student-verifications/**",
             "/oauth2/**",
             "/login/**",
+            "/auth/outbound/**",
     };
 
     private static final String[] PUBLIC_GET = {
