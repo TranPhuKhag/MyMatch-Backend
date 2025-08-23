@@ -19,9 +19,7 @@ import org.hibernate.annotations.SQLRestriction;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@SQLDelete(sql = "UPDATE role SET deleted = 1 WHERE id = ?")
-@SQLRestriction("deleted = 0")
-public class Role extends AbstractAuditingEntity {
+public class Role  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
