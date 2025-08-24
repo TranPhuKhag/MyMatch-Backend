@@ -28,6 +28,7 @@ public enum ErrorCode {
     COURSE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Môn học không tồn tại", HttpStatus.NOT_FOUND),
     USER_NOT_EXISTED(HttpStatus.NOT_FOUND.value(), "Người dùng không tồn tại", HttpStatus.NOT_FOUND),
     ROLE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy vai trò", HttpStatus.NOT_FOUND),
+    PERMISSION_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy quyền", HttpStatus.NOT_FOUND),
     UNIVERSITY_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy trường đại học", HttpStatus.NOT_FOUND),
     LECTURER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy giảng viên", HttpStatus.NOT_FOUND),
     CAMPUS_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy cơ sở", HttpStatus.NOT_FOUND),
@@ -45,7 +46,8 @@ public enum ErrorCode {
     CAMPUS_EXISTED(HttpStatus.CONFLICT.value(), "Cơ sở đã tồn tại", HttpStatus.CONFLICT),
     COURSE_EXISTED(HttpStatus.CONFLICT.value(), "Mã môn học đã tồn tại", HttpStatus.CONFLICT),
     STUDENT_CODE_EXISTED(HttpStatus.CONFLICT.value(), "Mã sinh viên đã tồn tại", HttpStatus.CONFLICT),
-    ROLE_EXISTED(HttpStatus.CONFLICT.value(), "Vai trò đã tồn tại", HttpStatus.CONFLICT),;
+    ROLE_EXISTED(HttpStatus.CONFLICT.value(), "Vai trò đã tồn tại", HttpStatus.CONFLICT),
+    PERMISSION_EXISTED(HttpStatus.CONFLICT.value(), "Quyền đã tồn tại", HttpStatus.CONFLICT);
 
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
