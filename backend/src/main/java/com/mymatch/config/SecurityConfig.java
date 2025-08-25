@@ -33,6 +33,8 @@ public class SecurityConfig {
             "/oauth2/**",
             "/login/**",
             "/auth/outbound/**",
+            "/swap-requests/**",
+            "/swaps/**",
     };
 
     private static final String[] PUBLIC_GET = {

@@ -10,6 +10,8 @@ import com.mymatch.entity.*;
 import com.mymatch.enums.RoleType;
 import com.mymatch.exception.AppException;
 import com.mymatch.exception.ErrorCode;
+import com.mymatch.mapper.StudentMapper;
+import com.mymatch.mapper.StudentMapperImpl;
 import com.mymatch.mapper.UserMapper;
 import com.mymatch.repository.CampusRepository;
 import com.mymatch.repository.RoleRepository;
@@ -47,7 +49,7 @@ public class UserServiceImpl implements UserService {
     CampusRepository campusRepository;
     StudentRepository studentRepository;
     StudentService studentService;
-
+    StudentMapper studentMapper;
     @Override
     @Transactional
     public UserResponse createUser(UserCreationRequest request, RoleType roleType) {
@@ -65,9 +67,7 @@ public class UserServiceImpl implements UserService {
         user.setWallet(wallet);
 
         if (roleType == RoleType.STUDENT) {
-            Student student = studentRepository.save(Student
-                    .builder()
-                    .build()
+            Student student = studentRepository.save(studentMapper.toEntity(request.getStudentCreationRequest())
             );
             user.setStudent(student);
         }
@@ -115,6 +115,7 @@ public class UserServiceImpl implements UserService {
         Set<String> permissions = user.getRole().getPermissions().stream()
                 .map(Permission::getName)
                 .collect(Collectors.toSet());
+        Student student = user.getStudent();
         UserResponse userResponse = userMapper.toUserResponse(user);
         userResponse.setPermissions(permissions);
         return userResponse;

@@ -15,4 +15,5 @@ public class StudentUpdateRequest {
     String skill;
     Double goals;
     String description;
+    String major;
 }

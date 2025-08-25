@@ -13,7 +13,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(
         componentModel = "spring",
-
+//        uses = {StudentMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface UserMapper {
 
@@ -25,6 +25,8 @@ public interface UserMapper {
     @Mapping(target = "permissions", ignore = true)
     @Mapping(target = "role", source = "role.name")
     @Mapping(target = "deleted", source = "deleted")
+    @Mapping(target = "student.id", source = "student.id")
+    @Mapping(target = "student.user", ignore = true)
     UserResponse toUserResponse(User user);
 
     @Mapping(target = "id", ignore = true) // KHÔNG đổi id
@@ -34,9 +36,9 @@ public interface UserMapper {
     @Mapping(target = "lastName",  source = "userInfo.familyName")
     @Mapping(target = "avatarUrl", source = "userInfo.picture")
     @Mapping(target = "address",   source = "userInfo.locale")
-    @Mapping(target = "role",      ignore = true)
-    @Mapping(target = "wallet",    ignore = true)
-    @Mapping(target = "student",   ignore = true)
+    @Mapping(target = "role",     source = "role")
+    @Mapping(target = "wallet",   source = "wallet")
+    @Mapping(target = "student",   source = "student")
     @Mapping(target = "password",  ignore = true)
     User toUserFromGoogle(OutboundUserResponse userInfo, Role role, Wallet wallet, Student student);
 }

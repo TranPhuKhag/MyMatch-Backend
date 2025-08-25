@@ -37,7 +37,8 @@ public enum ErrorCode {
     REVIEW_CRITERIA_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy tiêu chí đánh giá", HttpStatus.NOT_FOUND),
     SEMESTER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy học kỳ", HttpStatus.NOT_FOUND),
     REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy đánh giá", HttpStatus.NOT_FOUND),
-
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy người dùng", HttpStatus.NOT_FOUND),
+    SWAPREQUEST_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy yêu cầu đổi giảng viên của bạn", HttpStatus.NOT_FOUND),
     // 409 Conflict (đã tồn tại/trùng)
     USER_EXISTED(HttpStatus.CONFLICT.value(), "Người dùng đã tồn tại", HttpStatus.CONFLICT),
     LECTURER_EXISTED(HttpStatus.CONFLICT.value(), "Mã giảng viên đã tồn tại", HttpStatus.CONFLICT),

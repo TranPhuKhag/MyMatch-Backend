@@ -20,4 +20,5 @@ public class StudentResponse {
     String skill;
     Double goals;
     String description;
+    String major;
 }
