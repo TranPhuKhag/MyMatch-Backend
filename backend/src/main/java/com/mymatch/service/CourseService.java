@@ -8,7 +8,7 @@ import com.mymatch.dto.response.course.CourseResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface CourseService {
-//    @PreAuthorize("hasAuthority('course:create')")
+    @PreAuthorize("hasAuthority('course:create')")
     CourseResponse createCourse(CourseCreationRequest req);
 
     CourseResponse getById(Long id);
