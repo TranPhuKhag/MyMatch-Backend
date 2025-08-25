@@ -22,5 +22,5 @@ public class StudentCreationRequest {
     String skill;
     Double goals;
     String description;
-
+    String major;
 }

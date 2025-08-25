@@ -2,6 +2,8 @@ package com.mymatch.dto.response.user;
 
 import java.util.Set;
 
+import com.mymatch.dto.response.lecturer.LecturerResponse;
+import com.mymatch.dto.response.student.StudentResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -22,4 +24,6 @@ public class UserResponse {
     String role;
     Set<String> permissions;
     int deleted;
+    StudentResponse student;
+    LecturerResponse lecturer;
 }

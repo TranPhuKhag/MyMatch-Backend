@@ -120,20 +120,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         // Get user info
         var userInfo = outboundUserClient.getUserInfo("json", response.getAccessToken());
-
         log.info("User Info {}", userInfo);
-        Wallet wallet = Wallet.builder()
-                .coin(0L)
-                .build();
-        Role role = roleRepository.findByName(RoleType.STUDENT).orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
-        Student student = studentRepository.save(Student.builder().build());
-        userMapper.toUserFromGoogle(userInfo, role, wallet, student);
-        // Onboard user
 
-        User user = userMapper.toUserFromGoogle(userInfo, role, wallet, student);
+        Role role = roleRepository.findByName(RoleType.STUDENT).orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
+        // Onboard user
+        User user = userRepository.findByUsername(userInfo.getEmail()).orElseGet(() -> {
+            Wallet wallet = Wallet.builder()
+                    .coin(0L)
+                    .build();
+            Student student = studentRepository.save(Student.builder().build());
+
+            User newUser = userMapper.toUserFromGoogle(userInfo, role, wallet, student);
+            return userRepository.save(newUser);
+        });
+
         // Generate token
         var token = generateToken(user);
-
+        log.info("Generated token for user {}: {}", user.getUsername(), token);
         return AuthenticationResponse.builder()
                 .token(token)
                 .build();

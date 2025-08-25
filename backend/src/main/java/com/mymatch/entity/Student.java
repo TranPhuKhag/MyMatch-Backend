@@ -40,4 +40,6 @@ public class Student extends AbstractAuditingEntity {
 
     @OneToOne(mappedBy = "student")
     User user;
+
+    String major;
 }
