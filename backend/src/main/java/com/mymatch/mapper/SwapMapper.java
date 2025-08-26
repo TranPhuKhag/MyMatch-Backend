@@ -15,6 +15,8 @@ public interface SwapMapper {
     @Mapping(target = "requestFrom", ignore = true)
     @Mapping(target = "requestTo", ignore = true)
     @Mapping(target = "studentFrom", ignore = true)
+    @Mapping(target = "studentFrom.user.role", ignore = true)
+    @Mapping(target = "studentFrom.user.student", ignore = true)
     @Mapping(target = "studentTo", ignore = true)
     @Mapping(target = "fromDecision", ignore = true)
     @Mapping(target = "toDecision", ignore = true)
@@ -22,8 +24,14 @@ public interface SwapMapper {
     @Mapping(target = "matchedAt", ignore = true)
     Swap toEntity(SwapCreationRequest req);
     @Mapping(target = "requestFrom", source = "requestFrom")
+    @Mapping(target = "requestFrom.student.user.role", ignore = true)
     @Mapping(target = "requestTo", source = "requestTo")
+    @Mapping(target = "requestTo.student.user.role", ignore = true)
     @Mapping(target = "studentFrom", source = "studentFrom")
+    @Mapping(target = "studentFrom.user.role", ignore = true)
+    @Mapping(target = "studentFrom.user.student", ignore = true)
     @Mapping(target = "studentTo", source = "studentTo")
+    @Mapping(target = "studentTo.user.role", ignore = true)
+    @Mapping(target = "studentTo.user.student", ignore = true)
     SwapResponse toResponse(Swap swap);
 }

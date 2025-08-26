@@ -53,12 +53,17 @@
                     .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
             Student student = studentRepository.findById(user.getStudent().getId()).orElseThrow(()
                     -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
+            log.info("Student id: {}", student.getId());
             Course course = courseRepository.findById(request.getCourseId()).orElseThrow(()
                     -> new AppException(ErrorCode.COURSE_NOT_FOUND));
+            log.info("Course id: {}", request.getCourseId());
+            log.info("Lecturer id: {}", request.getLecturerFromId());
             Lecturer lecturerFrom = lecturerRepository.findById(request.getLecturerFromId()).orElseThrow(()
                     -> new AppException(ErrorCode.LECTURER_NOT_FOUND));
+            log.info("Lecturer from id: {}", request.getLecturerFromId());
             Lecturer lecturerTo = lecturerRepository.findById(request.getLecturerToId()).orElseThrow(()
                     -> new AppException(ErrorCode.LECTURER_NOT_FOUND));
+            log.info("Lecturer to id: {}", request.getLecturerToId());
             SwapRequest existingSwapRequest = swapRequestRepository.findBySwapRequest(
                     request.getCourseId(),
                     request.getTargetClass(),

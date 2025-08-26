@@ -22,7 +22,6 @@ public class SwapResponse {
     StudentResponse studentTo;
     SwapStatus status;
     String reason;
-    LocalDateTime approvedAt;
     LocalDateTime createAt;
     LocalDateTime updateAt;
     SwapDecision fromDecision;
