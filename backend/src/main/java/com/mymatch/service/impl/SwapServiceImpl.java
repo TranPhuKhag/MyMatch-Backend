@@ -9,7 +9,9 @@ import com.mymatch.enums.SwapDecision;
 import com.mymatch.enums.SwapStatus;
 import com.mymatch.exception.AppException;
 import com.mymatch.exception.ErrorCode;
+import com.mymatch.mapper.StudentMapper;
 import com.mymatch.mapper.SwapMapper;
+import com.mymatch.mapper.SwapRequestMapper;
 import com.mymatch.repository.*;
 import com.mymatch.service.SwapService;
 import com.mymatch.specification.SwapSpecification;
@@ -40,6 +42,8 @@ public class SwapServiceImpl implements SwapService {
     SwapRequestRepository swapRequestRepository;
     UserRepository userRepository;
     SwapMapper swapMapper;
+    SwapRequestMapper swapRequestMapper;
+    StudentMapper studentMapper;
     @Override
     public void createSwap(SwapRequest swapRequestCurrent , SwapRequest existingSwapRequest) {
         log.info("Creating swap between SwapRequest ID {} and SwapRequest ID {}",
@@ -60,15 +64,11 @@ public class SwapServiceImpl implements SwapService {
     @Override
     public PageResponse<SwapResponse> getAll(SwapFilterRequest req) {
         Specification<Swap> spec = SwapSpecification.withFilter(req);
-
-//        if (!hasAuthority("swap:read")) {
-//            Long studentId = currentUserService();
-//            spec = spec.and((root, q, cb) -> cb.or(
-//                    cb.equal(root.get("studentFrom").get("id"), studentId),
-//                    cb.equal(root.get("studentTo").get("id"), studentId)
-//            ));
-//        }
-        final Long viewerId = hasAuthority("swap:read") ? null : currentUserService();
+        Long currentUserService = userRepository.findById(SecurityUtil.getCurrentUserId())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND))
+                .getStudent()
+                .getId();
+        final Long viewerId = hasAuthority("swap:read") ? null : currentUserService;
 
         if (viewerId != null) {
             spec = spec.and((root, q, cb) -> cb.or(
@@ -86,7 +86,6 @@ public class SwapServiceImpl implements SwapService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(new Sort.Order(dir, sortBy)));
         Page<Swap> pages = swapRepository.findAll(spec, pageable);
 
-//        var data = pages.getContent().stream().map(swapMapper::toResponse).toList();
         var data = pages.getContent().stream()
                 .map(s -> viewerId == null ? swapMapper.toResponse(s) : toViewerResponse(s, viewerId))
                 .toList();
@@ -101,7 +100,11 @@ public class SwapServiceImpl implements SwapService {
     public SwapResponse getById(Long id) {
         Swap swap = new Swap();
         if (!hasAuthority("swap:read")) {
-            Long studentId = currentUserService();
+            Long studentId = userRepository.findById(SecurityUtil.getCurrentUserId())
+                    .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND))
+                    .getStudent()
+                    .getId();
+
             swap = swapRepository.findByIdAndStudentFromIdOrStudentToId(id, studentId, studentId)
                     .orElseThrow(() -> new AppException(ErrorCode.SWAP_NOT_FOUND));
            return toViewerResponse(swap, studentId);
@@ -113,37 +116,35 @@ public class SwapServiceImpl implements SwapService {
         return swapMapper.toResponse(swap);
     }
 
-    private Long currentUserService () {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        if (user.getStudent() == null) throw new AppException(ErrorCode.STUDENT_NOT_FOUND);
-        return user.getStudent().getId();
-    }
     private SwapResponse toViewerResponse(Swap s, Long viewerId) {
         boolean iAmFrom = Objects.equals(viewerId, s.getStudentFrom().getId());
 
-        Long requestFromId = (iAmFrom ? s.getRequestFrom().getId() : s.getRequestTo().getId());
-        Long requestToId   = (iAmFrom ? s.getRequestTo().getId()   : s.getRequestFrom().getId());
+        // Chọn đúng “from/to” theo NGƯỜI ĐANG XEM
+        var reqFrom = iAmFrom ? s.getRequestFrom() : s.getRequestTo();
+        var reqTo   = iAmFrom ? s.getRequestTo()   : s.getRequestFrom();
+        var stuFrom = iAmFrom ? s.getStudentFrom() : s.getStudentTo();
+        var stuTo   = iAmFrom ? s.getStudentTo()   : s.getStudentFrom();
 
-        Long studentFromId = (iAmFrom ? s.getStudentFrom().getId() : s.getStudentTo().getId());
-        Long studentToId   = (iAmFrom ? s.getStudentTo().getId()   : s.getStudentFrom().getId());
-
-        // Quyết định “của tôi” phải hiển thị ở fromDecision trong góc nhìn của tôi
-        var fromDecision = (iAmFrom ? s.getFromDecision() : s.getToDecision());
-        var toDecision   = (iAmFrom ? s.getToDecision()   : s.getFromDecision());
+        // Map entity -> DTO bằng mapper
+        var reqFromDto = (reqFrom != null) ? swapRequestMapper.toResponse(reqFrom) : null;
+        var reqToDto   = (reqTo   != null) ? swapRequestMapper.toResponse(reqTo)   : null;
+        var stuFromDto = (stuFrom != null) ? studentMapper.toResponse(stuFrom)     : null;
+        var stuToDto   = (stuTo   != null) ? studentMapper.toResponse(stuTo)       : null;
 
         return SwapResponse.builder()
                 .id(s.getId())
-                .requestFromId(requestFromId)
-                .requestToId(requestToId)
-                .studentFromId(studentFromId)
-                .studentToId(studentToId)
-                .fromDecision(fromDecision)
-                .toDecision(toDecision)
+                .requestFrom(reqFromDto)
+                .requestTo(reqToDto)
+                .studentFrom(stuFromDto)
+                .studentTo(stuToDto)
                 .status(s.getStatus())
+                .reason(s.getReason())
                 .createAt(s.getCreateAt())
                 .updateAt(s.getUpdateAt())
+                // “Quyết định của tôi” phải hiện ở fromDecision trong góc nhìn của tôi
+                .fromDecision(iAmFrom ? s.getFromDecision() : s.getToDecision())
+                .toDecision(iAmFrom ? s.getToDecision()   : s.getFromDecision())
                 .build();
     }
+
 }
