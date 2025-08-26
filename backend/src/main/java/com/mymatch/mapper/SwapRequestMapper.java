@@ -18,12 +18,12 @@ public interface SwapRequestMapper {
     @Mapping(target = "student.user", ignore = true)
     @Mapping(target = "lecturerFrom.id",source = "lecturerFrom.id")
     @Mapping(target = "lecturerTo.id",source = "lecturerTo.id")
-
     SwapRequestResponse toResponse(SwapRequest entity);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "student", ignore = true)
     @Mapping(target = "course", ignore = true)
+    @Mapping(target = "status", source = "status")
     SwapRequest toEntity(SwapRequestCreationRequest request);
 
     void update(@MappingTarget SwapRequest entity, SwapRequestUpdateRequest request);
