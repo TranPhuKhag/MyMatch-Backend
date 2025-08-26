@@ -4,4 +4,5 @@ public enum SwapRequestStatus {
     SENT,
     CANCELLED,
     EXPIRED,
+    COMPLETED
 }
