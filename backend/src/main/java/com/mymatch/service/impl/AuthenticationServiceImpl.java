@@ -124,16 +124,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         Role role = roleRepository.findByName(RoleType.STUDENT).orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
         // Onboard user
-        User user = userRepository.findByUsername(userInfo.getEmail()).orElseGet(() -> {
+        User user = userRepository.findByEmail(userInfo.getEmail())
+                .orElseGet(() -> {
             Wallet wallet = Wallet.builder()
                     .coin(0L)
                     .build();
             Student student = studentRepository.save(Student.builder().build());
-
             User newUser = userMapper.toUserFromGoogle(userInfo, role, wallet, student);
             return userRepository.save(newUser);
         });
-
         // Generate token
         var token = generateToken(user);
         log.info("Generated token for user {}: {}", user.getUsername(), token);
