@@ -6,9 +6,7 @@
     import com.mymatch.dto.response.PageResponse;
     import com.mymatch.dto.response.swaprequest.SwapRequestResponse;
     import com.mymatch.entity.*;
-    import com.mymatch.enums.SwapDecision;
     import com.mymatch.enums.SwapRequestStatus;
-    import com.mymatch.enums.SwapStatus;
     import com.mymatch.exception.AppException;
     import com.mymatch.exception.ErrorCode;
     import com.mymatch.mapper.SwapRequestMapper;
@@ -53,23 +51,18 @@
                     .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
             Student student = studentRepository.findById(user.getStudent().getId()).orElseThrow(()
                     -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
-            log.info("Student id: {}", student.getId());
-            Course course = courseRepository.findById(request.getCourseId()).orElseThrow(()
+            Course course = courseRepository.findByCode(request.getCodeCourse()).orElseThrow(()
                     -> new AppException(ErrorCode.COURSE_NOT_FOUND));
-            log.info("Course id: {}", request.getCourseId());
-            log.info("Lecturer id: {}", request.getLecturerFromId());
-            Lecturer lecturerFrom = lecturerRepository.findById(request.getLecturerFromId()).orElseThrow(()
+            Lecturer lecturerFrom = lecturerRepository.findByCode(request.getCodeLecturerFrom()).orElseThrow(()
                     -> new AppException(ErrorCode.LECTURER_NOT_FOUND));
-            log.info("Lecturer from id: {}", request.getLecturerFromId());
-            Lecturer lecturerTo = lecturerRepository.findById(request.getLecturerToId()).orElseThrow(()
+            Lecturer lecturerTo = lecturerRepository.findByCode(request.getCodeLecturerTo()).orElseThrow(()
                     -> new AppException(ErrorCode.LECTURER_NOT_FOUND));
-            log.info("Lecturer to id: {}", request.getLecturerToId());
             SwapRequest existing = swapRequestRepository.findExistingRequestByStudent(
-                    request.getCourseId(),
+                    course.getId(),
                     request.getFromClass(),
                     request.getTargetClass(),
-                    request.getLecturerFromId(),
-                    request.getLecturerToId(),
+                    lecturerFrom.getId(),
+                    lecturerTo.getId(),
                     request.getSlotFrom(),
                     request.getSlotTo(),
                     student.getId()
@@ -78,11 +71,11 @@
                 throw new AppException(ErrorCode.SWAPREQUEST_ALREADY_EXISTS);
             }
             SwapRequest partners = swapRequestRepository.findMatchingPartnerRequests(
-                    request.getCourseId(),
+                    course.getId(),
                     request.getTargetClass(),
                     request.getFromClass(),
-                    request.getLecturerToId(),
-                    request.getLecturerFromId(),
+                    lecturerTo.getId(),
+                    lecturerFrom.getId(),
                     request.getSlotTo(),
                     request.getSlotFrom(),
                     student.getId()
@@ -110,11 +103,11 @@
                     .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
             Student student = studentRepository.findById(user.getStudent().getId()).orElseThrow(()
                     -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
-            Course course = courseRepository.findById(request.getCourseId()).orElseThrow(()
+            Course course = courseRepository.findByCode(request.getCodeCourse()).orElseThrow(()
                     -> new AppException(ErrorCode.COURSE_NOT_FOUND));
-            Lecturer lecturerFrom = lecturerRepository.findById(request.getLecturerFromId()).orElseThrow(()
+            Lecturer lecturerFrom = lecturerRepository.findByCode(request.getCodeLecturerFrom()).orElseThrow(()
                     -> new AppException(ErrorCode.LECTURER_NOT_FOUND));
-            Lecturer lecturerTo = lecturerRepository.findById(request.getLecturerToId()).orElseThrow(()
+            Lecturer lecturerTo = lecturerRepository.findByCode(request.getCodeLecturerTo()).orElseThrow(()
                     -> new AppException(ErrorCode.LECTURER_NOT_FOUND));
             SwapRequest swapRequest = swapRequestRepository.findById(id)
                     .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_FOUND));
