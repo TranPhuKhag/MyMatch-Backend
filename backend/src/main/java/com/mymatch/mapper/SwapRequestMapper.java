@@ -15,7 +15,10 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface SwapRequestMapper {
     @Mapping(target = "student.id", source = "student.id")
     @Mapping(target = "course.id", source = "course.id")
-    @Mapping(target = "student.user", ignore = true)
+    @Mapping(target = "student.user.role", ignore = true)
+    @Mapping(target = "student.user.permissions", ignore = true)
+    @Mapping(target = "student.user.student", ignore = true)
+    @Mapping(target = "student.user.lecturer", ignore = true)
     @Mapping(target = "lecturerFrom.id",source = "lecturerFrom.id")
     @Mapping(target = "lecturerTo.id",source = "lecturerTo.id")
     SwapRequestResponse toResponse(SwapRequest entity);

@@ -40,6 +40,7 @@ public enum ErrorCode {
     USER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy người dùng", HttpStatus.NOT_FOUND),
     SWAPREQUEST_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy yêu cầu đổi giảng viên của bạn", HttpStatus.NOT_FOUND),
     SWAP_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy yêu cầu đổi giảng viên", HttpStatus.NOT_FOUND),
+    CONVERSATION_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Cuộc trò chuyện không tồn tại", HttpStatus.NOT_FOUND),
     // 409 Conflict (đã tồn tại/trùng)
     USER_EXISTED(HttpStatus.CONFLICT.value(), "Người dùng đã tồn tại", HttpStatus.CONFLICT),
     LECTURER_EXISTED(HttpStatus.CONFLICT.value(), "Mã giảng viên đã tồn tại", HttpStatus.CONFLICT),
