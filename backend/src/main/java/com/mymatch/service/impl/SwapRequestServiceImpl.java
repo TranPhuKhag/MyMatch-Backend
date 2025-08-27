@@ -64,7 +64,20 @@
             Lecturer lecturerTo = lecturerRepository.findById(request.getLecturerToId()).orElseThrow(()
                     -> new AppException(ErrorCode.LECTURER_NOT_FOUND));
             log.info("Lecturer to id: {}", request.getLecturerToId());
-            SwapRequest existingSwapRequest = swapRequestRepository.findBySwapRequest(
+            SwapRequest existing = swapRequestRepository.findExistingRequestByStudent(
+                    request.getCourseId(),
+                    request.getFromClass(),
+                    request.getTargetClass(),
+                    request.getLecturerFromId(),
+                    request.getLecturerToId(),
+                    request.getSlotFrom(),
+                    request.getSlotTo(),
+                    student.getId()
+            ).orElse(null);
+            if (existing != null) {
+                throw new AppException(ErrorCode.SWAPREQUEST_ALREADY_EXISTS);
+            }
+            SwapRequest partners = swapRequestRepository.findMatchingPartnerRequests(
                     request.getCourseId(),
                     request.getTargetClass(),
                     request.getFromClass(),
@@ -74,14 +87,15 @@
                     request.getSlotFrom(),
                     student.getId()
             ).orElse(null);
+
             SwapRequest swapRequest = swapRequestMapper.toEntity(request);
             swapRequest.setStudent(student);
             swapRequest.setCourse(course);
             swapRequest.setLecturerFrom(lecturerFrom);
             swapRequest.setLecturerTo(lecturerTo);
             SwapRequest curentSwapRequest =  swapRequestRepository.save(swapRequest);
-            if (existingSwapRequest != null) {
-                swapService.createSwap(curentSwapRequest, existingSwapRequest);
+            if (partners != null) {
+                swapService.createSwap(curentSwapRequest, partners);
                 return swapRequestMapper.toResponse(curentSwapRequest);
             } else {
                 return swapRequestMapper.toResponse(curentSwapRequest);

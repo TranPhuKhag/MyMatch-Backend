@@ -8,6 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.time.DayOfWeek;
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,4 +34,6 @@ public class SwapRequestFilterRequest  {
 
     String fromClass;   // nếu muốn lọc chính xác theo mã lớp nguồn
     String targetClass; // nếu muốn lọc chính xác theo mã lớp đích
+    Set<DayOfWeek> fromDays;
+    Set<DayOfWeek> toDays;
 }
