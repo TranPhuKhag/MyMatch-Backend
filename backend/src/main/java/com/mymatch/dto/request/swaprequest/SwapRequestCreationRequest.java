@@ -9,8 +9,11 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -40,5 +43,8 @@ public class SwapRequestCreationRequest {
     @Builder.Default
     Visibility visibility = Visibility.PUBLIC;
     LocalDateTime expiresAt = LocalDateTime.now().plusDays(14); // optional, default 7 days from now
-
+    @NotNull
+    Set<DayOfWeek> fromDays;
+    @NotNull
+    Set<DayOfWeek> toDays;
 }

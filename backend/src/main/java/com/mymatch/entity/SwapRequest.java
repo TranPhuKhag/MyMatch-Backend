@@ -10,7 +10,11 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -66,4 +70,19 @@ public class SwapRequest extends AbstractAuditingEntity {
 
     @Enumerated(EnumType.STRING)
     SwapRequestStatus status = SwapRequestStatus.SENT;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "swap_request_from_days",
+            joinColumns = @JoinColumn(name = "swap_request_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "day", length = 10, nullable = false)
+    Set<DayOfWeek> fromDays = EnumSet.noneOf(DayOfWeek.class);
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "swap_request_to_days",
+            joinColumns = @JoinColumn(name = "swap_request_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "day", length = 10, nullable = false)
+    Set<DayOfWeek> toDays = EnumSet.noneOf(DayOfWeek.class);
+
 }

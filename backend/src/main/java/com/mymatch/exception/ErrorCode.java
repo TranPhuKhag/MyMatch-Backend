@@ -49,8 +49,8 @@ public enum ErrorCode {
     COURSE_EXISTED(HttpStatus.CONFLICT.value(), "Mã môn học đã tồn tại", HttpStatus.CONFLICT),
     STUDENT_CODE_EXISTED(HttpStatus.CONFLICT.value(), "Mã sinh viên đã tồn tại", HttpStatus.CONFLICT),
     ROLE_EXISTED(HttpStatus.CONFLICT.value(), "Vai trò đã tồn tại", HttpStatus.CONFLICT),
-    PERMISSION_EXISTED(HttpStatus.CONFLICT.value(), "Quyền đã tồn tại", HttpStatus.CONFLICT);
-
+    PERMISSION_EXISTED(HttpStatus.CONFLICT.value(), "Quyền đã tồn tại", HttpStatus.CONFLICT),
+    SWAPREQUEST_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã tồn tại", HttpStatus.CONFLICT);
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
