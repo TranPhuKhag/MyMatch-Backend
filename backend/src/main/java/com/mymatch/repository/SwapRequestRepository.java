@@ -9,10 +9,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 
-import java.time.DayOfWeek;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface SwapRequestRepository extends JpaRepository<SwapRequest, Long>, JpaSpecificationExecutor<SwapRequest> {
     Optional<SwapRequest> findByIdAndStudentId(Long id, Long studentId);
