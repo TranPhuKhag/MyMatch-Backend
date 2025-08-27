@@ -16,11 +16,11 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SwapRequestUpdateRequest {
-    Long courseId;
+    String codeCourse;
     String fromClass;
     String targetClass;
-    Long lecturerFromId;
-    Long lecturerToId;
+    String codeLecturerFrom;
+    String codeLecturerTo;
     List<Long> preferredDayIds;
     ClassesSlot slot;
     String reason;

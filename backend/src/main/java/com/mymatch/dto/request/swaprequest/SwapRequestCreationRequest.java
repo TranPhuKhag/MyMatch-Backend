@@ -21,25 +21,23 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SwapRequestCreationRequest {
     @NotNull
-    Long courseId;
+    String codeCourse;
+
     @NotBlank
     String fromClass;
     @NotBlank
     String targetClass;
     @NotNull
-    Long lecturerFromId;
+    String codeLecturerFrom;
     @NotNull
-    Long lecturerToId;
-
+    String codeLecturerTo;
     @Builder.Default
     ClassesSlot slotFrom = ClassesSlot.SLOT_1; // optional, default
     @Builder.Default
     ClassesSlot slotTo   = ClassesSlot.SLOT_1; // optional, default
-
     String reason;
     @Builder.Default
     SwapRequestStatus status = SwapRequestStatus.SENT; // optional, default SENT
-
     @Builder.Default
     Visibility visibility = Visibility.PUBLIC;
     LocalDateTime expiresAt = LocalDateTime.now().plusDays(14); // optional, default 7 days from now
