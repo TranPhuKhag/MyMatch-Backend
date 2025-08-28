@@ -19,7 +19,5 @@ public class ConversationResponse {
     String conversationAvatar;
     String conversationName;
     List<ParticipantInfo> participants;
-    Instant createdDate;
-    Instant modifiedDate;
     boolean me;
 }

@@ -26,14 +26,12 @@ public class Conversation extends AbstractAuditingEntity {
     Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 20, nullable = false, unique = true)
+    @Column(length = 20, nullable = false)
     ConversationType type; // DIRECT/GROUP
-
-//    @Column(name="direct_key")
-//    String directKey;        // unique cho DIRECT
 
     @Column(name="participants_hash", unique = true)
     String participantsHash; // hash của các participant, unique
+
     @ManyToMany
     @JoinTable(
             name = "conversation_participants",

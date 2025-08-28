@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -17,16 +18,20 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SwapRequestUpdateRequest {
     String codeCourse;
+
     String fromClass;
     String targetClass;
+
     String codeLecturerFrom;
     String codeLecturerTo;
-    List<Long> preferredDayIds;
-    ClassesSlot slot;
+
+    ClassesSlot slotFrom;
+    ClassesSlot slotTo;
+
     String reason;
     Visibility visibility;
-    Long lecturerId;
     SwapRequestStatus status;
+
     Set<DayOfWeek> fromDays;
     Set<DayOfWeek> toDays;
 }
