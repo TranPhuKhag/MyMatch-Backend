@@ -40,7 +40,17 @@ public class SwapRequestSpecification {
             if (f.getTargetClass() != null && !f.getTargetClass().isBlank()) {
                 predicates.add(cb.equal(root.get("targetClass"), f.getTargetClass()));
             }
-
+            if (f.getStatuses() != null && !f.getStatuses().isEmpty()) {
+                predicates.add(root.get("status").in(f.getStatuses()));
+            }
+            if(Boolean.FALSE.equals(f.getIncludeExpired())) {
+                predicates.add(
+                        cb.or(
+                                cb.greaterThan(root.get("expiresAt"), java.time.LocalDateTime.now()),
+                                cb.isNull(root.get("expiresAt"))
+                        )
+                );
+            };
             return cb.and(predicates.toArray(new Predicate[0]));
         };
     }

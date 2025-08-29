@@ -88,8 +88,8 @@ public class ChatMessageServiceImpl implements ChatMessageService {
             if (Objects.nonNull(webSocketSession)) {
                 String message = null;
                 try {
-                    chatMessageResponse.setMe(webSocketSession.getStudentId().equals(chatMessage.getSender().getId()));
-                    message = objectMapper.writeValueAsString(chatMessage);
+                    chatMessageResponse.setMe(webSocketSession.getStudentId().equals(sender.getId()));
+                    message = objectMapper.writeValueAsString(chatMessageResponse);
                     client.sendEvent("message", message);
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException(e);

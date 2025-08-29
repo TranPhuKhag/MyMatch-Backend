@@ -11,4 +11,5 @@ public interface SwapService {
     void createSwap(SwapRequest swapRequestCurrent , SwapRequest existingSwapRequest);
     PageResponse<SwapResponse> getAll(SwapFilterRequest req);
     SwapResponse getById(Long id);
+    SwapResponse updateDecision(Long swapId, SwapUpdateRequest req);
 }
