@@ -1,5 +1,6 @@
-package com.mymatch.dto.request;
+package com.mymatch.dto.request.conversation;
 
+import com.mymatch.enums.ConversationType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -12,10 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ConversationRequest {
-    String type;
+public class ConversationCreationRequest {
+    ConversationType type;
 
     @Size(min = 1)
     @NotNull
-    List<String> participantIds;
+    List<Long> participantIds;
 }

@@ -1,6 +1,5 @@
 package com.mymatch.dto.response;
-
-import com.mymatch.entity.ParticipantInfo;
+import com.mymatch.dto.response.student.StudentResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,12 +11,10 @@ import java.time.Instant;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ChatMessageResponse {
-    String id;
-    String conversationId;
-    boolean me; // nếu ChatMessage này của người dùng hiện tại gửi thì true, ngược lại false
-    // Display thứ tự của mình nằm trên tay trái, người khác nằm bên phải
-    // nội suy ra
+    Long id;
+    ConversationResponse conversationResponse;
+    boolean me;
     String message;
-    ParticipantInfo sender;
+    StudentResponse sender;
     Instant createdDate;
 }

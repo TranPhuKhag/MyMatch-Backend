@@ -1,6 +1,7 @@
-package com.mymatch.dto.request;
+package com.mymatch.dto.request.chatmessage;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,8 +10,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ChatMessageRequest {
-    @NotBlank
+public class ChatMessageCreationRequest {
+    @NotNull
     Long conversationId;
     @NotBlank
     String message;

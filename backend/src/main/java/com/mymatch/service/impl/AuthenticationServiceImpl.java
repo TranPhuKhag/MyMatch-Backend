@@ -75,17 +75,28 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     StudentRepository studentRepository;
 
     @Override
-    public IntrospectResponse introspect(IntrospectRequest request) {
+    public IntrospectResponse introspect(IntrospectRequest request) throws ParseException {
         var token = request.getToken();
         boolean isValid = true;
+        SignedJWT jwt = null;
+        Long studentId = null;
 
         try {
-            verifyToken(token, false);
+            jwt = verifyToken(token, false);
+            Object claim = jwt.getJWTClaimsSet().getClaim("studentId");
+            if (claim != null) {
+                studentId = (claim instanceof Number)
+                        ? ((Number) claim).longValue()
+                        : Long.valueOf(claim.toString());
+            }
         } catch (AppException | JOSEException | ParseException e) {
             isValid = false;
         }
 
-        return IntrospectResponse.builder().valid(isValid).build();
+        return IntrospectResponse.builder()
+                .studentId(studentId)
+                .valid(isValid)
+                .build();
     }
 
     @Override

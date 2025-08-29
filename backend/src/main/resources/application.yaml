@@ -36,3 +36,5 @@ springdoc:
   swagger-ui:
     path: /1111
     persist-authorization: true
+socketio:
+  port: 9092

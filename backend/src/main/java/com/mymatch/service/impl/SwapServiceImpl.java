@@ -6,6 +6,7 @@ import com.mymatch.dto.response.PageResponse;
 import com.mymatch.dto.response.swap.SwapResponse;
 import com.mymatch.entity.*;
 import com.mymatch.enums.SwapDecision;
+import com.mymatch.enums.SwapMode;
 import com.mymatch.enums.SwapStatus;
 import com.mymatch.exception.AppException;
 import com.mymatch.exception.ErrorCode;
@@ -56,8 +57,12 @@ public class SwapServiceImpl implements SwapService {
                 .fromDecision(SwapDecision.PENDING)
                 .toDecision(SwapDecision.PENDING)
                 .status(SwapStatus.PENDING)
+                .mode(SwapMode.AUTOMATIC)
                 .build();
-        swapRepository.save(swap);
+        if (swapRepository.existsByPairEitherOrder(swapRequestCurrent.getId(), existingSwapRequest.getId())) {
+            throw new AppException(ErrorCode.SWAP_ALREADY_EXISTS);
+        }
+            swapRepository.save(swap);
     }
 
     @Transactional(Transactional.TxType.SUPPORTS)

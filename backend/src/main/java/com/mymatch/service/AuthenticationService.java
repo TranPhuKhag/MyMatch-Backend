@@ -16,7 +16,7 @@ public interface AuthenticationService {
      * @param request payload containing the token to validate
      * @return response indicating token validity
      */
-    IntrospectResponse introspect(IntrospectRequest request);
+    IntrospectResponse introspect(IntrospectRequest request) throws ParseException;
 
     /**
      * Authenticate user credentials and issue a new JWT.

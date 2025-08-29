@@ -57,6 +57,11 @@
                     -> new AppException(ErrorCode.LECTURER_NOT_FOUND));
             Lecturer lecturerTo = lecturerRepository.findByCode(request.getCodeLecturerTo()).orElseThrow(()
                     -> new AppException(ErrorCode.LECTURER_NOT_FOUND));
+            log.info("[auto-match] courseCode={}, from={}, to={}, lecFromCode={}, lecToCode={}, slotFrom={}, slotTo={}, excludeStudent={}",
+                    request.getCodeCourse(), request.getFromClass(), request.getTargetClass(),
+                    request.getCodeLecturerFrom(), request.getCodeLecturerTo(),
+                    request.getSlotFrom(), request.getSlotTo(), student.getId());
+
             SwapRequest existing = swapRequestRepository.findExistingRequestByStudent(
                     course.getId(),
                     request.getFromClass(),
@@ -70,6 +75,7 @@
             if (existing != null) {
                 throw new AppException(ErrorCode.SWAPREQUEST_ALREADY_EXISTS);
             }
+            log.info("[auto-match] searching for partners ...");
             SwapRequest partners = swapRequestRepository.findMatchingPartnerRequests(
                     course.getId(),
                     request.getTargetClass(),
@@ -80,7 +86,7 @@
                     request.getSlotFrom(),
                     student.getId()
             ).orElse(null);
-
+            log.info("[auto-match] partner found: {}", partners != null ? partners.getId() : null);
             SwapRequest swapRequest = swapRequestMapper.toEntity(request);
             swapRequest.setStudent(student);
             swapRequest.setCourse(course);
@@ -103,19 +109,28 @@
                     .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
             Student student = studentRepository.findById(user.getStudent().getId()).orElseThrow(()
                     -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
-            Course course = courseRepository.findByCode(request.getCodeCourse()).orElseThrow(()
-                    -> new AppException(ErrorCode.COURSE_NOT_FOUND));
-            Lecturer lecturerFrom = lecturerRepository.findByCode(request.getCodeLecturerFrom()).orElseThrow(()
-                    -> new AppException(ErrorCode.LECTURER_NOT_FOUND));
-            Lecturer lecturerTo = lecturerRepository.findByCode(request.getCodeLecturerTo()).orElseThrow(()
-                    -> new AppException(ErrorCode.LECTURER_NOT_FOUND));
             SwapRequest swapRequest = swapRequestRepository.findById(id)
                     .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_FOUND));
             swapRequestMapper.update(swapRequest, request);
-            swapRequest.setCourse(course);
-            swapRequest.setStudent(student);
-            swapRequest.setLecturerFrom(lecturerFrom);
-            swapRequest.setLecturerTo(lecturerTo);
+
+            if (request.getCodeCourse() != null && !request.getCodeCourse().isBlank()) {
+                Course course = courseRepository.findByCode(request.getCodeCourse())
+                        .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
+                swapRequest.setCourse(course);
+            }
+            if (request.getCodeLecturerFrom() != null && !request.getCodeLecturerFrom().isBlank()) {
+                Lecturer lecFrom = lecturerRepository.findByCode(request.getCodeLecturerFrom())
+                        .orElseThrow(() -> new AppException(ErrorCode.LECTURER_NOT_FOUND));
+                swapRequest.setLecturerFrom(lecFrom);
+            }
+            if (request.getCodeLecturerTo() != null && !request.getCodeLecturerTo().isBlank()) {
+                Lecturer lecTo = lecturerRepository.findByCode(request.getCodeLecturerTo())
+                        .orElseThrow(() -> new AppException(ErrorCode.LECTURER_NOT_FOUND));
+                swapRequest.setLecturerTo(lecTo);
+            }
+//            if (req.getSlotFrom() != null) sr.setSlotFrom(req.getSlotFrom());
+//            if (req.getSlotTo()   != null) sr.setSlotTo(req.getSlotTo());
+
             swapRequest = swapRequestRepository.save(swapRequest);
             return swapRequestMapper.toResponse(swapRequest);
         }

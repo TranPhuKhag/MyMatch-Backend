@@ -1,6 +1,6 @@
 package com.mymatch.service.impl;
 
-import com.mymatch.dto.request.ConversationRequest;
+import com.mymatch.dto.request.conversation.ConversationCreationRequest;
 import com.mymatch.dto.response.ConversationResponse;
 import com.mymatch.entity.Conversation;
 import com.mymatch.entity.Student;
@@ -12,12 +12,14 @@ import com.mymatch.repository.StudentRepository;
 import com.mymatch.repository.UserRepository;
 import com.mymatch.service.ConversationService;
 import com.mymatch.utils.SecurityUtil;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -31,13 +33,59 @@ public class ConversationServiceImpl implements ConversationService {
     ConversationMapper conversationMapper;
     @Override
     public List<ConversationResponse> myConversations() {
-    return null;
+        var currentUserId = SecurityUtil.getCurrentUserId();
+        var me = studentRepository.findByUserId(currentUserId)
+                .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
+        List<Conversation> conversations = conversationRepository.findAllByParticipants_Id(me.getId());
+        return conversations.stream().map(this::toConversationResponse).toList();
     }
 
     @Override
-    public ConversationResponse createConversation(ConversationRequest request) {
-        return null;
+    @Transactional
+    public ConversationResponse createConversation(ConversationCreationRequest request) {
+        // Fetch current user
+        var currentUserId = SecurityUtil.getCurrentUserId();
+        var me = studentRepository.findByUserId(currentUserId)
+                .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
+        log.info("Current user ID: {}", me.getUser().getUsername());
+        log.info("Current user: {}", me);
+        var otherStudent  = studentRepository.findById(request.getParticipantIds().getFirst())
+                .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
+        log.info("Other user: {}", otherStudent.getUser().getUsername() );
+        if (me.getId().equals(otherStudent.getId())) {
+            throw new AppException(ErrorCode.CANNOT_CREATE_CONVERSATION_WITH_YOURSELF);
+        }
+
+        // Generate hash (sorted)
+        List<Long> participantIds = List.of(me.getId(), otherStudent.getId());
+        String participantHash = generateParticipantHash(participantIds);
+
+        // Check existing
+        conversationRepository.findByParticipantsHash(participantHash)
+                .ifPresent(c -> { throw new AppException(ErrorCode.CONVERSATION_ALREADY_EXISTS); });
+
+        List<Student> participants = List.of(
+                me,
+                otherStudent
+        );
+
+        // Build Conversation info
+        Conversation newConversation = Conversation.builder()
+                .type(request.getType())
+                .participants(participants)
+                .participantsHash(participantHash)
+                .build();
+
+        Conversation conversation = conversationRepository.save(newConversation);
+        return toConversationResponse(conversation);
     }
+    private String generateParticipantHash(List<Long> ids) {
+        return ids.stream()
+                .sorted()
+                .map(String::valueOf)
+                .collect(java.util.stream.Collectors.joining("-"));
+    }
+
     private ConversationResponse toConversationResponse(Conversation conversation) {
         var userId = SecurityUtil.getCurrentUserId();
         var conversationResponse = conversationMapper.toConversationResponse(conversation);
@@ -45,4 +93,4 @@ public class ConversationServiceImpl implements ConversationService {
                 .anyMatch(participantInfo -> participantInfo.getUser().getId().equals(userId)));
         return conversationResponse;
     }
-    }
+}

@@ -27,18 +27,7 @@ public class ChatMessage extends AbstractAuditingEntity {
     @ManyToOne
     @JoinColumn(name="sender_id", nullable=false)
     Student sender;
-//    @Enumerated(EnumType.STRING)
-//    MessageType type = MessageType.TEXT;
 
     @Column(columnDefinition="TEXT")
     String message;
-
-    String attachmentUrl;
-
-    @ManyToOne
-    @JoinColumn(name="reply_to_id")
-    ChatMessage replyTo;
-
-    Boolean edited = false;
-    boolean me;
 }

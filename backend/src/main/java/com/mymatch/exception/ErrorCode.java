@@ -15,14 +15,13 @@ public enum ErrorCode {
     USERNAME_INVALID(HttpStatus.BAD_REQUEST.value(), "Tên đăng nhập phải có ít nhất {min} ký tự", HttpStatus.BAD_REQUEST),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST.value(), "Mật khẩu phải có ít nhất {min} ký tự", HttpStatus.BAD_REQUEST),
     STUDENT_INFO_REQUIRED(HttpStatus.BAD_REQUEST.value(), "Thiếu thông tin sinh viên", HttpStatus.BAD_REQUEST),
-
+    CANNOT_CREATE_CONVERSATION_WITH_YOURSELF(HttpStatus.BAD_REQUEST.value(), "Không thể tạo cuộc trò chuyện với chính bạn", HttpStatus.BAD_REQUEST),
     // 401 Unauthorized
     UNAUTHENTICATED(HttpStatus.UNAUTHORIZED.value(), "Unauthenticated", HttpStatus.UNAUTHORIZED),
-
+    UNAUTHORIZED_ACCESS_CONVERSATION(HttpStatus.UNAUTHORIZED.value(), "Bạn không có quyền truy cập cuộc trò chuyện này", HttpStatus.UNAUTHORIZED),
     // 403 Forbidden
     UNAUTHORIZED(HttpStatus.FORBIDDEN.value(), "Bạn không có quyền truy cập", HttpStatus.FORBIDDEN),
     USER_HAS_BEEN_BANNED(HttpStatus.FORBIDDEN.value(), "Tài khoản đã bị khóa", HttpStatus.FORBIDDEN),
-
     // 404 Not Found
     ENTITY_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy dữ liệu với ID đã cung cấp", HttpStatus.NOT_FOUND),
     COURSE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Môn học không tồn tại", HttpStatus.NOT_FOUND),
@@ -51,8 +50,9 @@ public enum ErrorCode {
     STUDENT_CODE_EXISTED(HttpStatus.CONFLICT.value(), "Mã sinh viên đã tồn tại", HttpStatus.CONFLICT),
     ROLE_EXISTED(HttpStatus.CONFLICT.value(), "Vai trò đã tồn tại", HttpStatus.CONFLICT),
     PERMISSION_EXISTED(HttpStatus.CONFLICT.value(), "Quyền đã tồn tại", HttpStatus.CONFLICT),
-    SWAPREQUEST_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã tồn tại", HttpStatus.CONFLICT);
-
+    SWAPREQUEST_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã tồn tại", HttpStatus.CONFLICT),
+    CONVERSATION_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Cuộc trò chuyện đã tồn tại", HttpStatus.CONFLICT),
+    SWAP_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã được tạo cho cặp này", HttpStatus.CONFLICT);
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
         this.message = message;
