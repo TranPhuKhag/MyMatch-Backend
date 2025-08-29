@@ -6,15 +6,10 @@ import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.mymatch.dto.request.auth.IntrospectRequest;
 import com.mymatch.dto.response.auth.IntrospectResponse;
-import com.mymatch.entity.Student;
 import com.mymatch.entity.WebSocketSession;
-import com.mymatch.exception.AppException;
-import com.mymatch.exception.ErrorCode;
-import com.mymatch.repository.StudentRepository;
 import com.mymatch.repository.UserRepository;
 import com.mymatch.service.AuthenticationService;
 import com.mymatch.service.WebSocketSessionService;
-import com.mymatch.utils.SecurityUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +20,6 @@ import org.springframework.stereotype.Component;
 import java.text.ParseException;
 import java.time.Instant;
 
-import static java.lang.Long.parseLong;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -36,12 +29,6 @@ public class SocketHandler {
     AuthenticationService authenticationService;
     WebSocketSessionService webSocketSessionService;
     private final UserRepository userRepository;
-
-//    @PostConstruct
-//    void init() {
-//        server.addListeners(this); // đăng ký các @OnConnect/@OnDisconnect trên class này
-//        log.info("Socket.IO listening on {}", server.getConfiguration().getPort());
-//    }
 
     @OnConnect
     public void clientConnected(SocketIOClient client) throws ParseException {

@@ -16,6 +16,7 @@ public enum ErrorCode {
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST.value(), "Mật khẩu phải có ít nhất {min} ký tự", HttpStatus.BAD_REQUEST),
     STUDENT_INFO_REQUIRED(HttpStatus.BAD_REQUEST.value(), "Thiếu thông tin sinh viên", HttpStatus.BAD_REQUEST),
     CANNOT_CREATE_CONVERSATION_WITH_YOURSELF(HttpStatus.BAD_REQUEST.value(), "Không thể tạo cuộc trò chuyện với chính bạn", HttpStatus.BAD_REQUEST),
+    INVALID_SWAP_DECISION(HttpStatus.BAD_REQUEST.value(), "Quyết định không hợp lệ", HttpStatus.BAD_REQUEST),
     // 401 Unauthorized
     UNAUTHENTICATED(HttpStatus.UNAUTHORIZED.value(), "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED_ACCESS_CONVERSATION(HttpStatus.UNAUTHORIZED.value(), "Bạn không có quyền truy cập cuộc trò chuyện này", HttpStatus.UNAUTHORIZED),

@@ -128,8 +128,6 @@
                         .orElseThrow(() -> new AppException(ErrorCode.LECTURER_NOT_FOUND));
                 swapRequest.setLecturerTo(lecTo);
             }
-//            if (req.getSlotFrom() != null) sr.setSlotFrom(req.getSlotFrom());
-//            if (req.getSlotTo()   != null) sr.setSlotTo(req.getSlotTo());
 
             swapRequest = swapRequestRepository.save(swapRequest);
             return swapRequestMapper.toResponse(swapRequest);
@@ -161,11 +159,6 @@
         @Override
         public PageResponse<SwapRequestResponse> getAllSwapRequests(SwapRequestFilterRequest req) {
             var spec = SwapRequestSpecification.withFilter(req);
-
-            if (!hasAuthority("swaprequest:read")) {
-                Long studentId = CurrentUserService();
-                spec = spec.and((root, query, cb) -> cb.equal(root.get("student").get("id"), studentId));
-            }
 
             var sortBy = (req.getSortBy() == null || req.getSortBy().isBlank()) ? "id" : req.getSortBy();
             Pageable pageable = PageRequest.of(

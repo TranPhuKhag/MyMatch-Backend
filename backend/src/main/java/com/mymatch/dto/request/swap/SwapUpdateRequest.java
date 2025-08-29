@@ -1,11 +1,9 @@
 package com.mymatch.dto.request.swap;
 
-import com.mymatch.enums.ClassesSlot;
-import com.mymatch.enums.Visibility;
+import com.mymatch.enums.SwapDecision;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -13,11 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SwapUpdateRequest {
-    String targetClass;
-    Long lecturerFromId;
-    Long lecturerToId;
-    ClassesSlot slotFrom;
-    ClassesSlot slotTo;
+    @NotNull
+    SwapDecision decision;
     String reason;
-    Visibility visibility;
 }

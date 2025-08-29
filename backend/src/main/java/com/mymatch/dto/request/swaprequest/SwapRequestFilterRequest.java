@@ -1,6 +1,7 @@
 package com.mymatch.dto.request.swaprequest;
 
 import com.mymatch.enums.ClassesSlot;
+import com.mymatch.enums.SwapRequestStatus;
 import com.mymatch.enums.Visibility;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,9 +32,11 @@ public class SwapRequestFilterRequest  {
     ClassesSlot slotTo;
 
     Visibility visibility;
-
+    Set<SwapRequestStatus> statuses;
     String fromClass;   // nếu muốn lọc chính xác theo mã lớp nguồn
     String targetClass; // nếu muốn lọc chính xác theo mã lớp đích
     Set<DayOfWeek> fromDays;
     Set<DayOfWeek> toDays;
+    @Builder.Default Boolean includeExpired = true;
+
 }

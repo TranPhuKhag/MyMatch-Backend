@@ -12,8 +12,9 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ChatMessageMapper {
     ChatMessage toChatMessage(ChatMessageCreationRequest request);
-    @Mapping(target = "sender.user.role", ignore = true) // Map full sender nếu cần, hoặc custom
+    @Mapping(target = "sender.user.role", ignore = true)
     @Mapping(target = "sender.user.student", ignore = true)
+    @Mapping(target = "sender.campus", ignore = true)
     ChatMessageResponse toChatMessageResponse(ChatMessage chatMessage);
 }
 

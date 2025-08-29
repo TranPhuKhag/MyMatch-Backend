@@ -7,6 +7,7 @@ import com.mymatch.dto.response.swap.SwapResponse;
 import com.mymatch.entity.*;
 import com.mymatch.enums.SwapDecision;
 import com.mymatch.enums.SwapMode;
+import com.mymatch.enums.SwapRequestStatus;
 import com.mymatch.enums.SwapStatus;
 import com.mymatch.exception.AppException;
 import com.mymatch.exception.ErrorCode;
@@ -18,18 +19,17 @@ import com.mymatch.service.SwapService;
 import com.mymatch.specification.SwapSpecification;
 import com.mymatch.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.AccessLevel;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import static com.mymatch.utils.SecurityUtil.hasAuthority;
@@ -119,6 +119,81 @@ public class SwapServiceImpl implements SwapService {
                     .orElseThrow(() -> new AppException(ErrorCode.SWAP_NOT_FOUND));
         }
         return swapMapper.toResponse(swap);
+    }
+
+    @Override
+    public SwapResponse updateDecision(Long swapId, SwapUpdateRequest req) {
+        Long currentUserId = SecurityUtil.getCurrentUserId();
+        Student currentStudent = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND))
+                .getStudent();
+        // Get Swap
+        Swap swap = swapRepository.findById(swapId)
+                .orElseThrow(() -> new AppException(ErrorCode.SWAP_NOT_FOUND));
+
+        // Check Swap is PENDING
+        if (swap.getStatus() != SwapStatus.PENDING) {
+            return swapMapper.toResponse(swap);
+        }
+        // Check current user is studentFrom or studentTo
+        boolean iAmFrom = Objects.equals(currentUserId, swap.getStudentFrom().getUser().getId());
+        SwapDecision newDecision = req.getDecision();
+
+        if (newDecision == SwapDecision.PENDING) {
+            throw new AppException(ErrorCode.INVALID_SWAP_DECISION);
+        }
+        // Update decision
+        updateUserDecision(swap, iAmFrom, newDecision, req.getReason());
+        // Update Swap status
+        SwapStatus outcome = computeSwapOutcome(swap.getFromDecision(), swap.getToDecision());
+        applyOutcomeAndSyncRequests(swap, outcome);
+        return toViewerResponse(swap, currentStudent.getId());
+
+    }
+    private void updateUserDecision(Swap swap, boolean iAmFrom, SwapDecision decision, String reason) {        if (iAmFrom && swap.getFromDecision() == decision) return;
+        if (!iAmFrom && swap.getToDecision() == decision) return;
+
+        if (iAmFrom) swap.setFromDecision(decision);
+        else swap.setToDecision(decision);
+
+        if (reason != null && !reason.isBlank()) {
+            swap.setReason(reason);
+        }
+    }
+    private SwapStatus computeSwapOutcome(SwapDecision from, SwapDecision to) {
+        if (from == SwapDecision.ACCEPTED && to == SwapDecision.ACCEPTED) {
+            return SwapStatus.APPROVED;
+        }
+        if (from == SwapDecision.REJECTED || to == SwapDecision.REJECTED) {
+            return SwapStatus.REJECTED;
+        }
+        return SwapStatus.PENDING;
+    }
+    private void applyOutcomeAndSyncRequests(Swap swap, SwapStatus outcome) {
+        switch (outcome) {
+            case PENDING -> swapRepository.save(swap);  // Rare in this API, but safe
+            case APPROVED -> approveSwapAndArchiveRequests(swap);
+            case REJECTED -> rejectSwapAndRetainRequests(swap);
+        }
+    }
+    private void approveSwapAndArchiveRequests(Swap swap) {
+        swap.setStatus(SwapStatus.APPROVED);
+        swap.setMatchedAt(LocalDateTime.now());
+
+        SwapRequest rf = swap.getRequestFrom();
+        SwapRequest rt = swap.getRequestTo();
+        rf.setStatus(SwapRequestStatus.COMPLETED);
+        rt.setStatus(SwapRequestStatus.COMPLETED);
+
+        // Batch save: requests + swap (no dependency issue)
+        swapRequestRepository.saveAll(List.of(rf, rt));
+        swapRepository.save(swap);
+    }
+
+    private void rejectSwapAndRetainRequests(Swap swap) {
+        swap.setStatus(SwapStatus.REJECTED);
+        swapRepository.save(swap);
+        log.info("Swap {} rejected; requests retained for matching", swap.getId());  // Optional audit log
     }
 
     private SwapResponse toViewerResponse(Swap s, Long viewerId) {
