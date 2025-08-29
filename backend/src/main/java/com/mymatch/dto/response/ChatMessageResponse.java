@@ -13,11 +13,8 @@ import java.time.Instant;
 public class ChatMessageResponse {
     Long id;
     ConversationResponse conversationResponse;
-    boolean me; // nếu ChatMessage này của người dùng hiện tại gửi thì true, ngược lại false
-    // Display thứ tự của mình nằm trên tay trái, người khác nằm bên phải
-    // nội suy ra
+    boolean me;
     String message;
     StudentResponse sender;
     Instant createdDate;
-
 }

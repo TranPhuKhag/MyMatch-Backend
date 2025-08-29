@@ -30,6 +30,4 @@ public class ChatMessage extends AbstractAuditingEntity {
 
     @Column(columnDefinition="TEXT")
     String message;
-
-    boolean me;
 }

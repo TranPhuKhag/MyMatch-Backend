@@ -2,6 +2,7 @@ package com.mymatch.service;
 
 import com.mymatch.entity.WebSocketSession;
 import com.mymatch.repository.WebSocketSessionRepository;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -17,6 +18,7 @@ public class WebSocketSessionService {
     public WebSocketSession create(WebSocketSession session) {
         return webSocketSessionRepository.save(session);
     }
+    @Transactional
     public void deleteBySessionId(String sessionId) {
         webSocketSessionRepository.deleteBySocketSessionId(sessionId);
     }

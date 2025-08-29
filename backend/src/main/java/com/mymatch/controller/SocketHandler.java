@@ -5,17 +5,27 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.mymatch.dto.request.auth.IntrospectRequest;
+import com.mymatch.dto.response.auth.IntrospectResponse;
+import com.mymatch.entity.Student;
 import com.mymatch.entity.WebSocketSession;
+import com.mymatch.exception.AppException;
+import com.mymatch.exception.ErrorCode;
+import com.mymatch.repository.StudentRepository;
+import com.mymatch.repository.UserRepository;
 import com.mymatch.service.AuthenticationService;
 import com.mymatch.service.WebSocketSessionService;
 import com.mymatch.utils.SecurityUtil;
+import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
 import java.time.Instant;
+
+import static java.lang.Long.parseLong;
 
 @Slf4j
 @Component
@@ -25,15 +35,23 @@ public class SocketHandler {
     SocketIOServer server;
     AuthenticationService authenticationService;
     WebSocketSessionService webSocketSessionService;
+    private final UserRepository userRepository;
+
+//    @PostConstruct
+//    void init() {
+//        server.addListeners(this); // đăng ký các @OnConnect/@OnDisconnect trên class này
+//        log.info("Socket.IO listening on {}", server.getConfiguration().getPort());
+//    }
+
     @OnConnect
-    public void clientConnected(SocketIOClient client) {
+    public void clientConnected(SocketIOClient client) throws ParseException {
         log.info("A client connected.{}", client.getSessionId());
 
         // Get Token from request param
         String token = client.getHandshakeData().getSingleUrlParam("token");
 
         //Verify token
-        var introspectResponse = authenticationService.introspect(IntrospectRequest.builder()
+        IntrospectResponse introspectResponse = authenticationService.introspect(IntrospectRequest.builder()
                 .token(token)
                 .build());
 
@@ -42,23 +60,23 @@ public class SocketHandler {
             // Persist webSocketSession
             WebSocketSession webSocketSession = WebSocketSession.builder()
                     .socketSessionId(client.getSessionId().toString())
-                    .userId(SecurityUtil.getCurrentUserId())
+                    .studentId(introspectResponse.getStudentId())
                     .createdAt(Instant.now())
                     .build();
             webSocketSession = webSocketSessionService.create(webSocketSession);
             log.info("WebSocket session created : {}", webSocketSession);
-            log.info(("WebSocket session userId : {}"), webSocketSession.getUserId());
+            log.info("Student ID from token: {}", introspectResponse.getStudentId());
         } else {
             log.warn("Client {} failed to authenticate. Disconnecting...", client.getSessionId());
             client.disconnect();
         }
     }
-    @OnConnect
+    @OnDisconnect
     public void clientDisconnected(SocketIOClient client) {
         log.info("A client disconnected.{}", client.getSessionId());
         webSocketSessionService.deleteBySessionId(client.getSessionId().toString());
     }
-    @OnDisconnect       // Khởi động server sau khi bean được khởi tạo
+    @PostConstruct       // Khởi động server sau khi bean được khởi tạo
     public void startServer() {
         server.start();
         server.addListeners(this);

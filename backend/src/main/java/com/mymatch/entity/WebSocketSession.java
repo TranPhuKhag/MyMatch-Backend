@@ -15,7 +15,6 @@ import java.time.Instant;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@SQLDelete(sql = "UPDATE web_socket_session SET deleted = 1 WHERE id = ?")
 public class WebSocketSession {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

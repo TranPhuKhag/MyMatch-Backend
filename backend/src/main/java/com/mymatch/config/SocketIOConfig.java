@@ -1,6 +1,7 @@
 package com.mymatch.config;
 
 import com.corundumstudio.socketio.SocketIOServer;
+import com.corundumstudio.socketio.Transport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,6 +13,7 @@ public class SocketIOConfig {
         config.setHostname("localhost");
         config.setPort(9092);
         config.setOrigin("*");
+        config.setTransports(Transport.WEBSOCKET);
         return new SocketIOServer(config);
     }
 }

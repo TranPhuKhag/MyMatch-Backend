@@ -65,12 +65,11 @@ public class ChatMessageServiceImpl implements ChatMessageService {
         }
 
         // Create chat message
-        ChatMessage chatMessage = chatMessageRepository.save(ChatMessage.builder()
+        ChatMessage chatMessage = ChatMessage.builder()
                         .sender(conversation.getParticipants().getFirst())
                         .conversation(conversation)
                         .message(request.getMessage())
-                .build());
-//        chatMessage = ;
+                .build();
 
         // Get studentIds info of participants in the conversation
         List<Long> studentIds =  conversation.getParticipants().stream()
