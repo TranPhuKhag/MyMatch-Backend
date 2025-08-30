@@ -1,5 +1,6 @@
 package com.mymatch.dto.response;
 
+import com.mymatch.dto.response.student.StudentResponse;
 import com.mymatch.entity.ParticipantInfo;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -18,6 +19,6 @@ public class ConversationResponse {
     String participantsHash;
     String conversationAvatar;
     String conversationName;
-    List<ParticipantInfo> participants;
+    List<StudentResponse> participants;
     boolean me;
 }

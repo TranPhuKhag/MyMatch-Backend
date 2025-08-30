@@ -49,6 +49,7 @@ public class ConversationServiceImpl implements ConversationService {
                 .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
         log.info("Current user ID: {}", me.getUser().getUsername());
         log.info("Current user: {}", me);
+        log.info("Participant IDs: {}", request.getParticipantIds().getFirst());
         var otherStudent  = studentRepository.findById(request.getParticipantIds().getFirst())
                 .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
         log.info("Other user: {}", otherStudent.getUser().getUsername() );
@@ -74,10 +75,16 @@ public class ConversationServiceImpl implements ConversationService {
                 .type(request.getType())
                 .participants(participants)
                 .participantsHash(participantHash)
+                .avatarUrl(null)
+                .title(null)
+                .createdBy(me)
                 .build();
 
         Conversation conversation = conversationRepository.save(newConversation);
-        return toConversationResponse(conversation);
+        ConversationResponse conversationResponse = toConversationResponse(conversation);
+        conversationResponse.setConversationAvatar(otherStudent.getUser().getAvatarUrl());
+        conversationResponse.setConversationName(otherStudent.getUser().getUsername());
+        return conversationResponse;
     }
     private String generateParticipantHash(List<Long> ids) {
         return ids.stream()
