@@ -16,7 +16,4 @@ public interface ConversationRepository  extends JpaRepository<Conversation, Lon
 
     @Query("SELECT c FROM Conversation c JOIN c.participants p WHERE p.id = :studentId")
     List<Conversation> findAllByParticipantId(@Param("studentId") Long studentId);
-//    @Query("{'participants_hash.senderId' : ?0}")
-//    List<Conversation> findAllByParticipantIdsContains(Long senderId);
-
 }
