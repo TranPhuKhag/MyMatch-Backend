@@ -37,7 +37,7 @@ WORKDIR /app
 COPY target/mymatchbackend-0.0.1-SNAPSHOT.jar app.jar
 
 # Khai báo cổng
-EXPOSE 8080
+EXPOSE 8080 9092
 
 # Thiết lập entrypoint với tối ưu JVM và các cấu hình Spring AOP
 ENTRYPOINT ["java", "-Xms128m", "-Xmx256m", "-XX:+UseSerialGC", "-Dspring.aop.proxy-target-class=true", "-Dspring.aop.auto=true", "-jar", "/app/app.jar"]
