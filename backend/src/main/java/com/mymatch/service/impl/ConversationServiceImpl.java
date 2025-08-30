@@ -4,6 +4,7 @@ import com.mymatch.dto.request.conversation.ConversationCreationRequest;
 import com.mymatch.dto.response.ConversationResponse;
 import com.mymatch.entity.Conversation;
 import com.mymatch.entity.Student;
+import com.mymatch.entity.User;
 import com.mymatch.exception.AppException;
 import com.mymatch.exception.ErrorCode;
 import com.mymatch.mapper.ConversationMapper;
@@ -37,7 +38,20 @@ public class ConversationServiceImpl implements ConversationService {
         var me = studentRepository.findByUserId(currentUserId)
                 .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
         List<Conversation> conversations = conversationRepository.findAllByParticipants_Id(me.getId());
-        return conversations.stream().map(this::toConversationResponse).toList();
+        return conversations.stream()
+                .map(conversation -> {
+                    var response = toConversationResponse(conversation);
+                    Student other = conversation.getParticipants().stream()
+                            .filter(s -> s.getUser() != null
+                                    && !s.getUser().getId().equals(currentUserId))
+                            .findFirst().orElse(null);
+                    if (other != null && other.getUser() != null) {
+                        response.setConversationAvatar(other.getUser().getAvatarUrl());
+                        response.setConversationName(other.getUser().getUsername());
+                    }
+                    return response;
+                })
+                .toList();
     }
 
     @Override
