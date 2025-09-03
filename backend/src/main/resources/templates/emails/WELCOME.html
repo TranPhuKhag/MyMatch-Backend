@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:v="urn:schemas-microsoft-com:vml"
+      xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="x-apple-disable-message-reformatting">
+    <meta name="format-detection" content="telephone=no,address=no,email=no,date=no,url=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Subject fragment (renderer sẽ lấy bằng selector #subject) -->
+    <th:block id="subject">Welcome to MyMatch, [[${name}]]! Let's Get Started</th:block>
+
+    <title>Welcome to MyMatch</title>
+
+    <style>
+        /* Reset cơ bản cho email */
+        html, body { margin:0 !important; padding:0 !important; height:100% !important; width:100% !important; }
+        * { -ms-text-size-adjust:100%; -webkit-text-size-adjust:100%; }
+        table, td { mso-table-lspace:0pt; mso-table-rspace:0pt; }
+        table { border-collapse:collapse !important; }
+        img { -ms-interpolation-mode:bicubic; border:0; outline:none; text-decoration:none; display:block; }
+        a { text-decoration:none; }
+        /* Dark mode friendly text */
+        @media (prefers-color-scheme: dark) {
+            body, .email-bg { background:#0b0c10 !important; }
+            .card { background:#14161b !important; }
+            .text { color:#e5e7eb !important; }
+            .muted { color:#9ca3af !important; }
+        }
+        /* Mobile */
+        @media screen and (max-width: 600px) {
+            .container { width:100% !important; }
+            .px-24 { padding-left:16px !important; padding-right:16px !important; }
+            .py-24 { padding-top:16px !important; padding-bottom:16px !important; }
+            .logo { width:140px !important; height:auto !important; }
+            .h1 { font-size:24px !important; line-height:30px !important; }
+            .cta-button { width:100% !important; text-align:center !important; }
+        }
+    </style>
+    <!--[if mso]>
+    <style type="text/css">
+        .fallback-font { font-family: Arial, sans-serif !important; }
+    </style>
+    <![endif]-->
+</head>
+
+<body class="email-bg" style="margin:0; padding:0; background:#f8fafc;">
+<!-- Preheader (ẩn) -->
+<div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">
+    Welcome to MyMatch, [[${name}]]! Your account is ready—sign in to complete your profile and start matching.
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;">
+    <tr>
+        <td align="center" style="padding:32px 16px;">
+            <!-- Container -->
+            <table role="presentation" width="600" class="container" cellpadding="0" cellspacing="0"
+                   style="width:600px; max-width:600px; background:#ffffff; border-radius:16px; box-shadow:0 8px 32px rgba(0,0,0,0.05);">
+                <!-- Header / Logo -->
+                <tr>
+                    <td align="center" class="py-24 px-24" style="padding:32px 24px;">
+                        <img class="logo"
+                             src="https://raw.githubusercontent.com/anhtu2808/MyMatch-Frontend/main/public/mymatch_logo.jpg"
+                             width="160" height="auto" alt="MyMatch Logo - Start Your Matching Journey" style="display:block; max-width:160px;">
+                    </td>
+                </tr>
+
+                <!-- Divider -->
+                <tr>
+                    <td style="padding:0 24px;">
+                        <hr style="border:none; border-top:1px solid #e2e8f0; margin:0;">
+                    </td>
+                </tr>
+
+                <!-- Hero -->
+                <tr>
+                    <td class="px-24" style="padding:32px 24px 16px;">
+                        <h1 class="fallback-font h1 text" style="margin:0 0 12px 0; font-family:Inter,Segoe UI,Arial,sans-serif; font-size:28px; line-height:36px; color:#111827; font-weight:700;">
+                            Welcome to MyMatch, [[${name}]]! 🎉
+                        </h1>
+                        <p class="fallback-font text" style="margin:0 0 16px; font-family:Inter,Segoe UI,Arial,sans-serif; font-size:16px; line-height:24px; color:#374151;">
+                            We're thrilled to have you on board. Your account has been created successfully. Sign in now to complete your profile and discover meaningful matches tailored just for you.
+                        </p>
+                        <p class="fallback-font muted" style="margin:0; font-family:Inter,Segoe UI,Arial,sans-serif; font-size:14px; line-height:22px; color:#6b7280;">
+                            Get started by updating your preferences and exploring our community.
+                        </p>
+                    </td>
+                </tr>
+
+                <!-- CTA Button -->
+                <tr>
+                    <td class="px-24 cta-button" style="padding:16px 24px 32px;">
+                        <!--[if mso]>
+                        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="${loginUrl}" arcsize="12%" strokecolor="#3B82F6" fillcolor="#3B82F6"
+                                     style="height:48px;v-text-anchor:middle;width:240px;">
+                            <w:anchorlock/>
+                            <center style="color:#ffffff; font-family:Arial,sans-serif; font-size:16px; font-weight:bold;">
+                                Sign In to MyMatch
+                            </center>
+                        </v:roundrect>
+                        <![endif]-->
+                        <a href="https://mymatch.social/login"
+                           class="fallback-font"
+                           style="display:inline-block; background:#3B82F6; color:#ffffff; font-family:Inter,Segoe UI,Arial,sans-serif;
+                           font-size:16px; font-weight:600; line-height:48px; height:48px; padding:0 32px; border-radius:8px; border:1px solid #3B82F6; text-decoration:none;">
+                            Sign In to MyMatch
+                        </a>
+                    </td>
+                </tr>
+
+                <!-- Info Card -->
+                <tr>
+                    <td class="px-24" style="padding:0 24px 32px;">
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="card"
+                               style="background:#f1f5f9; border:1px solid #e2e8f0; border-radius:12px;">
+                            <tr>
+                                <td class="py-24 px-24" style="padding:20px 24px;">
+                                    <p class="fallback-font text" style="margin:0 0 8px 0; font-family:Inter,Segoe UI,Arial,sans-serif; font-size:14px; line-height:22px; color:#111827;">
+                                        Your account email: <strong>[[${email}]]</strong>
+                                    </p>
+                                    <p class="fallback-font muted" style="margin:0; font-family:Inter,Segoe UI,Arial,sans-serif; font-size:13px; line-height:20px; color:#6b7280;">
+                                        If you didn't create this account, please ignore this email or contact support@mymatch.com.
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td class="px-24" style="padding:0 24px 32px;">
+                        <p class="fallback-font muted" style="margin:0 0 8px 0; font-family:Inter,Segoe UI,Arial,sans-serif; font-size:13px; line-height:20px; color:#9ca3af;">
+                            © [[${#dates.format(#dates.createNow(), 'yyyy')}]] MyMatch Inc. All rights reserved.
+                        </p>
+                        <p class="fallback-font muted" style="margin:0; font-family:Inter,Segoe UI,Arial,sans-serif; font-size:13px; line-height:20px; color:#9ca3af;">
+                            This is a transactional email regarding your account. For questions, reply to this email or visit our support center.
+                        </p>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Bottom spacing -->
+            <div style="height:32px; line-height:32px;">&nbsp;</div>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

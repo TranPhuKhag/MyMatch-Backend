@@ -38,3 +38,7 @@ springdoc:
     persist-authorization: true
 socketio:
   port: 9092
+notification:
+  email:
+    brevo-url: ${BREVO_URL:https://api.brevo.com}
+    brevo-apikey: ${BREVO_API_KEY}
