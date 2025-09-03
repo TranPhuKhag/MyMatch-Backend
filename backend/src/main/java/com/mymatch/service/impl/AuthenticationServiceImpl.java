@@ -4,6 +4,7 @@ import com.mymatch.dto.request.auth.*;
 import com.mymatch.dto.response.auth.AuthenticationResponse;
 import com.mymatch.dto.response.auth.IntrospectResponse;
 import com.mymatch.entity.*;
+import com.mymatch.enums.EmailType;
 import com.mymatch.enums.RoleType;
 import com.mymatch.exception.AppException;
 import com.mymatch.exception.ErrorCode;
@@ -12,6 +13,7 @@ import com.mymatch.repository.*;
 import com.mymatch.repository.httpClient.OutboundIdentityClient;
 import com.mymatch.repository.httpClient.OutboundUserClient;
 import com.mymatch.service.AuthenticationService;
+import com.mymatch.service.NotificationService;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
@@ -73,6 +75,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     RoleRepository roleRepository;
     WalletRepository walletRepository;
     StudentRepository studentRepository;
+    NotificationService notificationService;
 
     @Override
     public IntrospectResponse introspect(IntrospectRequest request) throws ParseException {
@@ -142,6 +145,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .build();
             Student student = studentRepository.save(Student.builder().build());
             User newUser = userMapper.toUserFromGoogle(userInfo, role, wallet, student);
+                    notificationService.send(
+                            EmailType.WELCOME,
+                            newUser.getUsername().toString(),
+                            newUser.getEmail().toString(),
+                            Map.of("name", newUser.getUsername())
+                            );
             return userRepository.save(newUser);
         });
         // Generate token
