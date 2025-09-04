@@ -14,6 +14,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(
         componentModel = "spring",
 //        uses = {StudentMapper.class},
+        uses = {WalletMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface UserMapper {
 

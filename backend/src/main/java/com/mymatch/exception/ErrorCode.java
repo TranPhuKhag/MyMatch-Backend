@@ -16,6 +16,7 @@ public enum ErrorCode {
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST.value(), "Mật khẩu phải có ít nhất {min} ký tự", HttpStatus.BAD_REQUEST),
     STUDENT_INFO_REQUIRED(HttpStatus.BAD_REQUEST.value(), "Thiếu thông tin sinh viên", HttpStatus.BAD_REQUEST),
     CANNOT_CREATE_CONVERSATION_WITH_YOURSELF(HttpStatus.BAD_REQUEST.value(), "Không thể tạo cuộc trò chuyện với chính bạn", HttpStatus.BAD_REQUEST),
+    INVALID_PARAMETER(HttpStatus.BAD_REQUEST.value(), "Tham số không hợp lệ", HttpStatus.BAD_REQUEST),
     INVALID_SWAP_DECISION(HttpStatus.BAD_REQUEST.value(), "Quyết định không hợp lệ", HttpStatus.BAD_REQUEST),
     CANNOT_SEND_EMAIL(HttpStatus.BAD_REQUEST.value(), "Không thể gửi email", HttpStatus.BAD_REQUEST),
     // 401 Unauthorized
@@ -54,7 +55,7 @@ public enum ErrorCode {
     PERMISSION_EXISTED(HttpStatus.CONFLICT.value(), "Quyền đã tồn tại", HttpStatus.CONFLICT),
     SWAPREQUEST_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã tồn tại", HttpStatus.CONFLICT),
     CONVERSATION_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Cuộc trò chuyện đã tồn tại", HttpStatus.CONFLICT),
-    SWAP_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã được tạo cho cặp này", HttpStatus.CONFLICT);
+    SWAP_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã được tạo cho cặp này", HttpStatus.CONFLICT), INSUFFICIENT_FUNDS(HttpStatus.BAD_REQUEST.value(), "Số dư không đủ", HttpStatus.BAD_REQUEST);
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
         this.message = message;
