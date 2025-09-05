@@ -66,7 +66,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 
         // Create chat message
         ChatMessage chatMessage = ChatMessage.builder()
-                        .sender(conversation.getParticipants().getFirst())
+                        .sender(sender)
                         .conversation(conversation)
                         .message(request.getMessage())
                 .build();
@@ -108,6 +108,19 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 
     @Override
     public List<ChatMessageResponse> getMessages(Long conversationId) {
-        return List.of();
+        // Validate conversationId
+        Conversation conversation = conversationRepository.findById(conversationId)
+                .orElseThrow(() -> new AppException(ErrorCode.CONVERSATION_NOT_FOUND));
+        // Check if current user is a participant of the conversation
+        Long currentUserId = SecurityUtil.getCurrentUserId();
+        boolean isParticipant = conversation.getParticipants().stream()
+                .anyMatch(p -> p.getUser().getId().equals(currentUserId));
+        if (!isParticipant) {
+            throw new AppException(ErrorCode.UNAUTHORIZED_ACCESS_CONVERSATION);
+        }
+        List<ChatMessage> chatMessages = chatMessageRepository.findAllByConversationIdOrderByCreateAtAsc(conversationId);
+        return chatMessages.stream()
+                .map(this::toChatMessageResponse)
+                .toList();
     }
 }
