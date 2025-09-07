@@ -3,7 +3,7 @@ import com.mymatch.dto.response.student.StudentResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -12,9 +12,10 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ChatMessageResponse {
     Long id;
-    ConversationResponse conversationResponse;
+    ConversationResponse conversation;
     boolean me;
     String message;
     StudentResponse sender;
-    Instant createdDate;
+    LocalDateTime createAt;
+    LocalDateTime updateAt;
 }
