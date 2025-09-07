@@ -9,6 +9,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(
         componentModel = "spring",
+        uses = {ConversationMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ChatMessageMapper {
     ChatMessage toChatMessage(ChatMessageCreationRequest request);
