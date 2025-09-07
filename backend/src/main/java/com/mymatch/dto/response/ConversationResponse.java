@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ConversationResponse {
-    String id;
+    Long id;
     String type; // GROUP, DIRECT
     String participantsHash;
     String conversationAvatar;
