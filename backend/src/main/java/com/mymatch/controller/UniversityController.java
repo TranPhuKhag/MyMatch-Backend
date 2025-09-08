@@ -4,13 +4,17 @@ import com.mymatch.dto.request.university.UniversityCreationRequest;
 import com.mymatch.dto.request.university.UniversityUpdateRequest;
 import com.mymatch.dto.response.ApiResponse;
 import com.mymatch.dto.response.PageResponse;
+import com.mymatch.dto.response.semester.SemesterResponse;
 import com.mymatch.dto.response.university.UniversityResponse;
+import com.mymatch.service.SemesterService;
 import com.mymatch.service.UniversityService;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/universities")
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class UniversityController {
 
     UniversityService universityService;
+    SemesterService semesterService;
 
     @PostMapping
     public ApiResponse<UniversityResponse> createUniversity(@RequestBody UniversityCreationRequest req) {
@@ -35,6 +40,15 @@ public class UniversityController {
                 .code(HttpStatus.OK.value())
                 .message("Lấy thông tin trường đại học thành công")
                 .result(universityService.getById(id))
+                .build();
+    }
+
+    @GetMapping("/{id}/semesters")
+    public ApiResponse<List<SemesterResponse>> getSemestersByUniversityId(@PathVariable Long id) {
+        return ApiResponse.<List<SemesterResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .message("Lấy danh sách học kỳ của trường đại học thành công")
+                .result(semesterService.getSemestersByUniversityId(id))
                 .build();
     }
 
