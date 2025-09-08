@@ -1,5 +1,6 @@
 package com.mymatch.service;
 
+import com.mymatch.dto.response.transaction.TransactionResponse;
 import com.mymatch.entity.Transaction;
 import com.mymatch.entity.Wallet;
 import com.mymatch.enums.TransactionSource;
@@ -15,10 +16,12 @@ public interface TransactionService {
     /**
      * Đánh dấu giao dịch là đã HOÀN THÀNH.
      */
-    void markAsCompleted(Transaction transaction);
+    TransactionResponse markAsCompleted(Transaction transaction);
 
     /**
      * Đánh dấu giao dịch là đã THẤT BẠI.
      */
-    void markAsFailed(Transaction transaction, String reason);
+    TransactionResponse markAsFailed(Transaction transaction, String reason);
+
+    void rollbackTransaction(Transaction transaction, String reason);
 }

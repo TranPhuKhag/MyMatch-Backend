@@ -7,10 +7,8 @@ import com.mymatch.dto.request.wallet.WalletRequest;
 import com.mymatch.dto.response.PageResponse;
 import com.mymatch.dto.response.filemanager.FileDownloadResponse;
 import com.mymatch.dto.response.material.MaterialResponse;
-import com.mymatch.entity.Course;
-import com.mymatch.entity.Lecturer;
-import com.mymatch.entity.Material;
-import com.mymatch.entity.User;
+import com.mymatch.dto.response.transaction.TransactionResponse;
+import com.mymatch.entity.*;
 import com.mymatch.enums.StorageType;
 import com.mymatch.enums.TransactionSource;
 import com.mymatch.enums.TransactionType;
@@ -20,6 +18,7 @@ import com.mymatch.mapper.MaterialMapper;
 import com.mymatch.repository.*;
 import com.mymatch.service.FileManagerService;
 import com.mymatch.service.MaterialService;
+import com.mymatch.service.TransactionService;
 import com.mymatch.service.WalletService;
 import com.mymatch.specification.MaterialSpecification;
 import com.mymatch.utils.SecurityUtil;
@@ -49,6 +48,7 @@ public class MaterialServiceImpl implements MaterialService {
     MaterialPurchaseRepository materialPurchaseRepository;
     FileManagerService fileManagerService;
     WalletService walletService;
+    TransactionService transactionService;
     MaterialMapper materialMapper;
     CourseRepository courseRepository;
     LecturerRepository lecturerRepository;
@@ -92,7 +92,7 @@ public class MaterialServiceImpl implements MaterialService {
         }
         MaterialResponse materialResponse = materialMapper.toMaterialResponse(material);
         materialResponse.setIsPurchased(isPurchased);
-        return materialMapper.toMaterialResponse(material);
+        return materialResponse;
     }
 
     @Override
@@ -132,28 +132,46 @@ public class MaterialServiceImpl implements MaterialService {
         }
         boolean alreadyPurchased = materialPurchaseRepository
                 .existsByMaterial_IdAndAndBuyer_Id(materialId, currentUserId);
-        if (alreadyPurchased) {
-            throw new AppException(ErrorCode.MATERIAL_ALREADY_PURCHASED);
-        }
-        WalletRequest deductRequest = WalletRequest.builder()
-                .type(TransactionType.OUT)
-                .userId(currentUserId)
-                .source(TransactionSource.SERVICE_PURCHASE)
-                .coin(material.getPrice())
-                .description("Purchase material: " + material.getName())
-                .build();
-        WalletRequest rewardRequest = WalletRequest.builder()
-                .type(TransactionType.IN)
-                .userId(material.getOwner().getId())
-                .source(TransactionSource.REWARD)
-                .coin(material.getPrice() * 90 / 100) // Owner gets 90% of the price
-                .description("Sale of material: " + material.getName())
-                .build();
-        walletService.deductFromWallet(deductRequest);
-        walletService.addToCoinWallet(rewardRequest);
-        material.setPurchaseCount(material.getPurchaseCount() + 1);
-        material = materialRepository.save(material);
+//        if (alreadyPurchased) {
+//            throw new AppException(ErrorCode.MATERIAL_ALREADY_PURCHASED);
+//        }
+        Transaction deductTransaction = null;
+        Transaction rewardTransaction = null;
+        try {
 
+            WalletRequest deductRequest = WalletRequest.builder()
+                    .type(TransactionType.OUT)
+                    .userId(currentUserId)
+                    .source(TransactionSource.SERVICE_PURCHASE)
+                    .coin(material.getPrice())
+                    .description("Purchase material: " + material.getName())
+                    .build();
+            WalletRequest rewardRequest = WalletRequest.builder()
+                    .type(TransactionType.IN)
+                    .userId(material.getOwner().getId())
+                    .source(TransactionSource.REWARD)
+                    .coin(material.getPrice() * 90 / 100) // Owner gets 90% of the price
+                    .description("Sale of material: " + material.getName())
+                    .build();
+            deductTransaction = walletService.deductFromWallet(deductRequest);
+            rewardTransaction = walletService.addToCoinWallet(rewardRequest);
+            material.setPurchaseCount(material.getPurchaseCount() + 1);
+            material = materialRepository.save(material);
+            MaterialPurchase purchase = MaterialPurchase.builder()
+                    .material(material)
+                    .totalCoin(material.getPrice())
+                    .transactionCode(deductTransaction.getTransactionCode())
+                    .platformFee(material.getPrice() * 10 / 100)
+                    .ownerEarning(material.getPrice() * 90 / 100)
+                    .buyer(userRepository.findById(currentUserId)
+                            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)))
+                    .build();
+            materialPurchaseRepository.save(purchase);
+        } catch (Exception e) {
+            transactionService.rollbackTransaction(deductTransaction, "Purchase material failed: " + e.getMessage());
+            transactionService.rollbackTransaction(rewardTransaction, "Reward coin failed " + material.getName());
+            throw e;
+        }
         return materialMapper.toMaterialResponse(material);
     }
 

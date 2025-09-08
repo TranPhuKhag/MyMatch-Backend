@@ -31,16 +31,16 @@ public class MaterialPurchase extends AbstractAuditingEntity {
     User buyer;
 
     @Column(nullable = false)
-    Double totalCoin;        // Tổng tiền
+    Long totalCoin;        // Tổng tiền
 
     @Column(nullable = false)
-    Double platformFee;        // Phí platform
+    Long platformFee;        // Phí platform
 
     @Column(nullable = false)
-    Double ownerEarning;
+    Long ownerEarning;
 
     @Column(nullable = false)
-    String transactionId;
+    String transactionCode;
 
 
 }
