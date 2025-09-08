@@ -1,8 +1,9 @@
 name: CI/CD My Match Backend
 
-on push:
-  branches:
-    - develop
+on:
+  push:
+    branches:
+      - develop
   workflow_dispatch:
 
 jobs:
@@ -27,6 +28,7 @@ jobs:
 
       - name: Build with Maven
         run: mvn -B clean package -DskipTests
+        working-directory: ./backend
 
       - name: Docker login
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ vars.DOCKER_USERNAME }}" --password-stdin
@@ -51,11 +53,11 @@ jobs:
           script: |
             cd /var/docker/mymatch
             echo "Deploying TEST environment..."
-            docker-compose pull
-            docker-compose down --remove-orphans || true
+            docker compose pull
+            docker compose down --remove-orphans || true
             docker rm -f $(docker ps -a -q --filter "name=mymatch") || true
             docker image prune -f
-            docker-compose up -d
+            docker compose up -d
             docker rmi $(docker images -q --filter "dangling=true") || true
             docker ps
 

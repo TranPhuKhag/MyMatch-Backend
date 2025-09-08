@@ -10,6 +10,8 @@ import com.mymatch.common.AbstractAuditingEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -36,4 +38,8 @@ public class Campus extends AbstractAuditingEntity {
 
     @Column(nullable = false)
     String address;
+
+    @OneToMany(mappedBy = "campus", fetch = FetchType.LAZY)
+    List<Lecturer> lecturers;
+
 }

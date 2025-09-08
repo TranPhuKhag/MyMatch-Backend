@@ -8,7 +8,6 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -17,14 +16,29 @@ spring:
     user:
       name: admin
       password: 123456
-
+google:
+  oauth:
+    client-id: ${GOOGLE_OAUTH_CLIENT_ID}
+    client-secret: ${GOOGLE_OAUTH_CLIENT_SECRET}
+    redirect-uri: ${GOOGLE_OAUTH_REDIRECT_URI}
 jwt:
   signerKey: ${JWT_SIGNER_KEY}
   valid-duration: 3600 # in second
   refreshable-duration: 36000 # in seconds
+app:
+  admin:
+    username: ${ADMIN_USERNAME}
+    password: ${ADMIN_PASSWORD}
 
 springdoc:
   api-docs:
-    path: /v3/api-docs
+    path: /1111
   swagger-ui:
-    path: /swagger-ui.html
+    path: /1111
+    persist-authorization: true
+socketio:
+  port: 9092
+notification:
+  email:
+    brevo-url: ${BREVO_URL:https://api.brevo.com}
+    brevo-apikey: ${BREVO_API_KEY}
