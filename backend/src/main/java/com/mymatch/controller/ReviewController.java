@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/reviews")
@@ -29,6 +30,16 @@ public class ReviewController {
                 .code(HttpStatus.CREATED.value())
                 .message("Thêm review thành công")
                 .result(reviewService.createReview(req))
+                .build();
+    }
+
+    @PostMapping("/upload-evidence")
+    public ApiResponse<String> uploadEvidenceFile(@RequestParam("file") MultipartFile file) {
+        String fileUrl = reviewService.uploadEvidenceFile(file);
+        return ApiResponse.<String>builder()
+                .code(HttpStatus.OK.value())
+                .message("Tải lên file thành công")
+                .result(fileUrl)
                 .build();
     }
 
