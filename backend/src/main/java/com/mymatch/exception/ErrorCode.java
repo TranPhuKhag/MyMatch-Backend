@@ -19,6 +19,10 @@ public enum ErrorCode {
     INVALID_PARAMETER(HttpStatus.BAD_REQUEST.value(), "Tham số không hợp lệ", HttpStatus.BAD_REQUEST),
     INVALID_SWAP_DECISION(HttpStatus.BAD_REQUEST.value(), "Quyết định không hợp lệ", HttpStatus.BAD_REQUEST),
     CANNOT_SEND_EMAIL(HttpStatus.BAD_REQUEST.value(), "Không thể gửi email", HttpStatus.BAD_REQUEST),
+    FILE_SIZE_EXCEEDED(HttpStatus.BAD_REQUEST.value(), "Kích thước tệp vượt quá giới hạn cho phép", HttpStatus.BAD_REQUEST),
+    CANNOT_PURCHASE_OWN_MATERIAL(HttpStatus.BAD_REQUEST.value(), "Không thể mua tài liệu của chính bạn", HttpStatus.BAD_REQUEST),
+    MATERIAL_ALREADY_PURCHASED(HttpStatus.BAD_REQUEST.value(), "Bạn đã mua tài liệu này", HttpStatus.BAD_REQUEST),
+    MATERIAL_NOT_PURCHASED(HttpStatus.BAD_REQUEST.value(), "Bạn chưa mua tài liệu này", HttpStatus.BAD_REQUEST),
     // 401 Unauthorized
     UNAUTHENTICATED(HttpStatus.UNAUTHORIZED.value(), "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED_ACCESS_CONVERSATION(HttpStatus.UNAUTHORIZED.value(), "Bạn không có quyền truy cập cuộc trò chuyện này", HttpStatus.UNAUTHORIZED),
@@ -43,6 +47,7 @@ public enum ErrorCode {
     SWAPREQUEST_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy yêu cầu đổi giảng viên của bạn", HttpStatus.NOT_FOUND),
     SWAP_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy yêu cầu đổi giảng viên", HttpStatus.NOT_FOUND),
     CONVERSATION_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Cuộc trò chuyện không tồn tại", HttpStatus.NOT_FOUND),
+    MATERIAL_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Tài liệu không tồn tại", HttpStatus.NOT_FOUND),
     // 409 Conflict (đã tồn tại/trùng)
     USER_EXISTED(HttpStatus.CONFLICT.value(), "Người dùng đã tồn tại", HttpStatus.CONFLICT),
     LECTURER_EXISTED(HttpStatus.CONFLICT.value(), "Mã giảng viên đã tồn tại", HttpStatus.CONFLICT),
@@ -56,6 +61,7 @@ public enum ErrorCode {
     SWAPREQUEST_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã tồn tại", HttpStatus.CONFLICT),
     CONVERSATION_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Cuộc trò chuyện đã tồn tại", HttpStatus.CONFLICT),
     SWAP_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã được tạo cho cặp này", HttpStatus.CONFLICT), INSUFFICIENT_FUNDS(HttpStatus.BAD_REQUEST.value(), "Số dư không đủ", HttpStatus.BAD_REQUEST);
+
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
         this.message = message;

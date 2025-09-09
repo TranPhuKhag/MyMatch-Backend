@@ -42,3 +42,7 @@ notification:
   email:
     brevo-url: ${BREVO_URL:https://api.brevo.com}
     brevo-apikey: ${BREVO_API_KEY}
+file:
+  storage:
+    private: /var/www/mymatch/private/
+    public: /var/www/mymatch/public/
