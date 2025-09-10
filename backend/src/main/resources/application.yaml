@@ -42,7 +42,6 @@ notification:
   email:
     brevo-url: ${BREVO_URL:https://api.brevo.com}
     brevo-apikey: ${BREVO_API_KEY}
-
 sepay:
   api:
     key: ${SEPAY_API_KEY}
@@ -64,4 +63,7 @@ mymatch:
     suffix: ${MYMATCH_WALLET_SUFFIX}
     min-digits: ${MYMATCH_WALLET_MIN}
     max-digits: ${MYMATCH_WALLET_MAX}
-
+file:
+  storage:
+    private: /var/www/mymatch/private/
+    public: /var/www/mymatch/public/

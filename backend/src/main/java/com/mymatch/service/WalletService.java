@@ -3,6 +3,7 @@ package com.mymatch.service;
 import com.mymatch.dto.request.wallet.WalletRequest;
 import com.mymatch.dto.response.transaction.TransactionResponse;
 import com.mymatch.dto.response.wallet.WalletResponse;
+import com.mymatch.entity.Transaction;
 
 
 public interface WalletService {
@@ -27,12 +28,12 @@ public interface WalletService {
      *
      * @param walletRequest - thông tin coin cần cộng và lý do
      */
-    void addToCoinWallet(WalletRequest walletRequest);
+    Transaction addToCoinWallet(WalletRequest walletRequest);
 
     /**
      * Trừ coin từ ví (thanh toán, mua feature...)
      *
      * @param walletRequest - thông tin coin cần trừ và lý do
      */
-    void deductFromWallet(WalletRequest walletRequest);
+    Transaction deductFromWallet(WalletRequest walletRequest);
 }

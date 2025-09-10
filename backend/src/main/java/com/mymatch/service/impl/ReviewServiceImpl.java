@@ -8,11 +8,13 @@ import com.mymatch.dto.response.PageResponse;
 import com.mymatch.dto.response.review.ReviewResponse;
 import com.mymatch.entity.*;
 import com.mymatch.enums.CriteriaType;
+import com.mymatch.enums.StorageType;
 import com.mymatch.exception.AppException;
 import com.mymatch.exception.ErrorCode;
 import com.mymatch.mapper.ReviewDetailMapper;
 import com.mymatch.mapper.ReviewMapper;
 import com.mymatch.repository.*;
+import com.mymatch.service.FileManagerService;
 import com.mymatch.service.ReviewService;
 import com.mymatch.specification.ReviewSpecification;
 import com.mymatch.utils.SecurityUtil;
@@ -26,9 +28,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -43,6 +47,7 @@ public class ReviewServiceImpl implements ReviewService {
     CourseRepository courseRepository;
     ReviewDetailMapper reviewDetailMapper;
     ReviewMapper reviewMapper;
+    FileManagerService fileManagerService;
     ReviewCriteriaRepository reviewCriteriaRepository;
 
 
@@ -151,6 +156,13 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewMapper.toReviewResponse(review);
     }
 
+    @Override
+    public String uploadEvidenceFile(MultipartFile file) {
+        Long currentUserId = SecurityUtil.getCurrentUserId();
+        String uuid = java.util.UUID.randomUUID().toString();
+        return fileManagerService.save(file, buildFilePath(currentUserId, uuid), StorageType.PRIVATE);
+    }
+
     private Double setOverallScore(List<ReviewDetail> details) {
         if (details == null || details.isEmpty()) {
             return 0.0;
@@ -170,5 +182,10 @@ public class ReviewServiceImpl implements ReviewService {
         double avg = totalScore / numberOfCriteria;
         // làm tròn 1 chữ số thập phân (vd: 8.333 -> 8.3)
         return Math.round(avg * 10.0) / 10.0;
+    }
+
+    private String buildFilePath(Long userId, String prefix) {
+
+        return userId.toString() + "/" + prefix;
     }
 }

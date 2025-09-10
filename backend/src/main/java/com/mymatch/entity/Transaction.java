@@ -47,6 +47,7 @@ public class Transaction extends AbstractAuditingEntity {
     @Column(nullable = false)
     TransactionSource source;
 
+    @Column(columnDefinition = "TEXT")
     String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -56,11 +57,11 @@ public class Transaction extends AbstractAuditingEntity {
     @PrePersist
     public void generateTransactionCode() {
         if (transactionCode == null || transactionCode.isEmpty()) {
-            String timestamp = ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
-
+            String timestamp = ZonedDateTime.now()
+                    .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
             int randomNumber = ThreadLocalRandom.current().nextInt(1000, 10000);
-
-            this.transactionCode = timestamp + randomNumber;
+            long nano = System.nanoTime();
+            this.transactionCode = timestamp + randomNumber + nano;
         }
     }
 }

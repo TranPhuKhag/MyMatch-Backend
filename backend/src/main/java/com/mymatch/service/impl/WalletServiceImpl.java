@@ -79,7 +79,7 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     @Transactional
-    public void addToCoinWallet(WalletRequest request) {
+    public Transaction addToCoinWallet(WalletRequest request) {
         Wallet wallet = getUser(request.getUserId()).getWallet();
         Long coinAmount = request.getCoin();
         wallet.setCoin(wallet.getCoin() + coinAmount);
@@ -88,11 +88,12 @@ public class WalletServiceImpl implements WalletService {
         transactionService.markAsCompleted(transaction);
 
         log.info("Added {} coins to wallet of user {}. Source: {}", coinAmount, wallet.getUser().getId(), request.getSource());
+        return transaction;
     }
 
     @Override
     @Transactional
-    public void deductFromWallet(WalletRequest request) {
+    public Transaction deductFromWallet(WalletRequest request) {
         Wallet wallet = getUser(request.getUserId()).getWallet();
         Long coinAmount = request.getCoin();
 
@@ -107,6 +108,7 @@ public class WalletServiceImpl implements WalletService {
         walletRepository.save(wallet);
         Transaction transaction = transactionService.initiateTransaction(wallet, coinAmount, null, TransactionType.OUT, request.getSource(), request.getDescription());
         transactionService.markAsCompleted(transaction);
+        return transaction;
     }
 
     private User getUser(Long userId) {
