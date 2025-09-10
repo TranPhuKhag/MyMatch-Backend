@@ -1,7 +1,7 @@
 package com.mymatch.service;
 
 import com.mymatch.dto.request.conversation.ConversationCreationRequest;
-import com.mymatch.dto.response.ConversationResponse;
+import com.mymatch.dto.response.conversation.ConversationResponse;
 
 import java.util.List;
 

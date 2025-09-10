@@ -3,7 +3,7 @@ package com.mymatch.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mymatch.dto.request.chatmessage.ChatMessageCreationRequest;
-import com.mymatch.dto.response.ChatMessageResponse;
+import com.mymatch.dto.response.chatmessage.ChatMessageResponse;
 
 import java.util.List;
 

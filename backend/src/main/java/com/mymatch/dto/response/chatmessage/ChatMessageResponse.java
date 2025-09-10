@@ -1,4 +1,5 @@
-package com.mymatch.dto.response;
+package com.mymatch.dto.response.chatmessage;
+import com.mymatch.dto.response.conversation.ConversationResponse;
 import com.mymatch.dto.response.student.StudentResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

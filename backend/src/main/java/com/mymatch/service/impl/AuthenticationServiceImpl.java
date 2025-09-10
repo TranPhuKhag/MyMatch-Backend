@@ -14,6 +14,7 @@ import com.mymatch.repository.httpClient.OutboundIdentityClient;
 import com.mymatch.repository.httpClient.OutboundUserClient;
 import com.mymatch.service.AuthenticationService;
 import com.mymatch.service.NotificationService;
+import com.mymatch.utils.WalletCodeUtil;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
@@ -76,6 +77,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     WalletRepository walletRepository;
     StudentRepository studentRepository;
     NotificationService notificationService;
+    WalletCodeUtil codeUtil;
 
     @Override
     public IntrospectResponse introspect(IntrospectRequest request) throws ParseException {
@@ -143,6 +145,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             Wallet wallet = Wallet.builder()
                     .coin(0L)
                     .build();
+                    String walletCode;
+                    do walletCode = codeUtil.randomBase();
+                    while (walletRepository.existsByCode(walletCode));
+                    wallet.setCode(code);
+            wallet = walletRepository.save(wallet);
             Student student = studentRepository.save(Student.builder().build());
             User newUser = userMapper.toUserFromGoogle(userInfo, role, wallet, student);
                     notificationService.send(

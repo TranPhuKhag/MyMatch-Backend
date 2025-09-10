@@ -30,4 +30,7 @@ public class Wallet extends AbstractAuditingEntity {
 
     @OneToOne(mappedBy = "wallet")
     User user;
+
+    @Column(nullable = false, unique = true, length = 32)
+    String code;
 }

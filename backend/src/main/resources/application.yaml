@@ -42,3 +42,26 @@ notification:
   email:
     brevo-url: ${BREVO_URL:https://api.brevo.com}
     brevo-apikey: ${BREVO_API_KEY}
+
+sepay:
+  api:
+    key: ${SEPAY_API_KEY}
+    base-url:  https://api.sepay.vn/v1
+  bank:
+    code: ${SEPAY_BANK_CODE}
+  account:
+    number: ${SEPAY_ACCOUNT_NUMBER}
+    name: ${SEPAY_ACCOUNT_NAME}
+  webhook:
+#    path: /payments/internal/sepay/webhook
+    api-key: ${SEPAY_WEBHOOK_API_KEY}
+  expire-minutes: 15
+  qr:
+    base-url: ${SEPAY_QR_BASE_URL}
+mymatch:
+  wallet-code:
+    prefix: ${MYMATCH_WALLET_PREFIX}
+    suffix: ${MYMATCH_WALLET_SUFFIX}
+    min-digits: ${MYMATCH_WALLET_MIN}
+    max-digits: ${MYMATCH_WALLET_MAX}
+

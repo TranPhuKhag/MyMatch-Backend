@@ -20,7 +20,7 @@ public interface WalletService {
      * @param amount - số tiền VND cần nạp
      * @return TransactionResponse - thông tin giao dịch nạp tiền
      */
-    TransactionResponse topUpWallet(Double amount);
+    TransactionResponse topUpWallet(String code, Double amount);
 
     /**
      * Cộng coin vào ví (từ hệ thống - reward, bonus...)

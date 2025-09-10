@@ -1,10 +1,8 @@
 package com.mymatch.controller;
 
 import com.mymatch.dto.request.conversation.ConversationCreationRequest;
-import com.mymatch.dto.request.lecturer.LecturerCreationRequest;
 import com.mymatch.dto.response.ApiResponse;
-import com.mymatch.dto.response.ConversationResponse;
-import com.mymatch.dto.response.lecturer.LecturerResponse;
+import com.mymatch.dto.response.conversation.ConversationResponse;
 import com.mymatch.service.ConversationService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
