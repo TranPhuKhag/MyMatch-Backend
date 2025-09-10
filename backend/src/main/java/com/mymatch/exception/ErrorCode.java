@@ -47,6 +47,9 @@ public enum ErrorCode {
     SWAPREQUEST_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy yêu cầu đổi giảng viên của bạn", HttpStatus.NOT_FOUND),
     SWAP_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy yêu cầu đổi giảng viên", HttpStatus.NOT_FOUND),
     CONVERSATION_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Cuộc trò chuyện không tồn tại", HttpStatus.NOT_FOUND),
+    TRANSACTION_NOT_EXISTED(HttpStatus.NOT_FOUND.value(), "Giao dịch không tồn tại", HttpStatus.NOT_FOUND),
+    WALLET_NOT_EXISTED(HttpStatus.NOT_FOUND.value(), "Ví không tồn tại", HttpStatus.NOT_FOUND),
+    WALLET_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy ví", HttpStatus.NOT_FOUND),
     MATERIAL_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Tài liệu không tồn tại", HttpStatus.NOT_FOUND),
     // 409 Conflict (đã tồn tại/trùng)
     USER_EXISTED(HttpStatus.CONFLICT.value(), "Người dùng đã tồn tại", HttpStatus.CONFLICT),
@@ -60,8 +63,10 @@ public enum ErrorCode {
     PERMISSION_EXISTED(HttpStatus.CONFLICT.value(), "Quyền đã tồn tại", HttpStatus.CONFLICT),
     SWAPREQUEST_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã tồn tại", HttpStatus.CONFLICT),
     CONVERSATION_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Cuộc trò chuyện đã tồn tại", HttpStatus.CONFLICT),
+    SWAP_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã được tạo cho cặp này", HttpStatus.CONFLICT),
+    INSUFFICIENT_FUNDS(HttpStatus.BAD_REQUEST.value(), "Số dư không đủ", HttpStatus.BAD_REQUEST),
+    DUPLICATE_CODE(HttpStatus.CONFLICT.value(), "Mã giao dịch đã tồn tại, vui lòng thử lại", HttpStatus.CONFLICT),;
     SWAP_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã được tạo cho cặp này", HttpStatus.CONFLICT), INSUFFICIENT_FUNDS(HttpStatus.BAD_REQUEST.value(), "Số dư không đủ", HttpStatus.BAD_REQUEST);
-
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
         this.message = message;

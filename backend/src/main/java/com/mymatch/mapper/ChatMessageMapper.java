@@ -1,7 +1,7 @@
 package com.mymatch.mapper;
 
 import com.mymatch.dto.request.chatmessage.ChatMessageCreationRequest;
-import com.mymatch.dto.response.ChatMessageResponse;
+import com.mymatch.dto.response.chatmessage.ChatMessageResponse;
 import com.mymatch.entity.ChatMessage;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

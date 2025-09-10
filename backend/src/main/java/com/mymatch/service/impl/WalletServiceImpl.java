@@ -49,15 +49,13 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     @Transactional
-    public TransactionResponse topUpWallet(Double amountVND) {
+    public TransactionResponse topUpWallet(String code,Double amountVND) {
         if (amountVND == null || amountVND <= 0) {
             throw new AppException(ErrorCode.INVALID_PARAMETER);
         }
+        Wallet wallet = walletRepository.findByCode(code)
+                .orElseThrow(() -> new AppException(ErrorCode.WALLET_NOT_FOUND));
 
-        Wallet wallet = userRepository
-                .findById(SecurityUtil.getCurrentUserId())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND))
-                .getWallet();
         long coinAmount = (long) (amountVND / EXCHANGE_RATE);
 
         Transaction transaction = transactionService.initiateTransaction(
