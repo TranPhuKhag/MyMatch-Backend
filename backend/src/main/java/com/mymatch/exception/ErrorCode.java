@@ -51,6 +51,7 @@ public enum ErrorCode {
     WALLET_NOT_EXISTED(HttpStatus.NOT_FOUND.value(), "Ví không tồn tại", HttpStatus.NOT_FOUND),
     WALLET_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy ví", HttpStatus.NOT_FOUND),
     MATERIAL_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Tài liệu không tồn tại", HttpStatus.NOT_FOUND),
+    PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Sản phẩm không tồn tại", HttpStatus.NOT_FOUND),
     // 409 Conflict (đã tồn tại/trùng)
     USER_EXISTED(HttpStatus.CONFLICT.value(), "Người dùng đã tồn tại", HttpStatus.CONFLICT),
     LECTURER_EXISTED(HttpStatus.CONFLICT.value(), "Mã giảng viên đã tồn tại", HttpStatus.CONFLICT),
