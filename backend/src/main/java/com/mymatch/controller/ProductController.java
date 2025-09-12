@@ -1,4 +1,3 @@
-// src/main/java/com/mymatch/controller/ProductController.java
 package com.mymatch.controller;
 
 import com.mymatch.dto.request.product.ProductCreationRequest;

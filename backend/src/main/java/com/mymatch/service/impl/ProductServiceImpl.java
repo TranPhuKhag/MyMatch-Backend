@@ -31,6 +31,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ProductResponse createProduct(ProductCreationRequest request) {
+        boolean exists = productRepository.existsByName(request.getName());
+        if (exists) {
+            throw new AppException(ErrorCode.PRODUCT_NAME_ALREADY_EXISTS);
+        }
         Product product = productMapper.toEntity(request);
         product = productRepository.save(product);
         return productMapper.toResponse(product);
@@ -41,14 +45,12 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse updateProduct(Long id, ProductUpdateRequest request) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
-        // MapStruct @MappingTarget để update partial các field != null
         productMapper.updateEntity(product, request);
         product = productRepository.save(product);
         return productMapper.toResponse(product);
     }
 
     @Override
-    @Transactional
     public void deleteProduct(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
@@ -57,7 +59,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<ProductResponse> getAllProducts() {
         return productRepository.findAll()
                 .stream()

@@ -66,7 +66,8 @@ public enum ErrorCode {
     CONVERSATION_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Cuộc trò chuyện đã tồn tại", HttpStatus.CONFLICT),
     DUPLICATE_CODE(HttpStatus.CONFLICT.value(), "Mã giao dịch đã tồn tại, vui lòng thử lại", HttpStatus.CONFLICT),
     SWAP_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã được tạo cho cặp này", HttpStatus.CONFLICT),
-    INSUFFICIENT_FUNDS(HttpStatus.BAD_REQUEST.value(), "Số dư không đủ", HttpStatus.BAD_REQUEST);
+    INSUFFICIENT_FUNDS(HttpStatus.BAD_REQUEST.value(), "Số dư không đủ", HttpStatus.BAD_REQUEST),
+    PRODUCT_NAME_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Tên sản phẩm đã tồn tại", HttpStatus.CONFLICT);
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
         this.message = message;

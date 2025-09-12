@@ -12,4 +12,5 @@ public class ProductUpdateRequest {
     String name;
     String description;
     Double price;
+    String imageUrl;
 }

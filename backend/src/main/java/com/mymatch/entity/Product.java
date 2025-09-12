@@ -27,7 +27,7 @@ public class Product extends AbstractAuditingEntity {
 
     String description;
 
-    Long price; // coin
+    Double price; // coin
 
     @Builder.Default
     @Column(nullable = false)

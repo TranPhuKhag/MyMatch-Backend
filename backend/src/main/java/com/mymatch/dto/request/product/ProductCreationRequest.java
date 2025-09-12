@@ -1,5 +1,6 @@
 package com.mymatch.dto.request.product;
 
+import jakarta.persistence.Column;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,5 +13,5 @@ public class ProductCreationRequest {
     String name;
     String description;
     Double price;
-    Integer quantity;
+    String imageUrl;
 }
