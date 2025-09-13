@@ -1,4 +1,4 @@
-package com.mymatch.dto.response.product;
+package com.mymatch.dto.response.plan;
 
 import lombok.*;
 
@@ -7,10 +7,12 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductResponse {
+public class PlanResponse {
     Long id;
     String name;
     String description;
-    Double price;
+    Double coin;
+    int purchaseCount;
     String imageUrl;
+    int durationDays;
 }

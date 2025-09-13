@@ -51,7 +51,7 @@ public enum ErrorCode {
     WALLET_NOT_EXISTED(HttpStatus.NOT_FOUND.value(), "Ví không tồn tại", HttpStatus.NOT_FOUND),
     WALLET_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy ví", HttpStatus.NOT_FOUND),
     MATERIAL_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Tài liệu không tồn tại", HttpStatus.NOT_FOUND),
-    PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Sản phẩm không tồn tại", HttpStatus.NOT_FOUND),
+    PLAN_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy gói", HttpStatus.NOT_FOUND),
     // 409 Conflict (đã tồn tại/trùng)
     USER_EXISTED(HttpStatus.CONFLICT.value(), "Người dùng đã tồn tại", HttpStatus.CONFLICT),
     LECTURER_EXISTED(HttpStatus.CONFLICT.value(), "Mã giảng viên đã tồn tại", HttpStatus.CONFLICT),
@@ -67,7 +67,8 @@ public enum ErrorCode {
     DUPLICATE_CODE(HttpStatus.CONFLICT.value(), "Mã giao dịch đã tồn tại, vui lòng thử lại", HttpStatus.CONFLICT),
     SWAP_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã được tạo cho cặp này", HttpStatus.CONFLICT),
     INSUFFICIENT_FUNDS(HttpStatus.BAD_REQUEST.value(), "Số dư không đủ", HttpStatus.BAD_REQUEST),
-    PRODUCT_NAME_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Tên sản phẩm đã tồn tại", HttpStatus.CONFLICT);
+    PLAN_NAME_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Tên gói đã tồn tại", HttpStatus.CONFLICT);
+
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
         this.message = message;
