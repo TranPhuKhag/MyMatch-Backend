@@ -16,22 +16,27 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@SQLDelete(sql = "UPDATE product SET deleted = 1 WHERE id = ?")
+@SQLDelete(sql = "UPDATE plan SET deleted = 1 WHERE id = ?")
 @SQLRestriction("deleted = 0")
-public class Product extends AbstractAuditingEntity {
+public class Plan extends AbstractAuditingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Column(nullable = false)
+
+    @Column(nullable = false, length = 255)
     String name;
 
+    @Column(columnDefinition = "TEXT")
     String description;
 
-    Double price; // coin
+    Double coin; // coin
 
     @Builder.Default
     @Column(nullable = false)
     int purchaseCount = 0;
 
     String imageUrl;
+
+    @Column(nullable = false)
+    int durationDays;            // Số ngày hiệu lực
 }
