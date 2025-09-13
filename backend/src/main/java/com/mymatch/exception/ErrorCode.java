@@ -23,6 +23,7 @@ public enum ErrorCode {
     CANNOT_PURCHASE_OWN_MATERIAL(HttpStatus.BAD_REQUEST.value(), "Không thể mua tài liệu của chính bạn", HttpStatus.BAD_REQUEST),
     MATERIAL_ALREADY_PURCHASED(HttpStatus.BAD_REQUEST.value(), "Bạn đã mua tài liệu này", HttpStatus.BAD_REQUEST),
     MATERIAL_NOT_PURCHASED(HttpStatus.BAD_REQUEST.value(), "Bạn chưa mua tài liệu này", HttpStatus.BAD_REQUEST),
+    INVALID_REDIRECT_URI(HttpStatus.BAD_REQUEST.value(), "URI chuyển hướng không hợp lệ", HttpStatus.BAD_REQUEST),
     // 401 Unauthorized
     UNAUTHENTICATED(HttpStatus.UNAUTHORIZED.value(), "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED_ACCESS_CONVERSATION(HttpStatus.UNAUTHORIZED.value(), "Bạn không có quyền truy cập cuộc trò chuyện này", HttpStatus.UNAUTHORIZED),

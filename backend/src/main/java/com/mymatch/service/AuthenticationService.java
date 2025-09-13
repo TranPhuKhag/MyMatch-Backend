@@ -41,5 +41,5 @@ public interface AuthenticationService {
      * @throws JOSEException if token verification fails
      */
     AuthenticationResponse refreshToken(RefreshRequest request) throws ParseException, JOSEException;
-    AuthenticationResponse outboundAuthenticate(String code);
-    }
+    AuthenticationResponse outboundAuthenticate(String code, String redirectUri);
+}

@@ -20,6 +20,7 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import jakarta.annotation.PostConstruct;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -35,6 +36,8 @@ import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+
+import static java.util.stream.Collectors.toSet;
 
 @Slf4j
 @Service
@@ -64,6 +67,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @NonFinal
     @Value("${google.oauth.redirect-uri}")
     protected String REDIRECT_URI;
+
+    @NonFinal
+    @Value("${google.oauth.allowed-redirect-uris}")
+    protected String ALLOWED_REDIRECT_URIS_RAW;
+
+    @NonFinal
+    protected Set<String> ALLOWED_REDIRECT_URIS;
 
     @NonFinal
     protected final String GRANT_TYPE = "authorization_code";
@@ -123,13 +133,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     @Transactional
-    public AuthenticationResponse outboundAuthenticate(String code) {
+    public AuthenticationResponse outboundAuthenticate(String code, String incomingRedirectUri) {
         log.info("Starting outbound authentication with code: {}", code);
+
+        var redirectUri = resolveRedirectUri(incomingRedirectUri);
         var response = outboundIdentityClient.exchangeToken(ExchangeTokenRequest.builder()
                 .code(code)
                 .clientId(CLIENT_ID)
                 .clientSecret(CLIENT_SECRET)
-                .redirectUri(REDIRECT_URI)
+                .redirectUri(redirectUri)
                 .grantType(GRANT_TYPE)
                 .build());
         log.info("TOKEN RESPONSE {}", response);
@@ -283,5 +295,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         return stringJoiner.toString();
     }
-
+    private String resolveRedirectUri(String incoming) {
+        String candidate = (incoming != null && !incoming.isBlank()) ? incoming : REDIRECT_URI;
+        if (!ALLOWED_REDIRECT_URIS.contains(candidate)) {
+            log.warn("Blocked redirect_uri: {}", candidate);
+            throw new AppException(ErrorCode.INVALID_REDIRECT_URI);
+        }
+        return candidate;
+    }
+    @PostConstruct
+    void initAllowedUris() {
+        ALLOWED_REDIRECT_URIS = Arrays.stream(ALLOWED_REDIRECT_URIS_RAW.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isBlank())
+                .collect(toSet());
+        log.info("Initialized allowed redirect URIs: {}", ALLOWED_REDIRECT_URIS);
+    }
 }
