@@ -19,6 +19,7 @@ public interface StudentMapper {
     @Mapping(target = "user", ignore = true)
     Student toEntity(StudentCreationRequest req);
     @Mapping(target = "user.role", ignore = true)
+    @Mapping(target = "user.student", ignore = true)
     StudentResponse toResponse(Student entity);
 
     @Mapping(target = "campus", ignore = true)
