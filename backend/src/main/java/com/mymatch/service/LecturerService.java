@@ -19,5 +19,5 @@ public interface LecturerService {
     @PreAuthorize("hasAuthority('lecturer:delete')")
     void deleteLecturer(Long id);
 
-    PageResponse<LecturerResponse> getAllLecturers(LecturerFilterRequest filter, int page, int size, String sort);;
+    PageResponse<LecturerResponse> getAllLecturers(LecturerFilterRequest filter, int page, int size, String sort);
 }

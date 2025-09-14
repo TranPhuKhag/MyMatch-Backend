@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LecturerFilterRequest {
     Long campusId;
+    Boolean isReviewed = false;
     String name;   // search contain
     String code;   // search contain
 }
