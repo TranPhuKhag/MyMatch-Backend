@@ -13,11 +13,9 @@ import com.mymatch.exception.ErrorCode;
 import com.mymatch.mapper.StudentMapper;
 import com.mymatch.mapper.StudentMapperImpl;
 import com.mymatch.mapper.UserMapper;
-import com.mymatch.repository.CampusRepository;
-import com.mymatch.repository.RoleRepository;
-import com.mymatch.repository.StudentRepository;
-import com.mymatch.repository.UserRepository;
+import com.mymatch.repository.*;
 import com.mymatch.service.StudentService;
+import com.mymatch.utils.WalletCodeUtil;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +48,8 @@ public class UserServiceImpl implements UserService {
     StudentRepository studentRepository;
     StudentService studentService;
     StudentMapper studentMapper;
+    WalletCodeUtil codeUtil;
+    WalletRepository walletRepository;
     @Override
     @Transactional
     public UserResponse createUser(UserCreationRequest request, RoleType roleType) {
@@ -58,10 +58,14 @@ public class UserServiceImpl implements UserService {
         Role role = roleRepository.findByName(roleType).orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
         String hashedPassword = passwordEncoder.encode(request.getPassword());
 
-        Wallet wallet = Wallet
-                .builder()
+        Wallet wallet = Wallet.builder()
                 .coin(0L)
                 .build();
+        String walletCode;
+        do walletCode = codeUtil.randomBase();
+        while (walletRepository.existsByCode(walletCode));
+        wallet.setCode(walletCode);
+        wallet = walletRepository.save(wallet);
 
         User user = userMapper.toUser(request, role, hashedPassword);
         user.setWallet(wallet);
