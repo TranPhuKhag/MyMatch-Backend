@@ -49,7 +49,6 @@ public class UserPurchaseServiceImpl implements UserPurchaseService {
     PlanRepository planRepository;
     UserPurchaseRepository userPurchaseRepository;
     UserPurchaseMapper userPurchaseMapper;
-    WalletRepository walletRepository;
     WalletService walletService;
 
     @Override

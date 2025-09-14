@@ -10,9 +10,6 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserPurchaseCreateRequest{
-//    @NotNull(message = "userId không được null")
-//    Long userId;
-
     @NotNull(message = "planId không được null")
     Long planId;
 }
