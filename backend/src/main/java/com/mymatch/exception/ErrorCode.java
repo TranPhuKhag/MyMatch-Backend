@@ -24,6 +24,10 @@ public enum ErrorCode {
     MATERIAL_ALREADY_PURCHASED(HttpStatus.BAD_REQUEST.value(), "Bạn đã mua tài liệu này", HttpStatus.BAD_REQUEST),
     MATERIAL_NOT_PURCHASED(HttpStatus.BAD_REQUEST.value(), "Bạn chưa mua tài liệu này", HttpStatus.BAD_REQUEST),
     INVALID_REDIRECT_URI(HttpStatus.BAD_REQUEST.value(), "URI chuyển hướng không hợp lệ", HttpStatus.BAD_REQUEST),
+    PURCHASE_ALREADY_ACTIVE(HttpStatus.BAD_REQUEST.value(), "Bạn đã có gói này đang hoạt động", HttpStatus.BAD_REQUEST),
+    PURCHASE_ALREADY_CANCELLED(HttpStatus.BAD_REQUEST.value(), "Giao dịch mua đã bị hủy", HttpStatus.BAD_REQUEST),
+    PURCHASE_ALREADY_EXPIRED(HttpStatus.BAD_REQUEST.value(), "Giao dịch mua đã hết hạn", HttpStatus.BAD_REQUEST),
+    COIN_NOT_ENOUGH(HttpStatus.BAD_REQUEST.value(), "Số coin trong ví không đủ", HttpStatus.BAD_REQUEST),
     // 401 Unauthorized
     UNAUTHENTICATED(HttpStatus.UNAUTHORIZED.value(), "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED_ACCESS_CONVERSATION(HttpStatus.UNAUTHORIZED.value(), "Bạn không có quyền truy cập cuộc trò chuyện này", HttpStatus.UNAUTHORIZED),
@@ -53,6 +57,7 @@ public enum ErrorCode {
     WALLET_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy ví", HttpStatus.NOT_FOUND),
     MATERIAL_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Tài liệu không tồn tại", HttpStatus.NOT_FOUND),
     PLAN_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy gói", HttpStatus.NOT_FOUND),
+    PURCHASE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy giao dịch mua", HttpStatus.NOT_FOUND),
     // 409 Conflict (đã tồn tại/trùng)
     USER_EXISTED(HttpStatus.CONFLICT.value(), "Người dùng đã tồn tại", HttpStatus.CONFLICT),
     LECTURER_EXISTED(HttpStatus.CONFLICT.value(), "Mã giảng viên đã tồn tại", HttpStatus.CONFLICT),
@@ -69,7 +74,6 @@ public enum ErrorCode {
     SWAP_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã được tạo cho cặp này", HttpStatus.CONFLICT),
     INSUFFICIENT_FUNDS(HttpStatus.BAD_REQUEST.value(), "Số dư không đủ", HttpStatus.BAD_REQUEST),
     PLAN_NAME_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Tên gói đã tồn tại", HttpStatus.CONFLICT);
-
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
         this.message = message;

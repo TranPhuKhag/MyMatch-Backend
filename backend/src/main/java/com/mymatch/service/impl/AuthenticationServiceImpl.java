@@ -309,6 +309,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .map(String::trim)
                 .filter(s -> !s.isBlank())
                 .collect(toSet());
-        log.info("Initialized allowed redirect URIs: {}", ALLOWED_REDIRECT_URIS);
     }
 }

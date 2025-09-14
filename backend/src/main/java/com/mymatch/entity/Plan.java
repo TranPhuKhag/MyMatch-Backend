@@ -29,7 +29,7 @@ public class Plan extends AbstractAuditingEntity {
     @Column(columnDefinition = "TEXT")
     String description;
 
-    Double coin; // coin
+    Long coin; // coin
 
     @Builder.Default
     @Column(nullable = false)
