@@ -160,7 +160,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     String walletCode;
                     do walletCode = codeUtil.randomBase();
                     while (walletRepository.existsByCode(walletCode));
-                    wallet.setCode(code);
+                    wallet.setCode(walletCode);
             wallet = walletRepository.save(wallet);
             Student student = studentRepository.save(Student.builder().build());
             User newUser = userMapper.toUserFromGoogle(userInfo, role, wallet, student);
