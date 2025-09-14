@@ -2,6 +2,7 @@ package com.mymatch.service.impl;
 
 import com.mymatch.dto.request.purchase.UserPurchaseCreateRequest;
 import com.mymatch.dto.request.purchase.UserPurchaseFilterRequest;
+import com.mymatch.dto.request.wallet.WalletRequest;
 import com.mymatch.dto.response.PageResponse;
 import com.mymatch.dto.response.purchase.UserPurchaseResponse;
 import com.mymatch.entity.Plan;
@@ -9,6 +10,8 @@ import com.mymatch.entity.User;
 import com.mymatch.entity.UserPurchase;
 import com.mymatch.entity.Wallet;
 import com.mymatch.enums.PurchaseStatus;
+import com.mymatch.enums.TransactionSource;
+import com.mymatch.enums.TransactionType;
 import com.mymatch.exception.AppException;
 import com.mymatch.exception.ErrorCode;
 import com.mymatch.mapper.UserPurchaseMapper;
@@ -17,6 +20,7 @@ import com.mymatch.repository.UserPurchaseRepository;
 import com.mymatch.repository.UserRepository;
 import com.mymatch.repository.WalletRepository;
 import com.mymatch.service.UserPurchaseService;
+import com.mymatch.service.WalletService;
 import com.mymatch.specification.UserPurchaseSpecification;
 import com.mymatch.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +50,7 @@ public class UserPurchaseServiceImpl implements UserPurchaseService {
     UserPurchaseRepository userPurchaseRepository;
     UserPurchaseMapper userPurchaseMapper;
     WalletRepository walletRepository;
+    WalletService walletService;
 
     @Override
     @Transactional
@@ -55,17 +60,18 @@ public class UserPurchaseServiceImpl implements UserPurchaseService {
         Plan plan = planRepository.findById(request.getPlanId())
                 .orElseThrow(() -> new AppException(ErrorCode.PLAN_NOT_FOUND));
 
-        Wallet wallet = user.getWallet();
-        if (wallet.getCoin() < plan.getCoin()) {
-            throw new AppException(ErrorCode.COIN_NOT_ENOUGH);
-        }
-        wallet.setCoin(wallet.getCoin() - plan.getCoin());
-        walletRepository.save(wallet);
-        // Check if user already has an active purchase for the same plan
-
         userPurchaseRepository.findFirstByUserIdAndPlanIdAndStatus(
                 user.getId(), plan.getId(), PurchaseStatus.ACTIVE
         ).ifPresent(up -> { throw new AppException(ErrorCode.PURCHASE_ALREADY_ACTIVE); });
+
+        WalletRequest walletRequest = WalletRequest.builder()
+                .userId(user.getId())
+                .type(TransactionType.OUT)
+                .source(TransactionSource.SERVICE_PURCHASE)
+                .coin(plan.getCoin())
+                .description("Mua gói " + plan.getName())
+                .build();
+        walletService.deductFromWallet(walletRequest);
 
         LocalDateTime expiryDate = LocalDateTime.now().plusDays(plan.getDurationDays());
         UserPurchase userPurchase = UserPurchase.builder()
