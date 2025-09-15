@@ -56,7 +56,7 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewResponse createReview(ReviewCreationRequest request) {
         Lecturer lecturer = lecturerRepository.findById(request.getLecturerId())
                 .orElseThrow(() -> new AppException(ErrorCode.LECTURER_NOT_FOUND));
-        Student student = studentRepository.findById(SecurityUtil.getCurrentUserId())
+        Student student = studentRepository.findByUserId(SecurityUtil.getCurrentUserId())
                 .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
         Course course = courseRepository.findById(request.getCourseId())
                 .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
