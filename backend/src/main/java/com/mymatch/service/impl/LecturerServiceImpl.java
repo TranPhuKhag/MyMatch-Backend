@@ -87,12 +87,17 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
-    public PageResponse<LecturerResponse> getAllLecturers(LecturerFilterRequest filter, int page, int size, String sort) {
+    public PageResponse<LecturerResponse> getAllLecturers(LecturerFilterRequest filter, int page, int size, String sortBy) {
+        Sort.Direction direction = Sort.Direction.fromOptionalString(sortBy)
+                .orElse(Sort.Direction.DESC);
+        Sort sort = Sort.by(direction, (sortBy != null && !sortBy.isBlank()) ? sortBy : "createAt");
+
         Pageable pageable = PageRequest.of(
                 page - 1,
                 size,
-                Sort.by("name")
-        );
+                sort);
+
+
         var spec = LecturerSpecification.buildSpec(filter);
         Page<Lecturer> pages;
         if (filter.getIsReviewed() != null && filter.getIsReviewed()) {

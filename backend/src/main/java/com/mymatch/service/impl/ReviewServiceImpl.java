@@ -1,5 +1,6 @@
 package com.mymatch.service.impl;
 
+import com.mymatch.dto.request.lecturercourse.LecturerCourseCreationRequest;
 import com.mymatch.dto.request.review.ReviewCreationRequest;
 import com.mymatch.dto.request.review.ReviewFilterRequest;
 import com.mymatch.dto.request.review.ReviewUpdateRequest;
@@ -15,6 +16,7 @@ import com.mymatch.mapper.ReviewDetailMapper;
 import com.mymatch.mapper.ReviewMapper;
 import com.mymatch.repository.*;
 import com.mymatch.service.FileManagerService;
+import com.mymatch.service.LecturerCourseService;
 import com.mymatch.service.ReviewService;
 import com.mymatch.specification.ReviewSpecification;
 import com.mymatch.utils.SecurityUtil;
@@ -49,6 +51,8 @@ public class ReviewServiceImpl implements ReviewService {
     ReviewMapper reviewMapper;
     FileManagerService fileManagerService;
     ReviewCriteriaRepository reviewCriteriaRepository;
+    LecturerCourseRepository lecturerCourseRepository;
+    LecturerCourseService lecturerCourseService;
 
 
     @Override
@@ -60,12 +64,19 @@ public class ReviewServiceImpl implements ReviewService {
                 .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
         Course course = courseRepository.findById(request.getCourseId())
                 .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
-
         Review review = reviewMapper.toReview(request, lecturer, course, student);
         if (request.getSemesterId() != null) {
             Semester semester = semesterRepository.findById(request.getSemesterId())
                     .orElseThrow(() -> new AppException(ErrorCode.SEMESTER_NOT_FOUND));
             review.setSemester(semester);
+        }
+        boolean hasTakenCourse = lecturerCourseRepository
+                .existsByLecturer_IdAndCourse_Id(lecturer.getId(), course.getId());
+        if (!hasTakenCourse) {// nếu giảng viên chưa dạy học phần này thì tự động thêm giảng viên dạy học phần
+        lecturerCourseService.assign(LecturerCourseCreationRequest.builder()
+                .courseId(course.getId())
+                .lecturerId(lecturer.getId())
+                .build());
         }
         review = reviewRepository.save(review);
         List<ReviewDetail> details = new ArrayList<>();

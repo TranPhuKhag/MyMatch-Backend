@@ -76,7 +76,9 @@ public enum ErrorCode {
     DUPLICATE_CODE(HttpStatus.CONFLICT.value(), "Mã giao dịch đã tồn tại, vui lòng thử lại", HttpStatus.CONFLICT),
     SWAP_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã được tạo cho cặp này", HttpStatus.CONFLICT),
     INSUFFICIENT_FUNDS(HttpStatus.BAD_REQUEST.value(), "Số dư không đủ", HttpStatus.BAD_REQUEST),
-    PLAN_NAME_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Tên gói đã tồn tại", HttpStatus.CONFLICT)
+    PLAN_NAME_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Tên gói đã tồn tại", HttpStatus.CONFLICT),
+    RESOURCE_EXISTED(HttpStatus.CONFLICT.value(), "Tài nguyên đã tồn tại", HttpStatus.CONFLICT),
+    LECTURER_COURSE_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Môn học đã được gán cho giảng viên này", HttpStatus.CONFLICT)
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
