@@ -34,6 +34,8 @@ public enum ErrorCode {
     // 403 Forbidden
     UNAUTHORIZED(HttpStatus.FORBIDDEN.value(), "Bạn không có quyền truy cập", HttpStatus.FORBIDDEN),
     USER_HAS_BEEN_BANNED(HttpStatus.FORBIDDEN.value(), "Tài khoản đã bị khóa", HttpStatus.FORBIDDEN),
+    ACCESS_DENIED(HttpStatus.FORBIDDEN.value(), "Từ chối truy cập", HttpStatus.FORBIDDEN),
+
     // 404 Not Found
     ENTITY_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy dữ liệu với ID đã cung cấp", HttpStatus.NOT_FOUND),
     COURSE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Môn học không tồn tại", HttpStatus.NOT_FOUND),
@@ -73,7 +75,9 @@ public enum ErrorCode {
     DUPLICATE_CODE(HttpStatus.CONFLICT.value(), "Mã giao dịch đã tồn tại, vui lòng thử lại", HttpStatus.CONFLICT),
     SWAP_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã được tạo cho cặp này", HttpStatus.CONFLICT),
     INSUFFICIENT_FUNDS(HttpStatus.BAD_REQUEST.value(), "Số dư không đủ", HttpStatus.BAD_REQUEST),
-    PLAN_NAME_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Tên gói đã tồn tại", HttpStatus.CONFLICT);
+    PLAN_NAME_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Tên gói đã tồn tại", HttpStatus.CONFLICT)
+    ;
+
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
         this.message = message;
