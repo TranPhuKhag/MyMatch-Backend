@@ -48,5 +48,4 @@ public class Lecturer extends AbstractAuditingEntity {
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     List<Tag> tags;
-
 }

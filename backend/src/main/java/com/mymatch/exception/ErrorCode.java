@@ -35,7 +35,7 @@ public enum ErrorCode {
     UNAUTHORIZED(HttpStatus.FORBIDDEN.value(), "Bạn không có quyền truy cập", HttpStatus.FORBIDDEN),
     USER_HAS_BEEN_BANNED(HttpStatus.FORBIDDEN.value(), "Tài khoản đã bị khóa", HttpStatus.FORBIDDEN),
     ACCESS_DENIED(HttpStatus.FORBIDDEN.value(), "Từ chối truy cập", HttpStatus.FORBIDDEN),
-
+    FORBIDDEN(HttpStatus.FORBIDDEN.value(), "Bạn không có quyền thực hiện hành động này", HttpStatus.FORBIDDEN),
     // 404 Not Found
     ENTITY_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy dữ liệu với ID đã cung cấp", HttpStatus.NOT_FOUND),
     COURSE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Môn học không tồn tại", HttpStatus.NOT_FOUND),
@@ -60,6 +60,7 @@ public enum ErrorCode {
     MATERIAL_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Tài liệu không tồn tại", HttpStatus.NOT_FOUND),
     PLAN_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy gói", HttpStatus.NOT_FOUND),
     PURCHASE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy giao dịch mua", HttpStatus.NOT_FOUND),
+    STUDENT_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy bài đăng tìm team", HttpStatus.NOT_FOUND),
     // 409 Conflict (đã tồn tại/trùng)
     USER_EXISTED(HttpStatus.CONFLICT.value(), "Người dùng đã tồn tại", HttpStatus.CONFLICT),
     LECTURER_EXISTED(HttpStatus.CONFLICT.value(), "Mã giảng viên đã tồn tại", HttpStatus.CONFLICT),

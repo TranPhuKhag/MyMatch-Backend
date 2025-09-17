@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -52,5 +52,5 @@ public class StudentRequest extends AbstractAuditingEntity {
     Campus campus;
 
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<StudentRequestSkill> skills;
+    Set<StudentRequestSkill> skills = new HashSet<>();
 }
