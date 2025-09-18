@@ -86,7 +86,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse updateUser(UserUpdateRequest request, Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        userMapper.toUser(user, request);
         User existingUser = userRepository.findById(SecurityUtil.getCurrentUserId())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         if(!hasAuthority("user:update")){
@@ -94,6 +93,7 @@ public class UserServiceImpl implements UserService {
                 throw new AppException(ErrorCode.FORBIDDEN);
             }
         }
+        userMapper.toUser(user, request);
         if (request.getCampusId() != null) {
             Campus campus = campusRepository.findById(request.getCampusId())
                     .orElseThrow(() -> new AppException(ErrorCode.CAMPUS_NOT_EXISTED));
