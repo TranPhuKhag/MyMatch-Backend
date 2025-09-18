@@ -15,6 +15,7 @@ import com.mymatch.mapper.StudentMapperImpl;
 import com.mymatch.mapper.UserMapper;
 import com.mymatch.repository.*;
 import com.mymatch.service.StudentService;
+import com.mymatch.utils.SecurityUtil;
 import com.mymatch.utils.WalletCodeUtil;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -33,6 +34,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.mymatch.utils.SecurityUtil.hasAuthority;
 
 @Service
 @RequiredArgsConstructor
@@ -82,10 +85,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse updateUser(UserUpdateRequest request, Long id) {
-        return null;
+        User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        userMapper.toUser(user, request);
+        User existingUser = userRepository.findById(SecurityUtil.getCurrentUserId())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        if(!hasAuthority("user:update")){
+            if(!existingUser.getId().equals(user.getId())){
+                throw new AppException(ErrorCode.FORBIDDEN);
+            }
+        }
+        if (request.getCampusId() != null) {
+            Campus campus = campusRepository.findById(request.getCampusId())
+                    .orElseThrow(() -> new AppException(ErrorCode.CAMPUS_NOT_EXISTED));
+            user.getStudent().setCampus(campus);
+    }
+        return userMapper.toUserResponse(userRepository.save(user));
     }
 
-    @Override
+        @Override
     public UserResponse deleteUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         userRepository.delete(user);
