@@ -1,13 +1,16 @@
 package com.mymatch.controller;
 
 import com.mymatch.dto.request.user.UserCreationRequest;
+import com.mymatch.dto.request.user.UserUpdateRequest;
 import com.mymatch.dto.response.ApiResponse;
+import com.mymatch.dto.response.university.UniversityResponse;
 import com.mymatch.dto.response.user.UserResponse;
 import com.mymatch.enums.RoleType;
 import com.mymatch.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,5 +35,13 @@ public class UserController {
     public ApiResponse<UserResponse> getMyInfo() {
         var result = userService.getMyInfo();
         return ApiResponse.<UserResponse>builder().result(result).build();
+    }
+    @PutMapping("/{id}")
+    public ApiResponse<UserResponse> updateUser(@PathVariable Long id,@RequestBody UserUpdateRequest request) {
+        return ApiResponse.<UserResponse>builder()
+                .code(HttpStatus.OK.value())
+                .message("Cập nhật người dùng thành công")
+                .result(userService.updateUser(request, id))
+                .build();
     }
 }

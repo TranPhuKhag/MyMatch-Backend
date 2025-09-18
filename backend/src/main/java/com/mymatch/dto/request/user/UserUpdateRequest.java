@@ -14,16 +14,9 @@ import lombok.experimental.FieldDefaults;
 public class UserUpdateRequest {
     String username;
 
-    @Email
-    String email;
-
-    String firstName;
-    String lastName;
-
     @Pattern(regexp = "^(?:\\+84|0)\\d(?:[\\s.-]?\\d){8}$", message = "Số điện thoại không hợp lệ")
     String phone;
-
-    String address;
     String avatarUrl;
-    String password;
+    Long campusId;
+    String major;
 }

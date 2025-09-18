@@ -1,6 +1,7 @@
 package com.mymatch.mapper;
 
 import com.mymatch.dto.request.user.UserCreationRequest;
+import com.mymatch.dto.request.user.UserUpdateRequest;
 import com.mymatch.dto.response.auth.OutboundUserResponse;
 import com.mymatch.dto.response.user.UserResponse;
 import com.mymatch.entity.Role;
@@ -9,6 +10,7 @@ import com.mymatch.entity.User;
 import com.mymatch.entity.Wallet;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(
@@ -42,4 +44,7 @@ public interface UserMapper {
     @Mapping(target = "student",   source = "student")
     @Mapping(target = "password",  ignore = true)
     User toUserFromGoogle(OutboundUserResponse userInfo, Role role, Wallet wallet, Student student);
+
+    @Mapping(target = "id", ignore = true)
+    void toUser(@MappingTarget User user, UserUpdateRequest request);
 }
