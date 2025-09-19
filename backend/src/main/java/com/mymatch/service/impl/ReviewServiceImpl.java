@@ -5,11 +5,14 @@ import com.mymatch.dto.request.review.ReviewCreationRequest;
 import com.mymatch.dto.request.review.ReviewFilterRequest;
 import com.mymatch.dto.request.review.ReviewUpdateRequest;
 import com.mymatch.dto.request.reviewdetail.ReviewDetailRequest;
+import com.mymatch.dto.request.wallet.WalletRequest;
 import com.mymatch.dto.response.PageResponse;
 import com.mymatch.dto.response.review.ReviewResponse;
 import com.mymatch.entity.*;
 import com.mymatch.enums.CriteriaType;
 import com.mymatch.enums.StorageType;
+import com.mymatch.enums.TransactionSource;
+import com.mymatch.enums.TransactionType;
 import com.mymatch.exception.AppException;
 import com.mymatch.exception.ErrorCode;
 import com.mymatch.mapper.ReviewDetailMapper;
@@ -18,6 +21,7 @@ import com.mymatch.repository.*;
 import com.mymatch.service.FileManagerService;
 import com.mymatch.service.LecturerCourseService;
 import com.mymatch.service.ReviewService;
+import com.mymatch.service.WalletService;
 import com.mymatch.specification.ReviewSpecification;
 import com.mymatch.utils.SecurityUtil;
 import lombok.AccessLevel;
@@ -53,6 +57,7 @@ public class ReviewServiceImpl implements ReviewService {
     ReviewCriteriaRepository reviewCriteriaRepository;
     LecturerCourseRepository lecturerCourseRepository;
     LecturerCourseService lecturerCourseService;
+    WalletService walletService;
 
 
     @Override
@@ -91,6 +96,15 @@ public class ReviewServiceImpl implements ReviewService {
         review.setDetails(details);
         review.setOverallScore(setOverallScore(details));
         review = reviewRepository.save(review);
+        // thưởng coin cho sinh viên
+        WalletRequest walletRequest = WalletRequest.builder()
+                .coin(10L)
+                .userId(student.getUser().getId())
+                .source(TransactionSource.REWARD)
+                .type(TransactionType.IN)
+                .description("Nhận 20 coin khi đánh giá giảng viên")
+                .build();
+        walletService.addToCoinWallet(walletRequest);
         return reviewMapper.toReviewResponse(review);
     }
 
