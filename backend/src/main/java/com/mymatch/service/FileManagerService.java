@@ -25,5 +25,9 @@ public interface FileManagerService {
      */
     void delete(String filename, String subDirectory, StorageType type);
 
+    String buildFilePath(Long userId, String uuid);
+
+
+
 
 }

@@ -37,6 +37,7 @@ public class SecurityConfig {
             "/swap-requests/**",
             "/swaps/**",
             "payments/internal/**",
+            "/images/**",
     };
 
     private static final String[] PUBLIC_GET = {

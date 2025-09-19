@@ -82,6 +82,12 @@ public class FileManagerServiceImpl implements FileManagerService {
         }
     }
 
+    @Override
+    public String buildFilePath(Long userId, String prefix) {
+
+        return userId.toString() + "/" + prefix;
+    }
+
 
     private Path resolveRoot(StorageType type) {
         return type == StorageType.PUBLIC ? publicRoot : privateRoot;
