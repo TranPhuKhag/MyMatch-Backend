@@ -2,10 +2,7 @@ package com.mymatch.entity;
 
 import com.mymatch.common.AbstractAuditingEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -14,6 +11,7 @@ import org.hibernate.annotations.SQLRestriction;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 @Entity
 @SQLDelete(sql = "UPDATE team_request_skill SET deleted = 1 WHERE id = ?")

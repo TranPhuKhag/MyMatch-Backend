@@ -9,7 +9,9 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -39,6 +41,6 @@ public class TeamRequest extends AbstractAuditingEntity {
     RequestStatus status = RequestStatus.OPEN;
 
     @OneToMany(mappedBy = "teamRequest", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<TeamRequestSkill> skills;
+    Set<TeamRequestSkill> skills = new HashSet<>();
 
 }
