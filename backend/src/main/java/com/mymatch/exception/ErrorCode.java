@@ -62,6 +62,9 @@ public enum ErrorCode {
     PURCHASE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy giao dịch mua", HttpStatus.NOT_FOUND),
     STUDENT_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy bài đăng tìm team", HttpStatus.NOT_FOUND),
     CAMPUS_NOT_EXISTED(HttpStatus.NOT_FOUND.value(), "Cơ sở không tồn tại", HttpStatus.NOT_FOUND),
+    TEAM_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy đội", HttpStatus.NOT_FOUND),
+    TEAM_MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy thành viên đội", HttpStatus.NOT_FOUND),
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy thành viên", HttpStatus.NOT_FOUND),
     // 409 Conflict (đã tồn tại/trùng)
     USER_EXISTED(HttpStatus.CONFLICT.value(), "Người dùng đã tồn tại", HttpStatus.CONFLICT),
     LECTURER_EXISTED(HttpStatus.CONFLICT.value(), "Mã giảng viên đã tồn tại", HttpStatus.CONFLICT),
@@ -80,6 +83,7 @@ public enum ErrorCode {
     PLAN_NAME_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Tên gói đã tồn tại", HttpStatus.CONFLICT),
     RESOURCE_EXISTED(HttpStatus.CONFLICT.value(), "Tài nguyên đã tồn tại", HttpStatus.CONFLICT),
     LECTURER_COURSE_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Môn học đã được gán cho giảng viên này", HttpStatus.CONFLICT),
+    TEAM_MEMBER_FULL(HttpStatus.BAD_REQUEST.value(),"Team đã đầy", HttpStatus.BAD_REQUEST),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
