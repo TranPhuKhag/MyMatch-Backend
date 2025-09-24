@@ -27,6 +27,12 @@ public class Material extends AbstractAuditingEntity {
     @Column(nullable = false)
     String name;
 
+    @Column(nullable = false)
+    String originalFileName;
+
+    @Column(nullable = false)
+    String fileType;
+
     @Column(length = 1000)
     String description;
 

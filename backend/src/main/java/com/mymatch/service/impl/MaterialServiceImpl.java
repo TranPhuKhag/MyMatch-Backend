@@ -77,6 +77,8 @@ public class MaterialServiceImpl implements MaterialService {
         material.setSize(fileSize);
         material.setFileURL(fileUrl);
         material.setOwner(owner);
+        material.setFileType(request.getFile().getContentType());
+        material.setOriginalFileName(request.getFile().getOriginalFilename());
         material.setPrice(COIN_PER_MATERIAL);
         material = materialRepository.save(material);
         return materialMapper.toMaterialResponse(material);
@@ -221,8 +223,8 @@ public class MaterialServiceImpl implements MaterialService {
         }
 
         return FileDownloadResponse.builder()
-                .contentType("application/octet-stream")
-                .fileName(material.getName())
+                .contentType(material.getFileType())
+                .fileName(material.getOriginalFileName())
                 .nginxPath(material.getFileURL())
                 .build();
 

@@ -12,6 +12,8 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -75,15 +77,15 @@ public class MaterialController {
     public ResponseEntity<Void> downloadMaterial(@PathVariable Long materialId) {
         FileDownloadResponse downloadInfo = materialService.downloadMaterial(materialId);
 
-        String encodedFileName = URLEncoder.encode(downloadInfo.getFileName(), StandardCharsets.UTF_8)
-                .replaceAll("\\+", "%20");
+        ContentDisposition contentDisposition = ContentDisposition.attachment()
+                                                                  .filename(downloadInfo.getFileName(), StandardCharsets.UTF_8)
+                                                                  .build();
 
         return ResponseEntity.ok()
-                .header("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"")
-                .header("Content-Type", downloadInfo.getContentType())
-                .header("X-Accel-Redirect", downloadInfo.getNginxPath())
-                .build();
-
+                             .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString())
+                             .header(HttpHeaders.CONTENT_TYPE, downloadInfo.getContentType())
+                             .header("X-Accel-Redirect", downloadInfo.getNginxPath())
+                             .build();
     }
 
     @DeleteMapping("/{id}")
