@@ -17,4 +17,5 @@ public class TeamFilterRequest {
     Integer size = 10;
     String sortBy; // default createAt
     String sortDirection = "DESC";
+    Long studentId;
 }

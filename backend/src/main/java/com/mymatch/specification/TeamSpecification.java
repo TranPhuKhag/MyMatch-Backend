@@ -17,6 +17,9 @@ public class TeamSpecification {
             if (f.getCourseId() != null) {
                 p = cb.and(p, cb.equal(root.get("course").get("id"), f.getCourseId()));
             }
+            if (f.getStudentId() != null) {
+                p = cb.and(p, cb.equal(root.get("createdBy").get("id"), f.getStudentId()));
+            }
             if (f.getKeyword() != null && !f.getKeyword().isBlank()) {
                 var like = "%" + f.getKeyword().toLowerCase() + "%";
                 p = cb.and(p, cb.or(
