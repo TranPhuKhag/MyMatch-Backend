@@ -186,9 +186,19 @@ public class TeamServiceImpl implements TeamService {
         );
         Pageable pageable = PageRequest.of(Math.max(f.getPage() - 1, 0), Math.max(f.getSize(), 1), sort);
         Page<Team> pages = teamRepository.findAll(spec, pageable);
-        List<TeamResponse> data = pages.getContent().stream()
-                .map(teamMapper::toResponse)
-                .toList();
+        List<TeamResponse> data = pages.getContent().stream().map(t -> {
+            var r = teamMapper.toResponse(t);
+
+            // map teamRequest
+            var reqs = (t.getRequests() == null) ? List.<TeamRequestResponse>of()
+                    : t.getRequests().stream().map(teamRequestMapper::toResponse).toList();
+            r.setTeamRequest(reqs);
+
+            // set counts
+            r.setRequestCount(reqs.size());
+            return r;
+
+        }).toList();
 
         return PageResponse.<TeamResponse>builder()
                 .data(data)
