@@ -22,6 +22,7 @@ public class TeamUpdateRequest {
     @NotNull Long semesterId;
     @NotNull Long campusId;
     @NotNull Long courseId;
+    String image;
 
     // ---- TeamRequest ops ----
     List<TeamRequestCreationRequest>   requestsToCreate;  // thêm mới

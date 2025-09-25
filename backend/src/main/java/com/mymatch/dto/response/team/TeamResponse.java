@@ -22,6 +22,7 @@ public class TeamResponse {
     String name;
     Integer memberMax;
     String description;
+    String image;
 
     CourseResponse course;
     SemesterResponse semester;
@@ -31,5 +32,6 @@ public class TeamResponse {
     LocalDateTime createAt;
     List<TeamRequestResponse> teamRequest;
     List<TeamMemberResponse> teamMember;
-
+    int requestCount;
+    int memberCount;
 }

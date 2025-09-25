@@ -7,6 +7,7 @@ import com.mymatch.dto.request.team.TeamUpdateRequest;
 import com.mymatch.dto.request.teammember.TeamMemberAddRequest;
 import com.mymatch.dto.response.PageResponse;
 import com.mymatch.dto.response.member.MemberResponse;
+import com.mymatch.dto.response.skill.SkillResponse;
 import com.mymatch.dto.response.team.TeamResponse;
 import com.mymatch.dto.response.teammember.TeamMemberResponse;
 import com.mymatch.dto.response.teamrequest.TeamRequestResponse;
@@ -26,6 +27,7 @@ import com.mymatch.utils.SecurityUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +38,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -93,7 +97,8 @@ public class TeamServiceImpl implements TeamService {
         var res = teamMapper.toResponse(team);
         res.setTeamRequest(teamRequests);
         res.setTeamMember(teamMembers);
-
+        res.setRequestCount(teamRequests != null ? teamRequests.size() : 0);
+        res.setMemberCount(teamMembers != null ? teamMembers.size() : 0);
         return res;
     }
     @Override
@@ -141,6 +146,8 @@ public class TeamServiceImpl implements TeamService {
             }
         }
         var res = teamMapper.toResponse(team);
+        res.setRequestCount( (team.getRequests() == null ? 0 : team.getRequests().size()) );
+        res.setMemberCount( (team.getTeamMembers() == null ? 0 : team.getTeamMembers().size()) );
         return res;
     }
     @Override
@@ -158,6 +165,8 @@ public class TeamServiceImpl implements TeamService {
                         .toList();
         teamResponse.setTeamRequest(requestResponses);
         teamResponse.setTeamMember(memberResponses);
+        teamResponse.setRequestCount( (team.getRequests() == null ? 0 : team.getRequests().size()) );
+        teamResponse.setMemberCount( (team.getTeamMembers() == null ? 0 : team.getTeamMembers().size()) );
         return teamResponse;
     }
     @Override

@@ -17,7 +17,9 @@ public interface TeamMapper {
     @Mapping(target = "name", source = "req.name")
     Team toEntity(TeamCreationRequest req, Semester semester, Campus campus, Course course);
 
-    @Mapping(target = "createdBy.user", ignore = true)
+    @Mapping(target = "createdBy.user.role", ignore = true)
+    @Mapping(target = "createdBy.user.permissions", ignore = true)
+    @Mapping(target = "createdBy.user.student", ignore = true)
     TeamResponse toResponse(Team team);
 
     void update(@MappingTarget Team team, TeamUpdateRequest req);

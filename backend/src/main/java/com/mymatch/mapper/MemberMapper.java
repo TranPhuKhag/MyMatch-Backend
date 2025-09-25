@@ -8,6 +8,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(
         componentModel = "spring",
+        uses = {MemberSkillMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface MemberMapper {
     Member toMember(MemberCreationRequest request);

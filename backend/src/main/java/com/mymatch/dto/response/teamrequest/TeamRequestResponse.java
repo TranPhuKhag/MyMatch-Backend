@@ -14,6 +14,5 @@ import java.util.Set;
 public class TeamRequestResponse {
     Long id;
     String title;
-    String description;
     Set<TeamRequestSkillResponse> skills;
 }
