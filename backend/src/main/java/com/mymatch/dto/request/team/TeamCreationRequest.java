@@ -22,6 +22,7 @@ public class TeamCreationRequest {
     @NotNull Long semesterId;
     @NotNull Long campusId;
     @NotNull Long courseId;
+    String image;
 
     @NotNull
     List<TeamRequestCreationRequest> teamRequest;

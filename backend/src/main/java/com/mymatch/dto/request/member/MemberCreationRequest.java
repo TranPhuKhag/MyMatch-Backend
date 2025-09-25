@@ -14,5 +14,6 @@ public class MemberCreationRequest {
     Long memberId;
     String name;
     String note;
+    String image;
     Set<Long> skillIds;
 }

@@ -30,6 +30,9 @@ public class Team extends AbstractAuditingEntity {
     @Column(length = 1000)
     String description;
 
+    @Column(name = "image", columnDefinition = "TEXT")
+    String image;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "semester_id")
     Semester semester;
