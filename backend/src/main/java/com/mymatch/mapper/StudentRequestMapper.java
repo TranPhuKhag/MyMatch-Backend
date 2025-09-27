@@ -12,7 +12,10 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
         componentModel = "spring",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface    StudentRequestMapper {
-    @Mapping(target = "student.user", ignore = true)
+    @Mapping(target = "student.user.role", ignore = true)
+    @Mapping(target = "student.user.permissions", ignore = true)
+    @Mapping(target = "student.user.student", ignore = true)
+    @Mapping(target = "student.user.wallet", ignore = true)
     StudentRequestResponse toResponse(StudentRequest entity);
     StudentRequest toEntity(StudentRequestCreationRequest req);
     void updateStudentRequest(@MappingTarget StudentRequest studentRequest, StudentRequestUpdateRequest req);

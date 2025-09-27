@@ -20,6 +20,9 @@ public interface TeamMapper {
     @Mapping(target = "createdBy.user.role", ignore = true)
     @Mapping(target = "createdBy.user.permissions", ignore = true)
     @Mapping(target = "createdBy.user.student", ignore = true)
+    @Mapping(target = "createdBy.campus", ignore = true)
+    @Mapping(target = "createdBy.user.wallet", ignore = true)
+    @Mapping(target = "campus.university.courses", ignore = true)
     TeamResponse toResponse(Team team);
 
     void update(@MappingTarget Team team, TeamUpdateRequest req);

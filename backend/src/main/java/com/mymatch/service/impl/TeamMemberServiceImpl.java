@@ -12,7 +12,6 @@ import com.mymatch.mapper.TeamMemberMapper;
 import com.mymatch.repository.TeamMemberRepository;
 import com.mymatch.repository.*;
 import com.mymatch.service.TeamMemberService;
-import com.mymatch.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
@@ -72,14 +71,15 @@ public class TeamMemberServiceImpl implements TeamMemberService {
 
     @Override
     public void deleteMember(Long teamId, Long teamMemberId) {
-        Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new AppException(ErrorCode.TEAM_NOT_FOUND));
         TeamMember teamMember = teamMemberRepository.findById(teamMemberId)
                 .orElseThrow(() -> new AppException(ErrorCode.TEAM_MEMBER_NOT_FOUND));
-        if (!teamMember.getTeam().getId().equals(teamId)) {
-            throw new AppException(ErrorCode.TEAM_MEMBER_NOT_FOUND); // không thuộc team này
-        }
+        if (!teamMember.getTeam().getId().equals(teamId)) throw new AppException(ErrorCode.TEAM_MEMBER_NOT_FOUND);
+        Team team = teamMember.getTeam();
+        if (team.getTeamMembers()!=null) team.getTeamMembers().removeIf(x -> x.getId().equals(teamMemberId));
         teamMemberRepository.delete(teamMember);
+        boolean stillUsed = teamMemberRepository.existsByMember_Id(teamMember.getMember().getId());
+        if (!stillUsed) {
+            memberRepository.deleteById(teamMember.getMember().getId());
+        }
     }
-
 }

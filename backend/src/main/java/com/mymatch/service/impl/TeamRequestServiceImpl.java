@@ -35,10 +35,10 @@ public class TeamRequestServiceImpl implements TeamRequestService {
 
         // SkillIds optional
         if (req.getSkillIds() != null && !req.getSkillIds().isEmpty()) {
-            Set<Long> incoming = new HashSet<>(req.getSkillIds()); // distinct
-            var skills = skillRepository.findAllById(incoming);
-            if (skills.size() != incoming.size()) {
-                throw new AppException(ErrorCode.INVALID_PARAMETER); // hoặc INVALID_PARAMETER
+            Set<Long> targetIds = new HashSet<>(req.getSkillIds());
+            var skills = skillRepository.findAllById(targetIds);
+            if (skills.size() != targetIds.size()) {
+                throw new AppException(ErrorCode.INVALID_PARAMETER);
             }
             for (Skill s : skills) {
                 tr.getSkills().add(
@@ -50,8 +50,14 @@ public class TeamRequestServiceImpl implements TeamRequestService {
             }
         }
 
-        TeamRequestResponse teamRequestResponse = teamRequestMapper.toResponse(teamRequestRepository.save(tr));
-        return teamRequestResponse;
+        tr = teamRequestRepository.save(tr);
+        // Đồng bộ collection của team để response không cần reload
+        if (team.getRequests() != null) {
+            TeamRequest finalTr = tr;
+            boolean exists = team.getRequests().stream().anyMatch(x -> x.getId().equals(finalTr.getId()));
+            if (!exists) team.getRequests().add(tr);
+        }
+        return teamRequestMapper.toResponse(tr);
     }
 
     @Override
@@ -69,7 +75,6 @@ public class TeamRequestServiceImpl implements TeamRequestService {
             // remove cái không còn trong newIds
             tr.getSkills().removeIf(x -> !newIds.contains(x.getSkill().getId()));
             // còn lại: thêm những id mới
-            Collectors Collectors = null;
             Set<Long> currentIds = tr.getSkills().stream()
                     .map(x -> x.getSkill().getId())
                     .collect(Collectors.toSet());
@@ -96,7 +101,12 @@ public class TeamRequestServiceImpl implements TeamRequestService {
     @Override
     public void deleteTeamRequest(Long requestId) {
         TeamRequest tr = teamRequestRepository.findById(requestId)
-                .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_FOUND));
-        teamRequestRepository.delete(tr);
+            .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_FOUND));
+
+        Team team = tr.getTeam();
+        if (team != null && team.getRequests() != null) {
+            team.getRequests().removeIf(x -> x.getId().equals(requestId));
+        }
+        teamRequestRepository.delete(tr); // HARD DELETE
     }
 }

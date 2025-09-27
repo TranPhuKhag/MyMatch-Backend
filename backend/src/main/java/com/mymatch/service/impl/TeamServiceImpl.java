@@ -138,16 +138,30 @@ public class TeamServiceImpl implements TeamService {
             for (Long tmId : req.getTeamMemberIdsToRemove()) teamMemberService.deleteMember(id, tmId);
         }
         // Create new members then add
-        if (req.getMembers() != null && !req.getMembers().isEmpty()) {
+        if (req.getMembersToCreate() != null && !req.getMembersToCreate().isEmpty()) {
             // capacity check...
-            for (MemberCreationRequest m : req.getMembers()) {
+            for (MemberCreationRequest m : req.getMembersToCreate()) {
                 MemberResponse mr = memberService.createMember(m);
                 teamMemberService.addMember(id, TeamMemberAddRequest.builder().memberId(mr.getId()).build());
             }
         }
+        // sau khi xử lý add/remove TeamRequest & TeamMember
+        if (req.getMembersToUpdate() != null && !req.getMembersToUpdate().isEmpty()) {
+            for (var mu : req.getMembersToUpdate()) {
+                memberService.updateMember(mu);
+            }
+        }
+
         var res = teamMapper.toResponse(team);
-        res.setRequestCount( (team.getRequests() == null ? 0 : team.getRequests().size()) );
-        res.setMemberCount( (team.getTeamMembers() == null ? 0 : team.getTeamMembers().size()) );
+        var reqs = team.getRequests()==null ? List.<TeamRequestResponse>of()
+                : team.getRequests().stream().map(teamRequestMapper::toResponse).toList();
+        var tms  = team.getTeamMembers()==null ? List.<TeamMemberResponse>of()
+                : team.getTeamMembers().stream().map(teamMemberMapper::toResponse).toList();
+
+        res.setTeamRequest(reqs);
+        res.setTeamMember(tms);
+        res.setRequestCount(reqs.size());
+        res.setMemberCount(tms.size());
         return res;
     }
     @Override
