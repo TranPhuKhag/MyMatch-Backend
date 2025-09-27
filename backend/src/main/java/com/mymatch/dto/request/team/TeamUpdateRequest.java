@@ -1,6 +1,7 @@
 package com.mymatch.dto.request.team;
 
 import com.mymatch.dto.request.member.MemberCreationRequest;
+import com.mymatch.dto.request.member.MemberUpdateRequest;
 import com.mymatch.dto.request.teammember.TeamMemberUpdateRequest;
 import com.mymatch.dto.request.teamrequest.TeamRequestCreationRequest;
 import com.mymatch.dto.request.teamrequest.TeamRequestUpdateRequest;
@@ -33,5 +34,6 @@ public class TeamUpdateRequest {
     List<Long> teamMemberIdsToRemove; // remove theo team_member.id
 
     List<MemberCreationRequest> newMembersToCreateAndAdd;
-    List<MemberCreationRequest> members;
+    List<MemberCreationRequest> membersToCreate;
+    List<MemberUpdateRequest> membersToUpdate;
 }

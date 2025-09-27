@@ -5,8 +5,6 @@ import com.mymatch.dto.response.user.UserResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @NoArgsConstructor
