@@ -42,6 +42,14 @@ public class TeamMemberServiceImpl implements TeamMemberService {
 
         TeamMember teamMember = TeamMember.builder().team(team).member(member).build();
         teamMember = teamMemberRepository.save(teamMember);
+        if (team.getTeamMembers() != null) {
+            TeamMember finalTeamMember = teamMember;
+            boolean exists = team.getTeamMembers().stream()
+                    .anyMatch(tm -> tm.getId().equals(finalTeamMember.getId()));
+            if (!exists) {
+                team.getTeamMembers().add(teamMember);
+            }
+        }
         return teamMemberMapper.toResponse(teamMember);
     }
 
