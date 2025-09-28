@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -70,6 +71,45 @@ public class FileManagerServiceImpl implements FileManagerService {
             throw new RuntimeException("Failed to store file", e);
         }
     }
+
+    @Override
+    public String saveStream(InputStream inputStream,
+                             String originalFilename,
+                             String contentType,
+                             String subDirectory,
+                             StorageType type) {
+        try {
+            if (originalFilename == null || originalFilename.isBlank()) {
+                throw new RuntimeException("File name is invalid");
+            }
+
+            Path targetDir = resolveRoot(type).resolve(subDirectory).normalize();
+            Files.createDirectories(targetDir);
+
+            Path targetFile = targetDir.resolve(originalFilename).normalize();
+
+            // Stream copy dữ liệu từ inputStream -> file
+            try (var os = Files.newOutputStream(targetFile)) {
+                byte[] buffer = new byte[8192]; // 8KB buffer
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                }
+            }
+
+            log.info("File saved (stream): {}", targetFile);
+
+            if (type == StorageType.PUBLIC) {
+                return "/public/" + subDirectory + "/" + originalFilename;
+            } else {
+                return "/private/" + subDirectory + "/" + originalFilename;
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to store file (stream)", e);
+        }
+    }
+
 
     @Override
     public void delete(String filename, String subDirectory, StorageType type) {

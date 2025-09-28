@@ -16,6 +16,10 @@ spring:
     user:
       name: admin
       password: 123456
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
 google:
   oauth:
     client-id: ${GOOGLE_OAUTH_CLIENT_ID}
