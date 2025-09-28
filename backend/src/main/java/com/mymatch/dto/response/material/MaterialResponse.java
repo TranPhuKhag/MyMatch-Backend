@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -24,6 +25,7 @@ public class MaterialResponse {
     Integer totalDownloads;
     Integer totalPurchases;
     LocalDateTime createAt;
+    List<MaterialItemResponse> items;
     LocalDateTime updateAt;
     Boolean isPurchased = false;
 }

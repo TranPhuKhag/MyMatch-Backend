@@ -17,6 +17,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface MaterialMapper {
 
+    @Mapping(target = "items", ignore = true)
     Material toMaterial(MaterialCreationRequest request);
 
     void updateMaterial(@MappingTarget Material material, MaterialUpdateRequest request);

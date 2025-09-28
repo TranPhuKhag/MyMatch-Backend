@@ -5,6 +5,8 @@ import com.mymatch.enums.StorageType;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
+
 public interface FileManagerService {
     /**
      * Lưu một file vào một thư mục con.
@@ -15,6 +17,23 @@ public interface FileManagerService {
      * @return Tên file duy nhất đã được tạo.
      */
     String save(MultipartFile file, String subDirectory, StorageType type);
+
+    /**
+     * Lưu file bằng streaming InputStream.
+     *
+     * @param inputStream      Dữ liệu file stream.
+     * @param originalFilename Tên gốc của file.
+     * @param contentType      MIME type.
+     * @param subDirectory     Thư mục con để lưu (ví dụ: "avatars", "products").
+     * @param type             Loại lưu trữ (PUBLIC hoặc PRIVATE).
+     * @return Đường dẫn hoặc URL của file đã lưu.
+     */
+    String saveStream(InputStream inputStream,
+                      String originalFilename,
+                      String contentType,
+                      String subDirectory,
+                      StorageType type);
+
 
     /**
      * Xóa một file khỏi thư mục con.

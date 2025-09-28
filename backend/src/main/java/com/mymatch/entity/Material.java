@@ -27,12 +27,6 @@ public class Material extends AbstractAuditingEntity {
     @Column(nullable = false)
     String name;
 
-    @Column(nullable = false)
-    String originalFileName;
-
-    @Column(nullable = false)
-    String fileType;
-
     @Column(length = 1000)
     String description;
 
@@ -48,8 +42,8 @@ public class Material extends AbstractAuditingEntity {
     @JoinColumn(name = "course_id")
     Course course;
 
-    String fileURL;
-
+    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<MaterialItem> items;
     Long price; // coin
 
     Double size;
