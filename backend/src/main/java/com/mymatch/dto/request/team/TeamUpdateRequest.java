@@ -32,8 +32,6 @@ public class TeamUpdateRequest {
 
     // ---- TeamMember ops ----
     List<Long> teamMemberIdsToRemove; // remove theo team_member.id
-
-    List<MemberCreationRequest> newMembersToCreateAndAdd;
     List<MemberCreationRequest> membersToCreate;
     List<MemberUpdateRequest> membersToUpdate;
 }

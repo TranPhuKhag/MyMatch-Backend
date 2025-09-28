@@ -1,44 +1,31 @@
 package com.mymatch.service.impl;
 
 import com.mymatch.dto.request.member.MemberCreationRequest;
-import com.mymatch.dto.request.team.TeamCreationRequest;
-import com.mymatch.dto.request.team.TeamFilterRequest;
-import com.mymatch.dto.request.team.TeamUpdateRequest;
+import com.mymatch.dto.request.team.*;
 import com.mymatch.dto.request.teammember.TeamMemberAddRequest;
 import com.mymatch.dto.response.PageResponse;
 import com.mymatch.dto.response.member.MemberResponse;
-import com.mymatch.dto.response.skill.SkillResponse;
 import com.mymatch.dto.response.team.TeamResponse;
 import com.mymatch.dto.response.teammember.TeamMemberResponse;
 import com.mymatch.dto.response.teamrequest.TeamRequestResponse;
 import com.mymatch.entity.*;
 import com.mymatch.exception.AppException;
 import com.mymatch.exception.ErrorCode;
-import com.mymatch.mapper.TeamMapper;
-import com.mymatch.mapper.TeamMemberMapper;
-import com.mymatch.mapper.TeamRequestMapper;
+import com.mymatch.mapper.*;
 import com.mymatch.repository.*;
-import com.mymatch.service.MemberService;
-import com.mymatch.service.TeamMemberService;
-import com.mymatch.service.TeamRequestService;
-import com.mymatch.service.TeamService;
+import com.mymatch.service.*;
 import com.mymatch.specification.TeamSpecification;
 import com.mymatch.utils.SecurityUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 
 @Slf4j
 @Service
