@@ -79,7 +79,10 @@ public class MaterialServiceImpl implements MaterialService {
 
         material.setPrice(COIN_PER_MATERIAL);
         material = materialRepository.save(material);
-        List<MaterialItem> materialItems = materialItemRepository.findAllById(request.getMaterialItemIds());
+        List<MaterialItem> materialItems = materialItemRepository.findAllByIdInAndMaterialIsNull(request.getMaterialItemIds());
+        if (materialItems.isEmpty()) {
+            throw new AppException(ErrorCode.MATERIAL_ITEM_NOT_FOUND_OR_ALREADY_ASSIGNED);
+        }
         Material finalMaterial = material;
         materialItems.forEach(item -> item.setMaterial(finalMaterial));
         materialItemRepository.saveAll(materialItems);

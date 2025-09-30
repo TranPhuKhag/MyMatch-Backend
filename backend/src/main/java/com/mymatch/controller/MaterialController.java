@@ -30,7 +30,7 @@ public class MaterialController {
 
     MaterialService materialService;
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping
     public ApiResponse<MaterialResponse> createMaterial(
             @ModelAttribute MaterialCreationRequest request) throws Exception {
         return ApiResponse.<MaterialResponse>builder()

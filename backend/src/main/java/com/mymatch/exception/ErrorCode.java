@@ -28,6 +28,7 @@ public enum ErrorCode {
     PURCHASE_ALREADY_CANCELLED(HttpStatus.BAD_REQUEST.value(), "Giao dịch mua đã bị hủy", HttpStatus.BAD_REQUEST),
     PURCHASE_ALREADY_EXPIRED(HttpStatus.BAD_REQUEST.value(), "Giao dịch mua đã hết hạn", HttpStatus.BAD_REQUEST),
     COIN_NOT_ENOUGH(HttpStatus.BAD_REQUEST.value(), "Số coin trong ví không đủ", HttpStatus.BAD_REQUEST),
+    MATERIAL_ITEM_NOT_FOUND_OR_ALREADY_ASSIGNED(HttpStatus.BAD_REQUEST.value(), "Chưa upload tài liệu hoặc tài liệu đã được sử dụng", HttpStatus.BAD_REQUEST),
     // 401 Unauthorized
     UNAUTHENTICATED(HttpStatus.UNAUTHORIZED.value(), "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED_ACCESS_CONVERSATION(HttpStatus.UNAUTHORIZED.value(), "Bạn không có quyền truy cập cuộc trò chuyện này", HttpStatus.UNAUTHORIZED),
