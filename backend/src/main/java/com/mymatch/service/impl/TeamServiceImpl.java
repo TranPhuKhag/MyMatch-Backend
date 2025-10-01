@@ -3,12 +3,15 @@ package com.mymatch.service.impl;
 import com.mymatch.dto.request.member.MemberCreationRequest;
 import com.mymatch.dto.request.team.*;
 import com.mymatch.dto.request.teammember.TeamMemberAddRequest;
+import com.mymatch.dto.request.wallet.WalletRequest;
 import com.mymatch.dto.response.PageResponse;
 import com.mymatch.dto.response.member.MemberResponse;
 import com.mymatch.dto.response.team.TeamResponse;
 import com.mymatch.dto.response.teammember.TeamMemberResponse;
 import com.mymatch.dto.response.teamrequest.TeamRequestResponse;
 import com.mymatch.entity.*;
+import com.mymatch.enums.TransactionSource;
+import com.mymatch.enums.TransactionType;
 import com.mymatch.exception.AppException;
 import com.mymatch.exception.ErrorCode;
 import com.mymatch.mapper.*;
@@ -43,6 +46,9 @@ public class TeamServiceImpl implements TeamService {
     MemberService memberService;
     TeamRequestMapper teamRequestMapper;
     TeamMemberMapper teamMemberMapper;
+    WalletService walletService;
+
+    private static final long TEAM_SEARCH_FEE_COIN = 2L;
 
     @Override
     @Transactional
@@ -57,9 +63,20 @@ public class TeamServiceImpl implements TeamService {
                 .orElseThrow(() -> new AppException(ErrorCode.CAMPUS_NOT_FOUND));
         Course course = courseRepository.findById(req.getCourseId())
                 .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
+
         var team = teamMapper.toEntity(req, semester, campus, course);
         team.setCreatedBy(current.getStudent());
         team = teamRepository.save(team);
+
+        WalletRequest walletRequest = WalletRequest.builder()
+                .userId(userId)
+                .type(TransactionType.OUT)
+                .source(TransactionSource.SERVICE_PURCHASE)
+                .coin(TEAM_SEARCH_FEE_COIN)
+                .description("Tạo tìm kiếm đồng đội cho team:" + team.getName())
+                .build();
+        walletService.deductFromWallet(walletRequest);
+
         // 1) tạo TeamRequest
         List<TeamRequestResponse> teamRequests = new ArrayList<>();
         if (req.getTeamRequest() != null && !req.getTeamRequest().isEmpty()) {

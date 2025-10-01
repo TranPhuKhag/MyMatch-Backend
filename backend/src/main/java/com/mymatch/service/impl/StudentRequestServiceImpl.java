@@ -2,15 +2,19 @@ package com.mymatch.service.impl;
 import com.mymatch.dto.request.studentrequest.StudentRequestCreationRequest;
 import com.mymatch.dto.request.studentrequest.StudentRequestFilterRequest;
 import com.mymatch.dto.request.studentrequest.StudentRequestUpdateRequest;
+import com.mymatch.dto.request.wallet.WalletRequest;
 import com.mymatch.dto.response.PageResponse;
 import com.mymatch.dto.response.studentrequest.StudentRequestResponse;
 import com.mymatch.entity.*;
 import com.mymatch.enums.RequestStatus;
+import com.mymatch.enums.TransactionSource;
+import com.mymatch.enums.TransactionType;
 import com.mymatch.exception.AppException;
 import com.mymatch.exception.ErrorCode;
 import com.mymatch.mapper.StudentRequestMapper;
 import com.mymatch.repository.*;
 import com.mymatch.service.StudentRequestService;
+import com.mymatch.service.WalletService;
 import com.mymatch.specification.StudentRequestSpecification;
 import com.mymatch.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +44,9 @@ public class StudentRequestServiceImpl implements StudentRequestService {
     StudentRequestRepository studentRequestRepository;
     UserRepository userRepository;
     SkillRepository skillRepository;
+    WalletService walletService;
+
+    private static final long STUDENT_REQUEST_FEE_COIN = 2L;
 
     @Transactional
     @Override
@@ -49,6 +56,14 @@ public class StudentRequestServiceImpl implements StudentRequestService {
         if (currentUser.getStudent() == null) {
             throw new AppException(ErrorCode.STUDENT_INFO_REQUIRED);
         }
+        WalletRequest walletRequest = WalletRequest.builder()
+                .userId(currentUser.getId())
+                .type(TransactionType.OUT)
+                .source(TransactionSource.SERVICE_PURCHASE)
+                .coin(STUDENT_REQUEST_FEE_COIN)
+                .description("Đăng yêu cầu tìm đồng đội của Student: " + currentUser.getUsername())
+                .build();
+        walletService.deductFromWallet(walletRequest);
         Student student = currentUser.getStudent();
         Course course = courseRepository.findById(req.getCourseId())
                 .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
@@ -56,6 +71,7 @@ public class StudentRequestServiceImpl implements StudentRequestService {
                 .orElseThrow(() -> new AppException(ErrorCode.SEMESTER_NOT_FOUND));
         Campus campus = campusRepository.findById(req.getCampusId())
                 .orElseThrow(() -> new AppException(ErrorCode.CAMPUS_NOT_FOUND));
+
         StudentRequest studentRequest = studentRequestMapper.toEntity(req);
         studentRequest.setStudent(student);
         studentRequest.setCourse(course);
