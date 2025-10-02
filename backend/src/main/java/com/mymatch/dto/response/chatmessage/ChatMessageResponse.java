@@ -1,9 +1,11 @@
 package com.mymatch.dto.response.chatmessage;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mymatch.dto.response.conversation.ConversationResponse;
 import com.mymatch.dto.response.student.StudentResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Data
@@ -17,6 +19,9 @@ public class ChatMessageResponse {
     boolean me;
     String message;
     StudentResponse sender;
-    LocalDateTime createAt;
-    LocalDateTime updateAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX", timezone = "UTC")
+    Instant createAt;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX", timezone = "UTC")
+    Instant updateAt;
 }
