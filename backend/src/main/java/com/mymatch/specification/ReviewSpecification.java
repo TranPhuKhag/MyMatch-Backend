@@ -29,7 +29,7 @@ public class ReviewSpecification {
                 predicates.add(cb.equal(root.get("semester").get("id"), f.getSemesterId()));
             }
             if (f.getIsVerified() != null) {
-                predicates.add(cb.equal(root.get("verified"), f.getIsVerified()));
+                predicates.add(cb.equal(root.get("isVerified"), f.getIsVerified()));
             }
             if (f.getIsAnonymous() != null) {
                 predicates.add(cb.equal(root.get("isAnonymous"), f.getIsAnonymous()));
