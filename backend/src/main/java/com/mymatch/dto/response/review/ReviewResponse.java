@@ -1,6 +1,7 @@
 package com.mymatch.dto.response.review;
 
 import com.mymatch.dto.response.course.CourseResponse;
+import com.mymatch.dto.response.lecturer.LecturerResponse;
 import com.mymatch.dto.response.reviewdetail.ReviewDetailResponse;
 import com.mymatch.dto.response.semester.SemesterResponse;
 import com.mymatch.dto.response.student.StudentResponse;
@@ -17,6 +18,7 @@ import java.util.List;
 public class ReviewResponse {
     Long id;
     StudentResponse student;
+    LecturerResponse lecturer;
     CourseResponse course;
     SemesterResponse semester;
     Double overallScore;
