@@ -1,14 +1,13 @@
 package com.mymatch.entity;
 
 import com.mymatch.common.AbstractAuditingEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+
+import java.util.*;
 
 @Getter
 @Setter
@@ -17,10 +16,18 @@ import org.hibernate.annotations.SQLRestriction;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@SQLDelete(sql = "UPDATE participant_info SET deleted = 1 WHERE id = ?")
-@SQLRestriction("deleted = 0")
-public class ParticipantInfo extends AbstractAuditingEntity {
+public class Member extends AbstractAuditingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
+    String name;
+    @Column(length = 1000)
+    String note;
+
+    @Column(name = "image", columnDefinition = "TEXT")
+    String image;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<MemberSkill> memberSkills = new HashSet<>();
 }

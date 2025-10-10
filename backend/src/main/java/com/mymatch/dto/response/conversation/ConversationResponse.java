@@ -1,11 +1,10 @@
-package com.mymatch.dto.response;
+package com.mymatch.dto.response.conversation;
 
 import com.mymatch.dto.response.student.StudentResponse;
-import com.mymatch.entity.ParticipantInfo;
+import com.mymatch.dto.response.swap.SwapResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -21,4 +20,5 @@ public class ConversationResponse {
     String conversationName;
     List<StudentResponse> participants;
     boolean me;
+    SwapResponse swap;
 }

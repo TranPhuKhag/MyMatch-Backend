@@ -1,10 +1,9 @@
 package com.mymatch.service.impl;
 
 import com.mymatch.dto.request.conversation.ConversationCreationRequest;
-import com.mymatch.dto.response.ConversationResponse;
+import com.mymatch.dto.response.conversation.ConversationResponse;
 import com.mymatch.entity.Conversation;
 import com.mymatch.entity.Student;
-import com.mymatch.entity.User;
 import com.mymatch.exception.AppException;
 import com.mymatch.exception.ErrorCode;
 import com.mymatch.mapper.ConversationMapper;
@@ -20,7 +19,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j

@@ -16,6 +16,7 @@ import com.mymatch.repository.LecturerRepository;
 import com.mymatch.repository.TagRepository;
 import com.mymatch.service.LecturerService;
 import com.mymatch.specification.LecturerSpecification;
+import com.mymatch.utils.SecurityUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -86,14 +87,25 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
-    public PageResponse<LecturerResponse> getAllLecturers(LecturerFilterRequest filter, int page, int size, String sort) {
+    public PageResponse<LecturerResponse> getAllLecturers(LecturerFilterRequest filter, int page, int size, String sortBy) {
+        Sort.Direction direction = Sort.Direction.fromOptionalString(sortBy)
+                .orElse(Sort.Direction.DESC);
+        Sort sort = Sort.by(direction, (sortBy != null && !sortBy.isBlank()) ? sortBy : "createAt");
+
         Pageable pageable = PageRequest.of(
                 page - 1,
                 size,
-                Sort.by("name")
-        );
+                sort);
+
+
         var spec = LecturerSpecification.buildSpec(filter);
-        var pages = lecturerRepository.findAll(spec, pageable);
+        Page<Lecturer> pages;
+        if (filter.getIsReviewed() != null && filter.getIsReviewed()) {
+            Long currentUserId = SecurityUtil.getCurrentUserId();
+            pages = lecturerRepository.findLecturersReviewedByUser(currentUserId, pageable);
+        } else {
+            pages = lecturerRepository.findAll(spec, pageable);
+        }
         List<LecturerResponse> lecturerResponses = new ArrayList<>();
         for (Lecturer lecturer : pages.getContent()) {
             int reviewCount = lecturer.getReviews() != null ? lecturer.getReviews().size() : 0;
@@ -109,4 +121,6 @@ public class LecturerServiceImpl implements LecturerService {
                 .currentPage(page)
                 .build();
     }
+
+
 }

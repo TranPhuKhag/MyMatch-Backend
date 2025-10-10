@@ -49,15 +49,13 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     @Transactional
-    public TransactionResponse topUpWallet(Double amountVND) {
+    public TransactionResponse topUpWallet(String code,Double amountVND) {
         if (amountVND == null || amountVND <= 0) {
             throw new AppException(ErrorCode.INVALID_PARAMETER);
         }
+        Wallet wallet = walletRepository.findByCode(code)
+                .orElseThrow(() -> new AppException(ErrorCode.WALLET_NOT_FOUND));
 
-        Wallet wallet = userRepository
-                .findById(SecurityUtil.getCurrentUserId())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND))
-                .getWallet();
         long coinAmount = (long) (amountVND / EXCHANGE_RATE);
 
         Transaction transaction = transactionService.initiateTransaction(
@@ -81,7 +79,7 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     @Transactional
-    public void addToCoinWallet(WalletRequest request) {
+    public Transaction addToCoinWallet(WalletRequest request) {
         Wallet wallet = getUser(request.getUserId()).getWallet();
         Long coinAmount = request.getCoin();
         wallet.setCoin(wallet.getCoin() + coinAmount);
@@ -90,11 +88,12 @@ public class WalletServiceImpl implements WalletService {
         transactionService.markAsCompleted(transaction);
 
         log.info("Added {} coins to wallet of user {}. Source: {}", coinAmount, wallet.getUser().getId(), request.getSource());
+        return transaction;
     }
 
     @Override
     @Transactional
-    public void deductFromWallet(WalletRequest request) {
+    public Transaction deductFromWallet(WalletRequest request) {
         Wallet wallet = getUser(request.getUserId()).getWallet();
         Long coinAmount = request.getCoin();
 
@@ -109,6 +108,7 @@ public class WalletServiceImpl implements WalletService {
         walletRepository.save(wallet);
         Transaction transaction = transactionService.initiateTransaction(wallet, coinAmount, null, TransactionType.OUT, request.getSource(), request.getDescription());
         transactionService.markAsCompleted(transaction);
+        return transaction;
     }
 
     private User getUser(Long userId) {

@@ -19,12 +19,24 @@ public enum ErrorCode {
     INVALID_PARAMETER(HttpStatus.BAD_REQUEST.value(), "Tham số không hợp lệ", HttpStatus.BAD_REQUEST),
     INVALID_SWAP_DECISION(HttpStatus.BAD_REQUEST.value(), "Quyết định không hợp lệ", HttpStatus.BAD_REQUEST),
     CANNOT_SEND_EMAIL(HttpStatus.BAD_REQUEST.value(), "Không thể gửi email", HttpStatus.BAD_REQUEST),
+    FILE_SIZE_EXCEEDED(HttpStatus.BAD_REQUEST.value(), "Kích thước tệp vượt quá giới hạn cho phép", HttpStatus.BAD_REQUEST),
+    CANNOT_PURCHASE_OWN_MATERIAL(HttpStatus.BAD_REQUEST.value(), "Không thể mua tài liệu của chính bạn", HttpStatus.BAD_REQUEST),
+    MATERIAL_ALREADY_PURCHASED(HttpStatus.BAD_REQUEST.value(), "Bạn đã mua tài liệu này", HttpStatus.BAD_REQUEST),
+    MATERIAL_NOT_PURCHASED(HttpStatus.BAD_REQUEST.value(), "Bạn chưa mua tài liệu này", HttpStatus.BAD_REQUEST),
+    INVALID_REDIRECT_URI(HttpStatus.BAD_REQUEST.value(), "URI chuyển hướng không hợp lệ", HttpStatus.BAD_REQUEST),
+    PURCHASE_ALREADY_ACTIVE(HttpStatus.BAD_REQUEST.value(), "Bạn đã có gói này đang hoạt động", HttpStatus.BAD_REQUEST),
+    PURCHASE_ALREADY_CANCELLED(HttpStatus.BAD_REQUEST.value(), "Giao dịch mua đã bị hủy", HttpStatus.BAD_REQUEST),
+    PURCHASE_ALREADY_EXPIRED(HttpStatus.BAD_REQUEST.value(), "Giao dịch mua đã hết hạn", HttpStatus.BAD_REQUEST),
+    COIN_NOT_ENOUGH(HttpStatus.BAD_REQUEST.value(), "Số coin trong ví không đủ", HttpStatus.BAD_REQUEST),
+    MATERIAL_ITEM_NOT_FOUND_OR_ALREADY_ASSIGNED(HttpStatus.BAD_REQUEST.value(), "Chưa upload tài liệu hoặc tài liệu đã được sử dụng", HttpStatus.BAD_REQUEST),
     // 401 Unauthorized
     UNAUTHENTICATED(HttpStatus.UNAUTHORIZED.value(), "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED_ACCESS_CONVERSATION(HttpStatus.UNAUTHORIZED.value(), "Bạn không có quyền truy cập cuộc trò chuyện này", HttpStatus.UNAUTHORIZED),
     // 403 Forbidden
     UNAUTHORIZED(HttpStatus.FORBIDDEN.value(), "Bạn không có quyền truy cập", HttpStatus.FORBIDDEN),
     USER_HAS_BEEN_BANNED(HttpStatus.FORBIDDEN.value(), "Tài khoản đã bị khóa", HttpStatus.FORBIDDEN),
+    ACCESS_DENIED(HttpStatus.FORBIDDEN.value(), "Từ chối truy cập", HttpStatus.FORBIDDEN),
+    FORBIDDEN(HttpStatus.FORBIDDEN.value(), "Bạn không có quyền thực hiện hành động này", HttpStatus.FORBIDDEN),
     // 404 Not Found
     ENTITY_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy dữ liệu với ID đã cung cấp", HttpStatus.NOT_FOUND),
     COURSE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Môn học không tồn tại", HttpStatus.NOT_FOUND),
@@ -43,6 +55,18 @@ public enum ErrorCode {
     SWAPREQUEST_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy yêu cầu đổi giảng viên của bạn", HttpStatus.NOT_FOUND),
     SWAP_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy yêu cầu đổi giảng viên", HttpStatus.NOT_FOUND),
     CONVERSATION_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Cuộc trò chuyện không tồn tại", HttpStatus.NOT_FOUND),
+    TRANSACTION_NOT_EXISTED(HttpStatus.NOT_FOUND.value(), "Giao dịch không tồn tại", HttpStatus.NOT_FOUND),
+    WALLET_NOT_EXISTED(HttpStatus.NOT_FOUND.value(), "Ví không tồn tại", HttpStatus.NOT_FOUND),
+    WALLET_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy ví", HttpStatus.NOT_FOUND),
+    MATERIAL_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Tài liệu không tồn tại", HttpStatus.NOT_FOUND),
+    PLAN_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy gói", HttpStatus.NOT_FOUND),
+    PURCHASE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy giao dịch mua", HttpStatus.NOT_FOUND),
+    STUDENT_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy bài đăng tìm team", HttpStatus.NOT_FOUND),
+    CAMPUS_NOT_EXISTED(HttpStatus.NOT_FOUND.value(), "Cơ sở không tồn tại", HttpStatus.NOT_FOUND),
+    TEAM_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy đội", HttpStatus.NOT_FOUND),
+    TEAM_MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy thành viên đội", HttpStatus.NOT_FOUND),
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy thành viên", HttpStatus.NOT_FOUND),
+    MATERIAL_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Không tìm thấy tài liệu", HttpStatus.NOT_FOUND),
     // 409 Conflict (đã tồn tại/trùng)
     USER_EXISTED(HttpStatus.CONFLICT.value(), "Người dùng đã tồn tại", HttpStatus.CONFLICT),
     LECTURER_EXISTED(HttpStatus.CONFLICT.value(), "Mã giảng viên đã tồn tại", HttpStatus.CONFLICT),
@@ -55,7 +79,14 @@ public enum ErrorCode {
     PERMISSION_EXISTED(HttpStatus.CONFLICT.value(), "Quyền đã tồn tại", HttpStatus.CONFLICT),
     SWAPREQUEST_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã tồn tại", HttpStatus.CONFLICT),
     CONVERSATION_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Cuộc trò chuyện đã tồn tại", HttpStatus.CONFLICT),
-    SWAP_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã được tạo cho cặp này", HttpStatus.CONFLICT), INSUFFICIENT_FUNDS(HttpStatus.BAD_REQUEST.value(), "Số dư không đủ", HttpStatus.BAD_REQUEST);
+    DUPLICATE_CODE(HttpStatus.CONFLICT.value(), "Mã giao dịch đã tồn tại, vui lòng thử lại", HttpStatus.CONFLICT),
+    SWAP_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Yêu cầu đổi giảng viên đã được tạo cho cặp này", HttpStatus.CONFLICT),
+    INSUFFICIENT_FUNDS(HttpStatus.BAD_REQUEST.value(), "Số dư không đủ", HttpStatus.BAD_REQUEST),
+    PLAN_NAME_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Tên gói đã tồn tại", HttpStatus.CONFLICT),
+    RESOURCE_EXISTED(HttpStatus.CONFLICT.value(), "Tài nguyên đã tồn tại", HttpStatus.CONFLICT),
+    LECTURER_COURSE_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "Môn học đã được gán cho giảng viên này", HttpStatus.CONFLICT),
+    TEAM_MEMBER_FULL(HttpStatus.BAD_REQUEST.value(), "Team đã đầy", HttpStatus.BAD_REQUEST);
+
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
         this.message = message;

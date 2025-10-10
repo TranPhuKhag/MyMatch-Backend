@@ -36,6 +36,8 @@ public class SecurityConfig {
             "/auth/outbound/**",
             "/swap-requests/**",
             "/swaps/**",
+            "payments/internal/**",
+            "/images/**",
     };
 
     private static final String[] PUBLIC_GET = {
@@ -53,6 +55,8 @@ public class SecurityConfig {
             "/lecturers/**",
             "/courses/**",
             "/review-criteria/**",
+            "/payments/qr-code",
+            "/plans/**",
     };
 
     private final CustomJwtDecoder customJwtDecoder;

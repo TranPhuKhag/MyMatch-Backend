@@ -4,7 +4,7 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mymatch.dto.request.chatmessage.ChatMessageCreationRequest;
-import com.mymatch.dto.response.ChatMessageResponse;
+import com.mymatch.dto.response.chatmessage.ChatMessageResponse;
 import com.mymatch.entity.ChatMessage;
 import com.mymatch.entity.Conversation;
 import com.mymatch.entity.Student;
@@ -29,7 +29,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 

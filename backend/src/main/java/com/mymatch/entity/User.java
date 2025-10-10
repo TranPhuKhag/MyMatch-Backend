@@ -48,7 +48,7 @@ public class User extends AbstractAuditingEntity {
     String lastName;
     String address;
     String phone;
-    @Column(name = "avatar_url", length = 2048)
+    @Column(name = "avatar_url", columnDefinition = "TEXT")
     String avatarUrl;
 
     @OneToOne(cascade = CascadeType.ALL)

@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: MyMatch
+  jackson:
+    time-zone: UTC
   datasource:
     url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -12,15 +14,22 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      hibernate.jdbc.time_zone: UTC
   security:
     user:
       name: admin
       password: 123456
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
 google:
   oauth:
     client-id: ${GOOGLE_OAUTH_CLIENT_ID}
     client-secret: ${GOOGLE_OAUTH_CLIENT_SECRET}
     redirect-uri: ${GOOGLE_OAUTH_REDIRECT_URI}
+    allowed-redirect-uris: ${GOOGLE_OAUTH_ALLOWED_REDIRECT_URI}
 jwt:
   signerKey: ${JWT_SIGNER_KEY}
   valid-duration: 3600 # in second
@@ -42,3 +51,28 @@ notification:
   email:
     brevo-url: ${BREVO_URL:https://api.brevo.com}
     brevo-apikey: ${BREVO_API_KEY}
+sepay:
+  api:
+    key: ${SEPAY_API_KEY}
+    base-url:  https://api.sepay.vn/v1
+  bank:
+    code: ${SEPAY_BANK_CODE}
+  account:
+    number: ${SEPAY_ACCOUNT_NUMBER}
+    name: ${SEPAY_ACCOUNT_NAME}
+  webhook:
+#    path: /payments/internal/sepay/webhook
+    api-key: ${SEPAY_WEBHOOK_API_KEY}
+  expire-minutes: 15
+  qr:
+    base-url: ${SEPAY_QR_BASE_URL}
+mymatch:
+  wallet-code:
+    prefix: ${MYMATCH_WALLET_PREFIX}
+    suffix: ${MYMATCH_WALLET_SUFFIX}
+    min-digits: ${MYMATCH_WALLET_MIN}
+    max-digits: ${MYMATCH_WALLET_MAX}
+file:
+  storage:
+    private: /var/www/mymatch/private/
+    public: /var/www/mymatch/public/
